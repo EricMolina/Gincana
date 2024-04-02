@@ -21,4 +21,5 @@ Route::controller(LabelController::class)->group(function () {
     Route::get('/label','index')->name('label.index');
     Route::get('/label/create','create')->name('label.create');
     Route::post('/label/list','list')->name('label.list');
+    Route::post('/label/store','store')->name('label.store');
 });

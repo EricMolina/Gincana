@@ -20,6 +20,18 @@ class LabelController extends Controller
         return response()->json($labels);
     }
     public function create(){
-        return view("");
+        return view("label.create");
+    }
+    public function store(Request $request){
+        $validated = $request->validate([
+            "name"=> "required|unique:labels|max:255",
+            "labelColor"=> "required"
+        ]);
+
+        $label = new Label();
+        $label->name=$request->input("name");
+        $label->color = $request->input("labelColor");
+        $label->save();
+        return redirect()->route("label.index");
     }
 }

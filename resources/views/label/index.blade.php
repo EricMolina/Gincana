@@ -9,8 +9,13 @@
 </head>
 <body>
     <h1>Labels</h1>
+    <a href="{{route('label.create')}}">Nuevo</a>
     <input type="text" name="src" id="src">
     <div id="labelContainer"></div>
     <script src="{{asset('js/label.js')}}"></script>
+    <script>
+        src.addEventListener("keyup",()=>{showLabels();});
+        window.onload = showLabels();
+    </script>
 </body>
 </html>

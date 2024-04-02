@@ -23,6 +23,3 @@ function showLabels(){
     }
     ajax.send(formdata);
 }
-
-src.addEventListener("keyup",()=>{showLabels();});
-window.onload = showLabels();
