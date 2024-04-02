@@ -13,18 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('gin_ses_grp_users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->enum('role', ['user', 'admin']);
-            $table->timestamps();
+            $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->foreignId('gin_ses_group_id')->nullable()->constrained('gin_ses_groups');
         });
     }
-    
 
     /**
      * Reverse the migrations.
@@ -33,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('gincana_session_groups_users');
     }
 };

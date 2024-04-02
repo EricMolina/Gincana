@@ -41,4 +41,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function session_admin() {
+        return $this->hasMany(GincanaSession::class, 'session_admin');
+    }
 }

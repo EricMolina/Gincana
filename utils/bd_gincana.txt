@@ -1,0 +1,91 @@
+bd_gincana
+
+
+users
+  name (laravel default)
+  email (laravel default)
+  password (laravel default)
+  role (ENUM['user', 'admin'])
+
+
+
+user_labels
+  id (int)
+  name (text) nullable
+
+
+points
+  id (int)
+  coord_x (double) nullable
+  coord_y (double) nullable
+  name (text) nullable
+  img (longtext) nullable
+
+
+
+user_labels_points
+  id (int)
+  user_label_id (int FK user_labels) nullable
+  point_id (int FK points) nullable
+
+
+
+labels
+  id (int)
+  name (text) nullable
+  color (text) nullable
+
+
+
+points_labels
+  id (int)
+  point_id (int FK points) nullable
+  label_id (int FK labels) nullable
+
+
+gincanas
+  id (int)
+  name (text) nullable
+  desc (longtext) nullable
+  difficulty (int) nullable
+
+
+
+gincana_points
+  id (int)
+  hint (longtext) nullable
+  order_id (int) nullable
+  gincana_id (int FK gincanas) nullable
+  point_id (int FK point) nullable
+
+
+
+gincana_sessions
+  id (int)
+  name (text) nullable
+  session_admin (int FK user) nullable
+  gincana_id (int FK gincanas) nullable
+  session_code (text) unique
+
+
+
+gin_ses_groups
+  id (int)
+  name (text) nullable
+  status (int) nullable
+  gincana_session_id (int FK gincana_sessions) nullable
+
+
+
+gin_ses_grp_users
+  id (int)
+  user_id (int FK users) nullable
+  gin_ses_group_id (int FK gin_ses_groups) nullable
+
+
+
+gin_ses_grp_usr_checkpoints
+  id (int)
+  gin_ses_grp_user_id (int FK gin_ses_grp_users) nullable
+  gincana_point_id (int FK gincana_points) nullable
+

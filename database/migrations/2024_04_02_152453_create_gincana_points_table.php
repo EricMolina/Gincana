@@ -13,18 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('gincana_points', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->enum('role', ['user', 'admin']);
-            $table->timestamps();
+            $table->longText('hint')->nullable();
+            $table->integer('order_id')->nullable();
+            $table->foreignId('gincana_id')->nullable()->constrained('gincanas');
+            $table->foreignId('point_id')->nullable()->constrained('points');
         });
     }
-    
 
     /**
      * Reverse the migrations.
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('gincana_points');
     }
 };
