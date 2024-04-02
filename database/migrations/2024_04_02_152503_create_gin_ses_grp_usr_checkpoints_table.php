@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('gin_ses_grp_user_id')->nullable()->constrained('gin_ses_grp_users');
             $table->foreignId('gincana_point_id')->nullable()->constrained('gincana_points');
+            $table->timestamps();
         });
     }
 

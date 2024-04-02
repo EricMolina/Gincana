@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('session_admin')->nullable()->constrained('users');
             $table->foreignId('gincana_id')->nullable()->constrained('gincanas');
             $table->string('session_code')->unique();
+            $table->timestamps();
         });
     }
 

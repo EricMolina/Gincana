@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->integer('status')->nullable();
             $table->foreignId('gincana_session_id')->nullable()->constrained('gincana_sessions');
+            $table->timestamps();
         });
     }
 

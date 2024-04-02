@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('order_id')->nullable();
             $table->foreignId('gincana_id')->nullable()->constrained('gincanas');
             $table->foreignId('point_id')->nullable()->constrained('points');
+            $table->timestamps();
         });
     }
 

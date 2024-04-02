@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\LabelController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,4 +15,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::controller(LabelController::class)->group(function () {
+    Route::get('/label','index')->name('label.index');
+    Route::get('/label/create','create')->name('label.create');
+    Route::post('/label/list','list')->name('label.list');
 });
