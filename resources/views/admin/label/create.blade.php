@@ -15,9 +15,8 @@
         <br>
         <label for="labelColor">Color</label>
         <input type="color" name="labelColor" id="labelColor" value="#ffffff">
-        <br>
-        <label for="hexColor">Codigo hexadecimal</label>
-        <input type="text" name="hexColor" id="hexColor">
+        {{-- <label for="hexColor">Codigo hexadecimal</label>
+        <input type="text" name="hexColor" id="hexColor"> --}}
         <br>
         <button type="submit">Crear</button>
     </form>
@@ -30,6 +29,7 @@
         </ul>
     </div>
     @endif
-    <script src="{{asset('js/colorpicker.js')}}"></script>
+    <a href="{{route('label.index')}}">Volver</a>
+    {{-- <script src="{{asset('js/colorpicker.js')}}"></script> --}}
 </body>
 </html>

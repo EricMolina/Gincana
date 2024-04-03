@@ -18,8 +18,10 @@ Route::get('/', function () {
 });
 
 Route::controller(LabelController::class)->group(function () {
-    Route::get('/label','index')->name('label.index');
-    Route::get('/label/create','create')->name('label.create');
-    Route::post('/label/list','list')->name('label.list');
-    Route::post('/label/store','store')->name('label.store');
+    Route::get('/admin/label','index')->name('label.index');
+    Route::post('/admin/label/list','list')->name('label.list');
+    Route::post('/admin/label/store','store')->name('label.store');
+    Route::post('/admin/label/delete','delete')->name('label.delete');
+    Route::post('/admin/label/show','show')->name('label.show');
+    Route::post('/admin/label/update','update')->name('label.update');
 });
