@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Gincana;
 use App\Models\GincanaPoint;
+use App\Models\Point;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -47,11 +48,16 @@ class GincanaController extends Controller
 
 
     function list() {
-        $gincanas = Gincana::all();
+        $gincanas = Gincana::withCount('gincana_points')->get();
 
         return $gincanas->map(function ($gincana) {
             $gincana->is_owner = Auth::user()->id == $gincana->user_id;
             return $gincana;
         });
+    }
+
+
+    function list_points() {
+        return Point::all();
     }
 }

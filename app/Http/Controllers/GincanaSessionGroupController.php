@@ -15,7 +15,7 @@ use Exception;
 class GincanaSessionGroupController extends Controller
 {
     function list(Request $request) {
-        return GincanaSessionGroup::withCount('gincanaSessionGroupUsers')
+        return GincanaSessionGroup::with('gincanaSessionGroupUsers.user')
                                   ->where('gincana_session_id', $request->id)
                                   ->get();
     }
@@ -35,6 +35,8 @@ class GincanaSessionGroupController extends Controller
             $gincana_session_group_user->user_id = Auth::user()->id;
             $gincana_session_group_user->gin_ses_group_id = $gincana_session_group->id;
             $gincana_session_group_user->save();
+
+            Session::put('current_activity', $gincana_session_group);
 
             DB::commit();
 

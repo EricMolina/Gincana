@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(GincanaController::class)->group(function () {
         Route::get('/api/gincanas/', 'list')->name('api.gincanas.list');
         Route::post('/api/gincanas/', 'store')->name('api.gincanas.store');
+        Route::get('/api/points/', 'list_points')->name('api.points.list');
     });
 
     Route::controller(GincanaSessionController::class)->group(function () {
