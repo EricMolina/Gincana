@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users');
             $table->foreignId('gin_ses_group_id')->nullable()->constrained('gin_ses_groups');
+            $table->timestamps();
         });
     }
 

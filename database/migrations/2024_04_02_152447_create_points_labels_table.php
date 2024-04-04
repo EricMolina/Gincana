@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('point_id')->nullable()->constrained('points');
             $table->foreignId('label_id')->nullable()->constrained('labels');
+            $table->timestamps();
         });
     }
 

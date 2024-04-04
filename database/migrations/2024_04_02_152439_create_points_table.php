@@ -19,6 +19,7 @@ return new class extends Migration
             $table->double('coord_y')->nullable();
             $table->string('name')->nullable();
             $table->longText('img')->nullable();
+            $table->timestamps();
         });
     }
 
