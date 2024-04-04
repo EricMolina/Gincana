@@ -18,8 +18,10 @@ class Point extends Model
         return $this->belongsToMany(Label::class, 
             'points_labels', 'point_id', 'label_id');
     }
-
     public function gincana_points() {
         return $this->hasMany(GincanaPoint::class, 'point_id');
+    }
+    public function main_label() {
+        return $this->belongsTo(Label::class, 'label_id');
     }
 }

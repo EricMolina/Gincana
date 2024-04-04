@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <meta name="csrf-token" content="{{csrf_token()}}">
-    <title>Labels</title>
+    <title>Admin - Labels</title>
 </head>
 <body>
     <h1>Labels</h1>

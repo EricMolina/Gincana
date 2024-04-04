@@ -13,4 +13,7 @@ class Label extends Model
         return $this->belongsToMany(Point::class, 
             'points_labels', 'label_id', 'point_id');
     }
+    public function main_points() {
+        return $this->hasMany(Point::class, 'point_id');
+    }
 }

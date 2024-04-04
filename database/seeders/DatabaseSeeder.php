@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Database\Seeders\LabelSeeder;
+use Database\Seeders\PointsSeeder;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -15,5 +16,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(LabelSeeder::class);
+        $this->call(PointsSeeder::class);
     }
 }

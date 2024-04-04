@@ -1,0 +1,7 @@
+.imgPoint{
+    float: left;
+    width: 120px;
+    height: 120px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
