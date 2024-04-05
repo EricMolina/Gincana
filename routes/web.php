@@ -60,7 +60,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::controller(CurrentActivityController::class)->group(function () {
         Route::get('/api/current-activity/status/', 'status')->name('api.current_activity.status');
-        Route::get('/api/current-activity/checkpoint/', 'checkpoint')->name('api.current_activity.checkpoint');
+        Route::post('/api/current-activity/checkpoint/', 'checkpoint')->name('api.current_activity.checkpoint');
     });
 
 });

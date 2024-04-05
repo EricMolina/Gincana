@@ -61,6 +61,7 @@ class CurrentActivityController extends Controller
             )->get();
 
             $show_next_hint = true;
+            $completed_points = 0;
             
             foreach ($gincana_points as $point) {
                 
@@ -92,6 +93,7 @@ class CurrentActivityController extends Controller
                     $current_available_point['coord_x'] = $point_data->coord_x;
                     $current_available_point['coord_y'] = $point_data->coord_y;
                     $show_next_hint = true;
+                    $completed_points++;
                 } else {
                     $show_next_hint = false;
                 }
@@ -102,6 +104,82 @@ class CurrentActivityController extends Controller
                 );
             }
 
+            if ($completed_points == count($gincana_points)) {
+
+                $last_session_point = GincanaPoint::where(
+                    'gincana_id', $data['gincana']->id
+                )->orderBy(
+                    'order_id'
+                )->get()->last();
+
+                $session_groups = GincanaSessionGroup::where(
+                    'gincana_session_id', $current_gincana_session_group->gincana_session_id
+                )->get();
+
+                $groups_in_last_point = [];
+
+                foreach ($session_groups as $group) {
+                    
+                    $session_group_members = GincanaSessionGroupUser::where(
+                        'gin_ses_group_id', $group->id
+                    )->get();
+
+                    $members_in_last_point_count = 0;
+
+                    foreach ($session_group_members as $group_member) {
+
+                        $member_last_checkpoint = GincanaSessionGroupUserCheckpoint::where(
+                            'gin_ses_grp_user_id', $group_member->id
+                        )->where(
+                            'gincana_point_id', $last_session_point->id
+                        );
+
+                        if ($member_last_checkpoint->exists()) {
+                            $members_in_last_point_count++;
+                        }
+                    }
+
+                    if (count($session_group_members) == $members_in_last_point_count) {
+                        array_push(
+                            $groups_in_last_point,
+                            $group->id
+                        );
+                    }
+                }
+
+                $groups_order = GincanaSessionGroupUserCheckpoint::with('gincanaSessionGroupUser')
+                ->whereHas('gincanaSessionGroupUser', 
+                    function ($query) use ($groups_in_last_point) {
+                        return $query->whereIn('gin_ses_group_id', $groups_in_last_point);
+                    }
+                )->where(
+                    'gincana_point_id', $last_session_point->id
+                )->orderBy(
+                    'created_at'
+                )->get()->groupBy(
+                    'gincanaSessionGroupUser.gin_ses_group_id'
+                );
+
+                $group_ranking = [];
+                $position = 1;
+
+                foreach ($groups_order as $group_id => $group_members) {
+                    $group = GincanaSessionGroup::find($group_id);
+
+                    array_push(
+                        $group_ranking,
+                        [
+                            'group_name' => $group->name,
+                            'group_position' => $position
+                        ]
+                    );
+
+                    $position++;
+                }
+
+                $data['ranking'] = $group_ranking;
+            }
+
             $data['available_points'] = $available_points;
         }
 
@@ -110,6 +188,8 @@ class CurrentActivityController extends Controller
 
 
     function checkpoint(Request $request) {
+        $data = [];
+
         $current_user_x_coord = $request->coord_x;
         $current_user_y_coord = $request->coord_y;
 
@@ -166,20 +246,24 @@ class CurrentActivityController extends Controller
         );
 
         if ($next_point_checkpoint->exists()) {
-            return 'wait';
+            $data['result'] = 'wait';
+
+        } else {
+            $distance = calculateDistance($current_user_x_coord, $current_user_y_coord, $nex_point->coord_x, $nex_point->coord_y);
+    
+            if ($distance <= 150) { # metros
+                $user_checkpoint = new GincanaSessionGroupUserCheckpoint;
+                $user_checkpoint->gin_ses_grp_user_id = $group_user->id;
+                $user_checkpoint->gincana_point_id = $next_gincana_point->id;
+                $user_checkpoint->save();
+    
+                $data['result'] = 'ok';
+
+            } else {
+                $data['result'] = 'no';
+            } 
         }
 
-        $distance = calculateDistance($current_user_x_coord, $current_user_y_coord, $nex_point->coord_x, $nex_point->coord_y);
-
-        if ($distance <= 150) { # metros
-            $user_checkpoint = new GincanaSessionGroupUserCheckpoint;
-            $user_checkpoint->gin_ses_grp_user_id = $group_user->id;
-            $user_checkpoint->gincana_point_id = $next_gincana_point->id;
-            $user_checkpoint->save();
-
-            return 'ok';
-        }
-
-        return 'no';
+        return $data;
     }
 }

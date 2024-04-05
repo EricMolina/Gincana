@@ -26,7 +26,14 @@
         .new-point {
             margin: 10px 0px;
         }
+        
+        #map { 
+            height: 500px;
+            width: 650px;
+        }
     </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
 <body>
 
@@ -49,9 +56,34 @@
         <div id="content">
 
         </div>
+        <div id="form">
+            <div id="map"></div><br>
+            <span id="check-result-msg"></span>
+        </div>
     </div>
 
-    <script>window.onload = () => displayCurrentActivityStatus();</script>
+    <script>
+        window.onload = () => {
+            displayCurrentActivityStatus();
+
+            var map = L.map('map').setView([41.35005355319907, 2.1073615730168473], 14);
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+            var marker = new L.marker([41.35005355319907, 2.1073615730168473], {id:1, draggable:'true'});
+            marker.on('dragend', function(event){
+                    var marker = event.target;
+                    var position = marker.getLatLng();
+                    marker.setLatLng(position,{id:1,draggable:'true'}).bindPopup(position).update();
+                    sendCheckpoint(position);
+            });
+            map.addLayer(marker);
+
+        }
+    </script>
 
     @endif
 
@@ -428,12 +460,56 @@
                 activity.available_points.forEach((point, index) => {
                     appContent.innerHTML += `
                         <div>
-                            <b>Punto ${index + 1}</b><br>
+                            <b>Punto ${index + 1} (${point.members_in_point}/${activity.group.gincana_session_group_users_count})</b><br>
                             ${point.hint ? `<span>Pista: ${point.hint}</span>` : ''}
                         </div><br>
                     `;
                 });
             }
+
+            if (activity.ranking) {
+                appContent.innerHTML += `
+                    <b>Gincana completada!</b>
+                `;
+
+                activity.ranking.forEach(group => {
+                    appContent.innerHTML += `<br><b>#${group.group_position} - ${group.group_name}</b>`;
+                });
+            }
+        })
+    }
+
+
+    function sendCheckpoint(position) {
+        let data = {
+            'coord_x': position['lat'],
+            'coord_y': position['lng']
+        };
+
+        fetch('{{ route("api.current_activity.checkpoint") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify(data)
+        })
+        .then((res) => res.text())
+        .then((text) => {
+            let response = JSON.parse(text);
+
+            if (response['result'] == 'ok') {
+                displayCurrentActivityStatus();
+                document.getElementById('check-result-msg').textContent = 'Punto encontrado';
+
+            } else if (response['result' ]== 'wait') {
+                document.getElementById('check-result-msg').textContent = 'Espera a que el resto lleguen al punto';
+
+            } else if (response['result'] == 'no')  {
+                document.getElementById('check-result-msg').textContent = 'No se ha encontrado el punto';
+
+            }
+
         })
     }
 

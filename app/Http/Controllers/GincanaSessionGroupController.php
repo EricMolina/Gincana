@@ -36,7 +36,7 @@ class GincanaSessionGroupController extends Controller
             $gincana_session_group_user->gin_ses_group_id = $gincana_session_group->id;
             $gincana_session_group_user->save();
 
-            Session::put('current_activity', $gincana_session_group);
+            Session::put('current_activity', $gincana_session_group->id);
 
             DB::commit();
 
