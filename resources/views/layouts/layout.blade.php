@@ -14,7 +14,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-    <script src="{{ asset('js/main.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,6 +24,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
+    <script src="{{ asset('js/map.js') }}"></script>
     <title>@yield('title')</title>
 </head>
 <body>
@@ -57,10 +57,10 @@
     <footer>
         <div class="footer-buttons">
             <div class="footer-small-buttons">
-                <div class="footer-small-button">
+                <div onclick="zoomIn()" class="footer-small-button">
                     <img class="img-icon" src="{{ asset('img/zoom_in_icon.png') }}" alt="zoom-in">
                 </div>
-                <div class="footer-small-button">
+                <div onclick="zoomOut()" class="footer-small-button">
                     <img class="img-icon" src="{{ asset('img/zoom_out_icon.png') }}" alt="zoom-out">
                 </div>
             </div>
