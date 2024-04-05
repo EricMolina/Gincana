@@ -19,6 +19,10 @@ class LabelController extends Controller
         }
         return response()->json($labels);
     }
+    public function getlabel(){
+        $labels = Label::all();
+        return response()->json($labels);
+    }
     public function store(Request $request){
         if(!$request->input("name")){
             return 'El campo nombre no puede estar vacío';

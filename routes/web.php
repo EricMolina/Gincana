@@ -20,6 +20,7 @@ Route::get('/', function () {
 
 Route::controller(LabelController::class)->group(function () {
     Route::get('/admin/label','index')->name('label.index');
+    Route::get('/label/getlabel','getlabel')->name('label.getlabel');
     Route::post('/admin/label/list','list')->name('label.list');
     Route::post('/admin/label/store','store')->name('label.store');
     Route::post('/admin/label/delete','delete')->name('label.delete');
