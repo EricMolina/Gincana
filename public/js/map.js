@@ -1,6 +1,6 @@
 var map = null;
 var pointers = [];
-var userPointer = { img: 'img/me_icon.png', coord_x: 0, coord_y: 0, name: 'Nombre de Usuario' };
+var userPointer = { img: '../img/me_icon.png', coord_x: 0, coord_y: 0, name: 'Nombre de Usuario' };
 var userLayer = null;
 var pointersLayer = null;
 

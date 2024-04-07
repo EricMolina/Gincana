@@ -24,6 +24,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
+    <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/map.js') }}"></script>
     <title>@yield('title')</title>
 </head>
@@ -78,19 +79,19 @@
         </div>
         <div class="footer-items">
             <div class="footer-item">
-                <div class="footer-item-img">
+                <div id="tab1" onclick="changeTab(1)" class="footer-item-img footer-item-selected">
                     <img class="img-icon" src="{{ asset('img/icon_map_selected.png') }}" alt="ubicaciones">
                 </div>
                 <span class="font-medium footer-item-text">Ubicaciones</span>
             </div>
             <div class="footer-item">
-                <div class="footer-item-img footer-item-selected">
+                <div id="tab2" onclick="changeTab(2)" class="footer-item-img">
                     <img class="img-icon" src="{{ asset('img/icon_gincanas_selected.png') }}" alt="gincanas">
                 </div>
                 <span class="font-medium footer-item-text">Gincanas</span>
             </div>
             <div class="footer-item">
-                <div class="footer-item-img">
+                <div id="tab3" onclick="changeTab(3)" class="footer-item-img footer-item-disabled">
                     <img class="img-icon" src="{{ asset('img/icon_activity_selected.png') }}" alt="mi-actividad">
                 </div>
                 <span class="font-medium footer-item-text">Mi actividad</span>
@@ -99,6 +100,14 @@
     </footer>
     <div class="content">
     </div>
+    <div id="load">
+        <img src="{{ asset('img/loading_circle.png') }}" alt="">
+    </div>
     @yield('scripts')
+    <script>
+        changeTab(1);
+        disableTab(3);
+        loading(false);
+    </script>
 </body>
 </html>
