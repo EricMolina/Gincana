@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 class pointController extends Controller
 {
     public function index(){
@@ -21,44 +22,111 @@ class pointController extends Controller
         return response()->json($point);
     }
     public function update(Request $request){
+        if(!isset($request->lab)){
+            return "Indica almenos una categoría";
+        }
+        $lab =  $request->lab;
         $id = $request->input("id");
-        $point = Point::find($id);
-        $imgOld = $point->img;
-        $img = $request->file("img");
-        $filename = time().'.'.$img->getClientOriginalExtension();
-        $img->move(public_path('img/points'), $filename);
+        $point = Point::with("labels")->get()->find($id);
+        if($request->name == "" || $request->name == null){
+            return "El campo nombre es obligatorio";
+        }
+        if($request->desc == "" || $request->desc == null){
+            return "El campo descripción es obligatorio";
+        }
+        if($request->address == "" || $request->address == null){
+            return "El campo dirección es obligatorio";
+        }
+        if($request->coordx == "" || $request->coordx == null){
+            return "Falta la ubicación en el mapa";
+        }
+        if($request->coordy == "" || $request->coordy == null){
+            return "Falta la ubicación en el mapa";
+        }
         try {
-            $point->img = $filename;
+            DB::beginTransaction();
+            foreach ($point["labels"] as $label) {
+                $label["pivot"]->delete();
+            }
+            foreach ($lab as $label) {
+                $point->labels()->attach($label);
+            }
+            $img = $request->file("img");
+            $imgOld = $point->img;
+            if($img != NULL){
+                $filename = time().'.'.$img->getClientOriginalExtension();
+                $img->move(public_path('img/points'), $filename);
+                $point->img = $filename;
+                if(File::exists("img/points/$imgOld")){
+                    File::delete("img/points/$imgOld");
+                }
+            }
+            $point->main_label_id = $request->labelMain;
             $point->name = $request->name;
+            $point->desc = $request->desc;
             $point->address = $request->address;
             $point->coord_x = $request->coordx;
             $point->coord_y = $request->coordy;
             $point->save();
-            // Storage::delete("img/points/$imgOld");
-            if(File::exists("img/points/$imgOld")){
-                File::delete("img/points/$imgOld");
-            }
+            DB::commit();
             return "ok";
         } catch (\Exception $e) {
+            DB::rollBack();
             return $e->getMessage();
         }
     }
     public function store(Request $request){
+        if(!isset($request->lab)){
+            return "Indica almenos una categoría";
+        }
+        if(!isset($request->img)){
+            return "Falta una imagen";
+        }
+        $lab =  $request->lab;
+        // return $request;
+        if($request->name == "" || $request->name == null){
+            return "El campo nombre es obligatorio";
+        }
+        if($request->address == "" || $request->address == null){
+            return "El campo dirección es obligatorio";
+        }
+        if($request->desc == "" || $request->desc == null){
+            return "El campo descripción es obligatorio";
+        }
+        
+        if($request->coordx == "" || $request->coordx == null){
+            return "Falta la ubicación en el mapa";
+        }
+        if($request->coordy == "" || $request->coordy == null){
+            return "Falta la ubicación en el mapa";
+        }
+        // return $lab;
+        // if(count($lab) == 0){
+        //     return "Define almenos un punto";
+        // }
         try {
+            DB::beginTransaction();
             $point = new Point();
+            $point->main_label_id = $request->labelMain;
             $point->name = $request->name;
             $point->address = $request->address;
             $point->coord_x = $request->coordx;
             $point->coord_y = $request->coordy;
             $filename = time().'.'.$request->file("img")->getClientOriginalExtension();
             $point->img = $filename;
+            $point->desc = $request->desc;
             $point->save();
             $request->file("img")->move(public_path('img/points'), $filename);
+            foreach ($lab as $label) {
+                // $label->points()->attach($label);
+                $point->labels()->attach($label);
+            }
+            DB::commit();
             return "ok";
         } catch (\Exception $e) {
+            DB::rollBack();
             return $e->getMessage();
         }
-
     }
     public function show(Request $request){
         $id = $request->input("id");
@@ -66,16 +134,23 @@ class pointController extends Controller
         return response()->json($point);
     }
     public function delete(Request $request){
+        DB::beginTransaction();
         $id = $request->input("id");
         try {
-            $point = Point::find($id);
+            $point = Point::with("main_label")->with("labels")->get()->find($id);
+            foreach ($point["labels"] as $label) {
+                $label["pivot"]->delete();
+                // return $label;
+            }
             $point->delete();
             $imgName = $point->img;
             if(File::exists("img/points/$imgName")){
                 File::delete("img/points/$imgName");
             }
+            DB::commit();
             return "ok";
         } catch (\Exception $e) {
+            DB::rollBack();
             return $e->getMessage();
         }
     }

@@ -11,7 +11,7 @@ function createPoint(e) {
     // var marker = L.marker([lat,lng]).addTo(map);
     Swal.fire({
         showConfirmButton: false,
-        width: '50%',
+        width: '70%',
         html:`<a id="closeModal" onclick="swal.close(); return false;">x</a><h1>Nuevo punto</h1>
         <div class="fila">
             <form id="modForm" enctype="multipart/form-data">
@@ -25,6 +25,11 @@ function createPoint(e) {
                     <label for="address">Dirección</label>
                     </br>
                     <input type="text" name="address" id="address">
+                    <br>
+                    <label for="desc">Descripción</label>
+                    <br>
+                    <textarea name="desc" id = "desc" rows="2" cols="35" style="resize: none"></textarea>
+                    <br>
                     <input type="file" name="img" id="img">
                     <div id="preview" style="background-image: url('');" class="imgPoint"></div>
                     </br>
@@ -53,7 +58,7 @@ function createPoint(e) {
             labels.forEach(label => {
                 labelForm +=`<option value="${label.id}" selected>${label.name}</option>`;
                 labelchk +=`<label for='${label.id}'>${label.name}</label>`;
-                labelchk +=`<input type='checkbox' name='lab[]' id='${label.id}' value='${label.name}'>`;
+                labelchk +=`<input type='checkbox' name='lab[]' id='${label.id}' value='${label.id}'>`;
             });
             labelForm +=`</label>`
             labelchk +=`</fieldset>`
@@ -127,11 +132,11 @@ function modForm(id){
     formdata.append('_token', csrf_token);
     ajax.onload = function(){
         if(ajax.status == 200){
-            console.log(ajax.responseText);
             var data = JSON.parse(ajax.responseText);
+            // console.log(data.main_label_id);
             Swal.fire({
                 showConfirmButton: false,
-                width: '50%',
+                width: '70%',
                 html:`<a id="closeModal" onclick="swal.close(); return false;">x</a><h1>Editando ${data.name}</h1>
                 <div class="fila">
                     <form id="modForm" enctype="multipart/form-data">
@@ -148,6 +153,10 @@ function modForm(id){
                             </br>
                             <input type="text" name="address" id="address" value="${data.address}">
                             </br>
+                            <label for="desc">Descripción</label>
+                            <br>
+                            <textarea name="desc" id = "desc" rows="2" cols="35" style="resize: none">${data.desc}</textarea>
+                            <br>
                             <input type="file" name="img" id="img">
                             <div id="preview" style="background-image: url('../img/points/${data.img}');" class="imgPoint"></div>
                             </br>
@@ -164,7 +173,7 @@ function modForm(id){
                 </div>
                 <p id="error"></p><button onclick="update()">Modificar</button><button onclick="deletePoint(${data.id})">Borrar</button>`
             });
-            labelFormMain()
+            labelFormMain(data.labels,data.main_label_id)
             var file = document.getElementById("img");
             var profilePreview = document.getElementById("preview");
             file.addEventListener("change",()=>{getImg()})
@@ -189,7 +198,6 @@ function modForm(id){
                 document.getElementById("coordy").value = lng;
             }
             mapMod.on('click', onMapClick);
-            
         }
     }
     ajax.send(formdata);
@@ -203,7 +211,7 @@ function update(){
     ajax.open('POST', '/admin/point/update');
     ajax.onload=function(){
         if(ajax.status == 200){
-            // console.log(ajax.responseText);
+            console.log(ajax.responseText);
             if(ajax.responseText == "ok"){
                 getPoints()
                 document.getElementById("closeModal").click();
@@ -310,7 +318,12 @@ function getImg(){
         reader.readAsDataURL(file.files[0]);
     }
 }
-function labelFormMain(){
+function labelFormMain(inputs, main){
+    var inputArray = [];
+    inputs.forEach(elem=>{
+        inputArray.push(elem.id)
+    })
+    // console.log(inputArray);
     var labelList = document.getElementById("labelList");
     var ajax = new XMLHttpRequest();
     ajax.open('get', '/label/getlabel');
@@ -323,13 +336,21 @@ function labelFormMain(){
             labels.forEach(label => {
                 labelForm +=`<option value="${label.id}" selected>${label.name}</option>`;
                 labelchk +=`<label for='${label.id}'>${label.name}</label>`;
-                labelchk +=`<input type='checkbox' name='lab[]' id='${label.id}' value='${label.name}'>`;
+                if(inputArray.includes(label.id)){
+                    labelchk +=`<input type='checkbox' name='lab[]' id='${label.id}' value='${label.id}' checked>`;
+                }else{
+                    labelchk +=`<input type='checkbox' name='lab[]' id='${label.id}' value='${label.id}'>`;
+                }
             });
             labelForm +=`</label>`
             labelchk +=`</fieldset>`
             labelList.innerHTML = labelForm;
             labelList.innerHTML += "</br>";
             labelList.innerHTML += labelchk;
+            document.getElementById("labelMain").value = main
+            // console.log(document.getElementById("labelsList").children);
+            var form  = document.getElementById("labelsList");
+            var inputs = form.querySelectorAll("input")
         }
     }
     ajax.send();
