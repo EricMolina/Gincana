@@ -179,9 +179,9 @@
             <div id="bottom-container-content">
 
 
-                <div class="bottom-gincana-selected">
+                {{-- <div class="bottom-gincana-selected">
                     <h1 class="font-bold bottom-gincana-selected-title">Nombre de la gincana seleccionada</h1>
-                    <p class="font-medium bottom-gincana-selected-desc">Descripción de ejemplo descripción de ejemplo descripción de ejemplo descripción de ejemplo descripción de ejemplo descripción de ejemplo</p>
+                    <p class="font-medium bottom-gincana-selected-desc">Desc</p>
                     <span class="bottom-gincana-selected-creator">Creada por: Usuario</span>
                     <span class="bottom-gincana-selected-checkpoints">Puntos de control: 18</span>
                     <h1 class="font-bold bottom-gincana-selected-title">Sesiones activas</h1>
@@ -203,6 +203,33 @@
                             <img src="{{asset ('img/arrow_up_icon.png') }}" alt="ver">
                         </div>
                     </div>
+                </div> --}}
+
+                <div class="bottom-gincana-session">
+                    <h1 class="font-bold bottom-gincana-session-title">Nombre de la gincana seleccionada</h1>
+                    <p class="font-medium-italic bottom-gincana-session-name">Nombre de la sesión</p>
+                    <div class="bottom-gincana-session-groups-title-container">
+                        <span class="font-medium bottom-gincana-session-groups-title">Grupos de la sesión</span>
+                        <div class="bottom-gincana-session-groups-create">
+                            <img src="{{ asset('img/create_group_icon.png')}}" alt="create">
+                        </div>
+                    </div>
+                    
+                    <div class="bottom-gincana-session-group">
+                        <span class="font-medium bottom-gincana-session-group-title">Nombre del grupo</span>
+
+                        <div class="font-medium bottom-gincana-session-group-user"><span>Usuario de ejemplo</span></div>
+                        <div class="font-medium bottom-gincana-session-group-user"><span>Usuario de ejemplo</span></div>
+                        <div class="font-medium bottom-gincana-session-group-user"><span>Usuario de ejemplo</span></div>
+
+                        <div class="bottom-gincana-session-group-join-container">
+                            <div class="bottom-gincana-session-group-join">
+                                <img src="{{ asset('img/join_icon.png')}}" alt="join">
+                            </div>
+                        </div>
+                        
+                    </div>
+
                 </div>
 
                 

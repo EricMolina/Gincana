@@ -739,7 +739,6 @@ footer {
 .bottom-gincana-selected-desc {
     font-size: 14px;
     text-align: justify;
-    float: left;
     margin: 0;
     padding: 0;
     margin-bottom: 15px;
@@ -826,4 +825,124 @@ footer {
     width: 35px;
     height: 35px;
     margin: auto;
+}
+
+
+
+
+
+.bottom-gincana-session {
+    width: 100%;
+    height: fit-content;
+}
+
+.bottom-gincana-session-title {
+    font-size: 24px;
+    text-align: center;
+}
+
+.bottom-gincana-session-name {
+    font-size: 22px;
+    text-align: left;
+}
+
+.bottom-gincana-session-groups-title-container {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.bottom-gincana-session-groups-title {
+    font-size: 24px;
+    text-align: center;
+}
+
+.bottom-gincana-session-groups-create {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    background-color: #d0ffcc;
+    border-radius: 1000px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.bottom-gincana-session-groups-create img {
+    width: 35px;
+    height: 35px;
+    margin: auto;
+}
+
+.bottom-gincana-session-groups-create:hover {
+    background-color: #a2c79e;
+}
+
+.bottom-gincana-session-group {
+    width: calc(100% - 20px);
+    padding: 10px;
+    height: fit-content;
+    background-color: #d3eaff;
+    border-radius: 40px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.bottom-gincana-session-group-title {
+    font-size: 24px;
+}
+
+.bottom-gincana-session-group-user {
+    width: calc(100% - 20px);
+    margin-top: 15px;
+    height: fit-content;
+    padding: 6px 10px;
+    font-size: 16px;
+    text-align: left;
+    background-color: white;
+    border-radius: 1000px;
+    box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.bottom-gincana-session-group-join-container {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.bottom-gincana-session-group-join {
+    width: 125px;
+    height: 50px;
+    background-color: #d0ffcc;
+    border-radius: 1000px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.bottom-gincana-session-group-join img {
+    width: 35px;
+    height: 35px;
+    margin: auto;
+}
+
+.bottom-gincana-session-group-join:hover {
+    background-color: #a2c79e;
 }
