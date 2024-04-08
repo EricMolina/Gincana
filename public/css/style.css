@@ -18,3 +18,8 @@
     margin-right: auto;
     width: 30%;
 }
+.picCRUD{
+    display: block;
+    height: 50px;
+    width: 50px;
+}
