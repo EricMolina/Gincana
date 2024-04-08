@@ -172,9 +172,16 @@
                 </div>
                 <div class="bottom-reload-button">
                     <div id="reload-button" class="back-arrow-img">
-                        <img class="back-arrow" src="{{ asset('img/reload_icon.png') }}" alt="gincanas">
+                        <img class="reload-arrow" src="{{ asset('img/reload_icon.png') }}" alt="gincanas">
                     </div>
                 </div>
+
+                <div class="bottom-play-button">
+                    <div class="back-arrow-img">
+                        <img class="play-arrow" src="{{ asset('img/icon_play.png') }}" alt="gincanas">
+                    </div>
+                </div>
+
             </div>
             <div id="bottom-container-content">
 
@@ -233,7 +240,7 @@
                 </div> --}}
 
                 
-                <div class="bottom-gincana-mysession">
+                {{-- <div class="bottom-gincana-mysession">
                     <h1 class="font-bold bottom-gincana-session-title">Nombre de la gincana seleccionada</h1>
                     <p class="font-medium-italic bottom-gincana-session-name">Nombre de la sesión</p>
 
@@ -259,6 +266,9 @@
                         <div class="bottom-gincana-mysession-groups-create">
                             <img src="{{ asset('img/exit_icon.png')}}" alt="create">
                         </div>
+                        <div class="bottom-gincana-mysession-groups-close">
+                            <img src="{{ asset('img/close_icon.png')}}" alt="close">
+                        </div>
                     </div>
                     
                     <div class="bottom-gincana-mysession-group">
@@ -269,6 +279,34 @@
                         <span class="font-medium bottom-gincana-mysession-group-title">Nombre de un usuario</span>
                     </div>
 
+                </div> --}}
+
+
+
+
+
+                <div class="bottom-gincana-finished">
+                    <h1 class="font-bold bottom-gincana-session-title">Nombre de la gincana seleccionada</h1>
+                    <p class="font-medium-italic bottom-gincana-session-name">Nombre de la sesión</p>
+                    <h1 class="font-bold bottom-gincana-session-title">¡Enhorabuena, has terminado la gincana!</h1>
+                    
+                    <div class="bottom-gincana-finished-position-container">
+                        <span class="font-bold bottom-gincana-finished-position">#1: Nombre del grupo</span>
+                    </div>
+
+                    <div class="bottom-gincana-finished-position-container">
+                        <span class="font-bold bottom-gincana-finished-position">#2: Nombre del grupo</span>
+                    </div>
+
+                    <div class="bottom-gincana-finished-position-container">
+                        <span class="font-bold bottom-gincana-finished-position">#3: Nombre del grupo</span>
+                    </div>
+
+                    <div class="bottom-gincana-finished-left-container">
+                        <div class="bottom-gincana-finished-left">
+                            <img src="{{ asset('img/exit_icon.png')}}" alt="leave">
+                        </div>
+                    </div>
                 </div>
 
             </div>

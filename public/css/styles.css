@@ -580,6 +580,18 @@ footer {
     margin: auto;
 }
 
+.reload-arrow {
+    width: auto;
+    height: 35px;
+    margin: auto;
+}
+
+.play-arrow {
+    width: auto;
+    height: 35px;
+    margin: auto;
+}
+
 .profile-crud-button {
     width: 50px;
     height: 50px;
@@ -628,7 +640,7 @@ footer {
     position: relative;
 }
 
-.bottom-close-container > div > div > img {
+.bottom-close-container > div > div > img.back-arrow {
     transform: rotate(180deg);
 }
 
@@ -721,6 +733,20 @@ footer {
     position: absolute;
     top: 0;
     right: 0;
+}
+
+.bottom-play-button {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 
@@ -996,6 +1022,31 @@ footer {
     background-color: #c79e9e;
 }
 
+.bottom-gincana-mysession-groups-close {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 50px;
+    background-color: #ffcccc;
+    border-radius: 1000px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.bottom-gincana-mysession-groups-close img {
+    width: 35px;
+    height: 35px;
+    margin: auto;
+}
+
+.bottom-gincana-mysession-groups-close:hover {
+    background-color: #c79e9e;
+}
+
 .bottom-gincana-mysession-group-title {
     font-size: 16px;
 }
@@ -1044,4 +1095,64 @@ footer {
     font-size: 16px;
     text-align: left;
     margin: 5px 0 15px 0;
+}
+
+
+
+.bottom-gincana-finished {
+    width: 100%;
+    height: fit-content;
+}
+
+.bottom-gincana-finished-position-container {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 15px;
+    background-color: rgb(255, 255, 197);
+    border-radius: 10000px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.bottom-gincana-finished-position-container span {
+    font-size: 24px;
+    text-align: center;
+}
+
+.bottom-gincana-finished-left-container {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+
+.bottom-gincana-finished-left {
+    width: 125px;
+    height: 50px;
+    background-color: #ffcccc;
+    border-radius: 1000px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.bottom-gincana-finished-left img {
+    width: 35px;
+    height: 35px;
+    margin: auto;
+}
+
+.bottom-gincana-finished-left:hover {
+    background-color: #c79e9e;
 }
