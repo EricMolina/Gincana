@@ -42,6 +42,10 @@ function initMap() {
     return map;
 }
 
+function setUserPointerName(name) {
+    userPointer.name = name;
+}
+
 function getGeoLocation() {
     return new Promise((resolve, reject) => {
         if (!navigator.geolocation) {
@@ -111,7 +115,7 @@ function UpdateMapPointers() {
     for (var i = 0; i < pointers.length; i++) {
         var icon = L.icon({
             iconUrl: pointers[i].pointer_img,
-            iconSize: [64, 64],
+            iconSize: [48, 64],
             iconAnchor: [32, 64]
         });
         var marker = L.marker([pointers[i].coord_x, pointers[i].coord_y], { icon: icon })
@@ -212,5 +216,5 @@ function centerMapOnUser() {
 }
 
 function openPointer(pointer) {
-    console.log(pointer)
+    openBottomContainer(true);
 }

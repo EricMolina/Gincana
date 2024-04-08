@@ -3,6 +3,12 @@
 @auth
     @php
     //Hacer cosas si el usuario está autenticado
+    $user = Auth::user();
+    $userImage = "../img/default_user.png";
+    if ($user->image != null) {
+        $userImage = $user->image;
+    }
+    //blade php console log $user
     @endphp
 @endauth
 
@@ -40,7 +46,7 @@
                 <input class="font-light" type="text" name="search" id="search" placeholder="Buscar aquí">
             </div>
             <div onclick="openUserProfile(true)" class="icon user-icon">
-                <img src="{{ asset('img/default_user.png') }}" alt="">
+                <img src="{{$userImage}}" alt="">
             </div>
         </div>
         <div class="header-labels">
@@ -104,14 +110,14 @@
         <div class="user-profile">
             <div class="user-profile-principal-container">
                 <div onclick="changeUserPhoto(id)" class="user-profile-principal-img-container">
-                    <img class="user-profile-principal-img-container-img" src="{{ asset('img/default_user.png') }}" alt="user-photo">
+                    <img class="user-profile-principal-img-container-img" src="{{$userImage}}" alt="user-photo">
                     <img class="user-profile-principal-img-container-change" src="{{ asset('img/photo_icon.png') }}" alt="change">
                 </div>
                 <div class="user-profile-name-container">
-                    <span class="font-bold">Nombre de usuario</span>
+                    <span class="font-bold">{{$user->name}}</span>
                 </div>
                 <div class="user-profile-email-container">
-                    <span class="font-medium">correo_electronico@gmail.com</span>
+                    <span class="font-medium">{{$user->email}}</span>
                 </div>
             </div>
             <div class="profile-labels">
@@ -140,6 +146,7 @@
                 </div>
             </div>
             <span class="font-light-italic">Gincanas en las que he participado: 10</span>
+            <br>
             <span class="font-light-italic">Gincanas en las que he ganado: 2</span>
             <div class="profile-close-container">
                 <div class="back-arrow-container">
@@ -163,6 +170,42 @@
                         <img class="back-arrow" src="{{ asset('img/back_arrow.png') }}" alt="gincanas">
                     </div>
                 </div>
+                <div class="bottom-reload-button">
+                    <div onclick="reloadContent()" class="back-arrow-img">
+                        <img class="back-arrow" src="{{ asset('img/reload_icon.png') }}" alt="gincanas">
+                    </div>
+                </div>
+            </div>
+            <div id="bottom-container-content">
+
+
+                <div class="bottom-gincana-selected">
+                    <h1 class="font-bold bottom-gincana-selected-title">Nombre de la gincana seleccionada</h1>
+                    <p class="font-medium bottom-gincana-selected-desc">Descripción de ejemplo descripción de ejemplo descripción de ejemplo descripción de ejemplo descripción de ejemplo descripción de ejemplo</p>
+                    <span class="bottom-gincana-selected-creator">Creada por: Usuario</span>
+                    <span class="bottom-gincana-selected-checkpoints">Puntos de control: 18</span>
+                    <h1 class="font-bold bottom-gincana-selected-title">Sesiones activas</h1>
+                    <div class="bottom-gincana-selected-session">
+                        <div class="bottom-gincana-selected-session-container">
+                            <p class="bottom-gincana-selected-session-container-title">Sesión de ejemplo</p>
+                            <p class="bottom-gincana-selected-session-container-creator">Creador: Usuario de ejemplo</p>
+                        </div>
+                        <div class="bottom-gincana-selected-session-join">
+                            <img src="{{asset ('img/arrow_up_icon.png') }}" alt="ver">
+                        </div>
+                    </div>
+                    <div class="bottom-gincana-selected-session">
+                        <div class="bottom-gincana-selected-session-container">
+                            <p class="bottom-gincana-selected-session-container-title">Sesión de ejemplo</p>
+                            <p class="bottom-gincana-selected-session-container-creator">Creador: Usuario de ejemplo</p>
+                        </div>
+                        <div onclick="checkSessionGroups(session_id)" class="bottom-gincana-selected-session-join">
+                            <img src="{{asset ('img/arrow_up_icon.png') }}" alt="ver">
+                        </div>
+                    </div>
+                </div>
+
+                
             </div>
         </div>
     </div>
@@ -170,5 +213,8 @@
         <img id="load_img" src="{{ asset('img/loading_circle.png') }}" alt="">
     </div>
     @yield('scripts')
+    <script>
+        setUserPointerName('{{$user->name}}');
+    </script>
 </body>
 </html>

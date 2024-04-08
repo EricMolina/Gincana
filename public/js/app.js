@@ -75,3 +75,10 @@ function changeUserPhoto(user_id) {
 function createUserLabel(user_id) {
 
 }
+
+function reloadContent() {
+    loading(true);
+
+
+    loading(false);
+}
