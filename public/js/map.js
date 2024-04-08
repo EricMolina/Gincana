@@ -225,7 +225,7 @@ function centerMapOnUser() {
 
 function openPointer(pointer) {
     openBottomContainer(true);
-    displaySessions(pointer)
+    displayCurrentActivityStatus()
 }
 
 
@@ -339,6 +339,77 @@ function joinGroup(groupId) {
         body: JSON.stringify(data)
     })
     .then(() => {
+        displayCurrentActivityStatus();
     })
 }
 
+
+/* CURRENT ACTIVITY FUNCTIONALITIES */
+
+function displayCurrentActivityStatus() {
+    fetch('/api/current-activity/status/')
+    .then((res) => res.text())
+    .then((text) => {
+        let activity = JSON.parse(text);
+
+        appContent.innerHTML = `
+            <div class="bottom-gincana-mysession">
+                <h1 class="font-bold bottom-gincana-session-title">${activity.gincana.name}</h1>
+                <p class="font-medium-italic bottom-gincana-session-name">${activity.session.name} [${activity.session.session_code}]</p>
+                <p class="font-medium-italic bottom-gincana-session-name">${activity.session.status == 0 ? `Esperando jugadores` : `En juego`}</p>
+            `;
+
+        if (activity.session.status == 1) {
+            activity.available_points.forEach((point, index) => {
+                appContent.innerHTML += `
+                    <div class="bottom-gincana-mysession-clue-container">
+                        <div class="bottom-gincana-mysession-clue-title">
+                            <h1 class="font-medium">Punto ${index + 1}</h1>
+                        </div>
+                        <div class="bottom-gincana-mysession-clue">
+                            <span class="font-medium bottom-gincana-mysession-clue-text">Pista: ${point.hint ? point.hint : ''}</span>
+                        </div>
+                        <span class="font-medium-italic bottom-gincana-mysession-clue-left">Miembros restantes: ${activity.group.gincana_session_group_users_count}</span>
+                        <br>
+                        <span class="font-medium-italic bottom-gincana-mysession-clue-arrived">Han llegado: ${point.members_in_point}</span>
+                    </div>
+                `;
+            });
+        }
+
+        appContent.innerHTML += `
+            <div class="bottom-gincana-session-groups-title-container">
+                <span class="font-medium bottom-gincana-mysession-groups-title">${activity.group.name}</span>
+                <div class="bottom-gincana-mysession-groups-create">
+                    <img src="../img/exit_icon.png" alt="create">
+                </div>
+            </div>
+        `;
+
+        activity.group.gincana_session_group_users.forEach(member => {
+            appContent.innerHTML += `
+                <div class="bottom-gincana-mysession-group">
+                    <span class="font-medium bottom-gincana-mysession-group-title">${member.user.name}</span>
+                </div>`;
+        });
+
+        /* appContent.innerHTML += `
+            </ul><br>
+            ${activity.session.is_owner && activity.session.status != 1 ? 
+                '<button onclick="startGincanaSession()">Iniciar gincana</button><br><br>' : ''}
+            <button onclick="exitGroup()">Abandonar grupo</button><br><br>
+        `; */
+
+       /*  if (activity.ranking) {
+            appContent.innerHTML += `
+                <b>Gincana completada!</b>
+            `;
+
+            activity.ranking.forEach(group => {
+                appContent.innerHTML += `<br><b>#${group.group_position} - ${group.group_name}</b>`;
+            });
+
+            appContent.innerHTML += '<br><br><button onclick="exitCurrentActivity()">Salir</button>';
+        } */
+    })
+}

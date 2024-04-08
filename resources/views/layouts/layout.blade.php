@@ -171,7 +171,7 @@
                     </div>
                 </div>
                 <div class="bottom-reload-button">
-                    <div onclick="reloadContent()" class="back-arrow-img">
+                    <div id="reload-button" class="back-arrow-img">
                         <img class="back-arrow" src="{{ asset('img/reload_icon.png') }}" alt="gincanas">
                     </div>
                 </div>
