@@ -331,7 +331,7 @@
         fetch(`{{ route("api.groups.list") }}?id=${sessionId}`)
         .then((res) => res.text())
         .then((text) => {
-            let groups = JSON.parse(text);
+            let groups = JSON.parse(text).groups;
             let content = "";
             let rows = "";
 

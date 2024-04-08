@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\GincanaSessionGroup;
 use App\Models\GincanaSessionGroupUser;
 use App\Models\GincanaSessionGroupUserCheckpoint;
+use App\Models\GincanaSession;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -16,9 +17,15 @@ use Exception;
 class GincanaSessionGroupController extends Controller
 {
     function list(Request $request) {
-        return GincanaSessionGroup::with('gincanaSessionGroupUsers.user')
-                                  ->where('gincana_session_id', $request->id)
-                                  ->get();
+        $data = [];
+
+        $data['groups'] = GincanaSessionGroup::with('gincanaSessionGroupUsers.user')
+                                            ->where('gincana_session_id', $request->id)
+                                            ->get();
+
+        $data['session'] = GincanaSession::with('gincana')->where('id', $request->id)->first();
+
+        return $data;
     }
 
 

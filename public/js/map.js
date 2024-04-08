@@ -4,8 +4,15 @@ var userPointer = { name: 'Nombre de Usuario', pointer_img: '../img/me_icon.png'
 var userLayer = null;
 var pointersLayer = null;
 
+var appContent;
+// var appForm = document.getElementById('form');
+var currentGincana;
+var currentSession;
+
 
 window.onload = function () {
+    appContent = document.getElementById('bottom-container-content');
+
     var map = initMap();
     
     requestGeoLocationPermission().then(() => {
@@ -189,8 +196,9 @@ function loadPointers(type) {
                         difficulty: data[i].difficulty,
                         coord_x: data[i].coord_x,
                         coord_y: data[i].coord_y,
+                        gincana_points_count: data[i].gincana_points_count,
                         pointer_img: '../img/gincana_icon.png',
-                        user: data[i].user
+                        user: data[i].gincana_creator.name
                     });
                 }
                 
@@ -217,4 +225,120 @@ function centerMapOnUser() {
 
 function openPointer(pointer) {
     openBottomContainer(true);
+    displaySessions(pointer)
 }
+
+
+/* APP CONTROLER */
+
+/* SESSIONS FUNCTIONALITIES */
+
+function displaySessions(gincana) {
+    currentGincana = gincana.id;
+
+    fetch(`/api/sessions/?id=${gincana.id}`)
+    .then((res) => res.text())
+    .then((text) => {
+        appContent.innerHTML = `
+            <div class="bottom-gincana-selected">
+                <h1 class="font-bold bottom-gincana-selected-title">${gincana.name}</h1>
+                <p class="font-medium bottom-gincana-selected-desc">${gincana.desc}</p>
+                <span class="bottom-gincana-selected-creator">Creada por: ${gincana.user}</span>
+                <span class="bottom-gincana-selected-checkpoints">Puntos de control: ${gincana.gincana_points_count}</span>
+                <h1 class="font-bold bottom-gincana-selected-title">Sesiones activas</h1>
+        `;
+
+        let sessions = JSON.parse(text);
+        let content = "";
+
+        sessions.forEach(session => {
+            content += `
+                <div class="bottom-gincana-selected-session">
+                    <div class="bottom-gincana-selected-session-container">
+                        <p class="bottom-gincana-selected-session-container-title">${session.name}</p>
+                        <p class="bottom-gincana-selected-session-container-creator">Creador: ${session.session_admin.name}</p>
+                    </div>
+                    <div onclick="displayGroups(${session.id})" class="bottom-gincana-selected-session-join">
+                        <img src="../img/arrow_up_icon.png" alt="ver">
+                    </div>
+                </div>
+            `;
+        });
+        
+        appContent.innerHTML += content + "</div>";
+    })
+
+    document.getElementById('reload-button').onclick = () => displaySessions(gincana);
+}
+
+
+
+/* GROUPS FUNCTIONALITIES */
+
+function displayGroups(sessionId) {
+    currentSession = sessionId;
+
+    fetch(`/api/groups/?id=${sessionId}`)
+    .then((res) => res.text())
+    .then((text) => {
+        let groups = JSON.parse(text);
+        let content = "";
+
+        content = `
+            <div class="bottom-gincana-session">
+                <h1 class="font-bold bottom-gincana-session-title">${groups.session.gincana.name}</h1>
+                <p class="font-medium-italic bottom-gincana-session-name">${groups.session.name} [${groups.session.session_code}]</p>
+                <div class="bottom-gincana-session-groups-title-container">
+                    <span class="font-medium bottom-gincana-session-groups-title">Grupos de la sesión</span>
+                    <div class="bottom-gincana-session-groups-create">
+                        <img src="../img/create_group_icon.png" alt="create">
+                    </div>
+                </div>
+        `;
+
+        groups.groups.forEach(group => {
+            let members = "";
+            group.gincana_session_group_users.forEach(user => {
+                members += `<div class="font-medium bottom-gincana-session-group-user"><span>${user.user.name}</span></div>`;
+            });
+
+            content += `
+                <div class="bottom-gincana-session-group">
+                    <span class="font-medium bottom-gincana-session-group-title">${group.name}</span>
+
+                    ${members}
+
+                    <div onclick="joinGroup(${group.id})" class="bottom-gincana-session-group-join-container">
+                        <div class="bottom-gincana-session-group-join">
+                            <img src="../img/join_icon.png" alt="join">
+                        </div>
+                    </div>
+                    
+                </div>
+            `;
+        });
+        
+        appContent.innerHTML = content;
+        document.getElementById('reload-button').onclick = () => displayGroups(sessionId);
+    })
+}
+
+
+function joinGroup(groupId) {
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    let data = {
+        'gincana_session_group_id': groupId
+    };
+
+    fetch('/api/groups/join/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify(data)
+    })
+    .then(() => {
+    })
+}
+

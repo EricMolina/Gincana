@@ -48,7 +48,11 @@ class GincanaController extends Controller
 
 
     function list() {
-        $gincanas = Gincana::withCount('gincana_points')->get();
+        $gincanas = Gincana::withCount(
+            'gincana_points'
+        )->with(
+            'gincana_creator'
+        )->get();
 
         return $gincanas->map(function ($gincana) {
             $gincana->is_owner = Auth::user()->id == $gincana->user_id;
