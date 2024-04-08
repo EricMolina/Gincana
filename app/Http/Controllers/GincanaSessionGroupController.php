@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\GincanaSessionGroup;
 use App\Models\GincanaSessionGroupUser;
+use App\Models\GincanaSessionGroupUserCheckpoint;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -67,21 +68,30 @@ class GincanaSessionGroupController extends Controller
     }
 
 
-    function exit(Request $request) {
+    function exit() {
         try {
+            DB::beginTransaction();
 
             $gincana_session_group_user = GincanaSessionGroupUser::where(
-                'gin_ses_group_id', $request->gincana_session_group_id
+                'gin_ses_group_id', Session::get('current_activity')
             )->where(
                 'user_id', Auth::user()->id
             );
+
+            GincanaSessionGroupUserCheckpoint::where(
+                'gin_ses_grp_user_id', $gincana_session_group_user->first()->id
+            )->delete();
+            
             $gincana_session_group_user->delete();
 
-            Session::put('current_activity', null);
+            Session::forget('current_activity');
+
+            DB::commit();
 
             return 'ok';
         
         } catch (Exception $e) {
+            DB::rollBack();
             return "error: ".$e->getMessage();
         }
     }

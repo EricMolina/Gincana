@@ -46,6 +46,8 @@ class CurrentActivityController extends Controller
 
         $data['session'] = GincanaSession::find($current_gincana_session_group->gincana_session_id);
 
+        $data['session']->is_owner = Auth::user()->id == $data['session']->session_admin;
+
         $data['gincana'] = Gincana::find($data['session']->gincana_id);
 
         if ($data['session']->status == 1) {
@@ -265,5 +267,10 @@ class CurrentActivityController extends Controller
         }
 
         return $data;
+    }
+
+    
+    function exit() {
+        Session::forget('current_activity');
     }
 }

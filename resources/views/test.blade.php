@@ -453,7 +453,9 @@
 
             appContent.innerHTML += `
                 </ul><br>
-                <button>Abandonar</button><br><br>
+                ${activity.session.is_owner && activity.session.status != 1 ? 
+                    '<button onclick="startGincanaSession()">Iniciar gincana</button><br><br>' : ''}
+                <button onclick="exitGroup()">Abandonar grupo</button><br><br>
             `;
 
             if (activity.session.status == 1) {
@@ -475,6 +477,8 @@
                 activity.ranking.forEach(group => {
                     appContent.innerHTML += `<br><b>#${group.group_position} - ${group.group_name}</b>`;
                 });
+
+                appContent.innerHTML += '<br><br><button onclick="exitCurrentActivity()">Salir</button>';
             }
         })
     }
@@ -510,6 +514,48 @@
 
             }
 
+        })
+    }
+
+
+    function exitGroup() {
+        fetch('{{ route("api.groups.exit") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(() => {
+            location.reload();
+        })
+    }
+
+
+    function startGincanaSession() {
+        fetch('{{ route("api.sessions.start") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(() => {
+            displayCurrentActivityStatus();
+        })
+    }
+
+
+    function exitCurrentActivity() {
+        fetch('{{ route("api.current_activity.exit") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(() => {
+            location.reload();
         })
     }
 

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\GincanaSession;
+use App\Models\GincanaSessionGroup;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Exception;
 
 
@@ -24,7 +26,11 @@ function generateRandomString($length = 8) {
 class GincanaSessionController extends Controller
 {
     function list(Request $request) {
-        $gincana_sessions = GincanaSession::where('gincana_id', $request->id)->get();
+        $gincana_sessions = GincanaSession::where(
+            'gincana_id', $request->id
+        )->where(
+            'status', 0
+        )->get();
 
         return $gincana_sessions->map(function ($session) {
             $session->is_owner = Auth::user()->id == $session->session_admin;
@@ -55,7 +61,11 @@ class GincanaSessionController extends Controller
     function start(Request $request) {
         try {
 
-            $gincana_session = GincanaSession::find($request->id);
+            $gincana_session_group = GincanaSessionGroup::find(
+                Session::get('current_activity')
+            );
+
+            $gincana_session = GincanaSession::find($gincana_session_group->gincana_session_id);
             $gincana_session->status = 1;
             $gincana_session->save();
 
