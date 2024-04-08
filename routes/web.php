@@ -18,11 +18,6 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
 Route::get('register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('register', [AuthController::class, 'register']);
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -34,6 +29,10 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
  */
 
 Route::middleware(['auth'])->group(function () {
+
+    Route::get('/', function () {
+        return view('welcome');
+    });    
 
     Route::get('/test/', function () {
         return view('test');

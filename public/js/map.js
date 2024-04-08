@@ -123,9 +123,9 @@ function UpdateMapPointers() {
             })
             .addTo(pointersLayer);
 
-        marker.on('click', function() {
-            openPointer(pointers[i]);
-        });
+        marker.on('click', (function(actualPointer) {
+            return function () { openPointer(actualPointer); };
+        })(pointers[i]));
     }
     loading(false);
 }
@@ -168,7 +168,7 @@ function loadPointers(type) {
                 console.error(error);
             });
     } else if (pointersType == 'gincanas') { //Gincanas
-        fetch('/api/gincanas/points')
+        fetch('/api/gincanas/')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error al cargar los puntos');
@@ -183,6 +183,8 @@ function loadPointers(type) {
                         name: data[i].name,
                         desc: data[i].desc,
                         difficulty: data[i].difficulty,
+                        coord_x: data[i].coord_x,
+                        coord_y: data[i].coord_y,
                         pointer_img: '../img/gincana_icon.png',
                         user: data[i].user
                     });
@@ -210,5 +212,5 @@ function centerMapOnUser() {
 }
 
 function openPointer(pointer) {
-
+    console.log(pointer)
 }
