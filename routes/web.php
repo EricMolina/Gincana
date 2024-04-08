@@ -39,6 +39,10 @@ Route::middleware(['auth'])->group(function () {
         return view('test');
     })->name('test');
 
+    Route::get('index', function () {
+        return view('index');
+    });    
+
     Route::controller(GincanaController::class)->group(function () {
         Route::get('/api/gincanas/', 'list')->name('api.gincanas.list');
         Route::post('/api/gincanas/', 'store')->name('api.gincanas.store');
