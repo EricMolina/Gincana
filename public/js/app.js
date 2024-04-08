@@ -6,9 +6,9 @@ function changeTab(tab) {
     document.getElementById('tab'+oldTab).classList.remove('footer-item-selected');
     oldTab = tab;
     if (tab == 1) { //Ubicaciones
-
+        loadPointers('ubicaciones');
     } else if (tab == 2) { //Gincanas
-
+        loadPointers('gincanas');
     } else { //Mi actividad
 
     }
@@ -38,10 +38,40 @@ function enableTab(tab) {
     }
 }
 
+var howManyLoadings = 0;
 function loading(b) {
     if (b) {
-        document.getElementById('load').style.display = 'block';
+        howManyLoadings++;
+        document.getElementById('load').style.display = 'flex';
     } else {
+        howManyLoadings--;
+        if (howManyLoadings < 0) howManyLoadings = 0;
+        
+        if (howManyLoadings > 0) return;
         document.getElementById('load').style.display = 'none';
     }
+}
+
+function openUserProfile(b) {
+    if (b) {
+        document.getElementById('user-profile-container').style.display = 'inline-block';
+    } else {
+        document.getElementById('user-profile-container').style.display = 'none';
+    }
+}
+
+function openBottomContainer(b) {
+    if (b) {
+        document.getElementById('bottom-container').style.display = 'inline-block';
+    } else {
+        document.getElementById('bottom-container').style.display = 'none';
+    }
+}
+
+function changeUserPhoto(user_id) {
+
+}
+
+function createUserLabel(user_id) {
+
 }

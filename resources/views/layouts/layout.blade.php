@@ -24,8 +24,8 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
-    <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/map.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
     <title>@yield('title')</title>
 </head>
 <body>
@@ -39,7 +39,7 @@
             <div class="header-search-input">
                 <input class="font-light" type="text" name="search" id="search" placeholder="Buscar aquí">
             </div>
-            <div class="icon">
+            <div onclick="openUserProfile(true)" class="icon user-icon">
                 <img src="{{ asset('img/default_user.png') }}" alt="">
             </div>
         </div>
@@ -69,10 +69,10 @@
                 <div class="footer-big-button">
                     <img class="img-icon" src="{{ asset('img/new_gincana_icon.png') }}" alt="create-gincana">
                 </div>
-                <div class="footer-big-button">
+                <div onclick="loadPointers()" class="footer-big-button">
                     <img class="img-icon" src="{{ asset('img/reload_icon.png') }}" alt="">
                 </div>
-                <div class="footer-big-button">
+                <div onclick="centerMapOnUser()" class="footer-big-button">
                     <img class="img-icon" src="{{ asset('img/location_icon.png') }}" alt="">
                 </div>
             </div>
@@ -100,14 +100,75 @@
     </footer>
     <div class="content">
     </div>
+    <div id="user-profile-container" style="display: none">
+        <div class="user-profile">
+            <div class="user-profile-principal-container">
+                <div onclick="changeUserPhoto(id)" class="user-profile-principal-img-container">
+                    <img class="user-profile-principal-img-container-img" src="{{ asset('img/default_user.png') }}" alt="user-photo">
+                    <img class="user-profile-principal-img-container-change" src="{{ asset('img/photo_icon.png') }}" alt="change">
+                </div>
+                <div class="user-profile-name-container">
+                    <span class="font-bold">Nombre de usuario</span>
+                </div>
+                <div class="user-profile-email-container">
+                    <span class="font-medium">correo_electronico@gmail.com</span>
+                </div>
+            </div>
+            <div class="profile-labels">
+                <div class="profile-label">
+                    <span class="font-light">Mi label ejemplo</span>
+                </div>
+                <div class="profile-label">
+                    <span class="font-light">Mi label ejemplo</span>
+                </div>
+                <div class="profile-label">
+                    <span class="font-light">Mi label ejemplo</span>
+                </div>
+            </div>
+            <div class="profile-buttons">
+                <div class="profile-button">
+                    <div onclick="createUserLabel(user_id)" class="footer-item-img profile-button-label">
+                        <img class="img-icon" src="{{ asset('img/label_icon.png') }}" alt="ubicaciones">
+                    </div>
+                    <span class="font-medium footer-item-text">Crear etiqueta</span>
+                </div>
+                <div class="profile-button">
+                    <div onclick="window.location.href = '/logout'" class="footer-item-img profile-button-close">
+                        <img class="img-icon" src="{{ asset('img/exit_icon.png') }}" alt="gincanas">
+                    </div>
+                    <span class="font-medium footer-item-text">Cerrar sesión</span>
+                </div>
+            </div>
+            <span class="font-light-italic">Gincanas en las que he participado: 10</span>
+            <span class="font-light-italic">Gincanas en las que he ganado: 2</span>
+            <div class="profile-close-container">
+                <div class="back-arrow-container">
+                    <div onclick="openUserProfile(false)" class="back-arrow-img">
+                        <img class="back-arrow" src="{{ asset('img/back_arrow.png') }}" alt="gincanas">
+                    </div>
+                </div>
+                <div class="profile-crud-button">
+                    <div onclick="window.location.href = '/crud/points'" class="back-arrow-img">
+                        <img class="back-arrow" src="{{ asset('img/crud_icon.png') }}" alt="gincanas">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="bottom-container" style="display: none">
+        <div class="bottom-content">
+            <div class="bottom-close-container">
+                <div class="back-arrow-container">
+                    <div onclick="openBottomContainer(false)" class="back-arrow-img">
+                        <img class="back-arrow" src="{{ asset('img/back_arrow.png') }}" alt="gincanas">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="load">
-        <img src="{{ asset('img/loading_circle.png') }}" alt="">
+        <img id="load_img" src="{{ asset('img/loading_circle.png') }}" alt="">
     </div>
     @yield('scripts')
-    <script>
-        changeTab(1);
-        disableTab(3);
-        loading(false);
-    </script>
 </body>
 </html>
