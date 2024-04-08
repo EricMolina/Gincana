@@ -11,9 +11,9 @@ function showLabels(){
         if(ajax.status == 200){
             var json = JSON.parse(ajax.responseText);
             // console.log(ajax.responseText);
-            var table="<table><tr><th>Categoría</th><th>Color</th><th>Opciones</th></tr>";
+            var table="<table><tr><th>Label</th><th>Color</th><th>Icono</th><th>Opciones</th></tr>";
             json.forEach(label => {
-                table +=`<tr><td>${label.name}</td><td style="color:#${label.color}">#${label.color}</td><td><a onclick="deleteLabel(${label.id})">Borrar</a> <a onclick="openEditModal(${label.id})">Editar</a></td>
+                table +=`<tr><td>${label.name}</td><td style="color:#${label.color}">#${label.color}</td><td><img class="iconsCRUD" style="filter: drop-shadow(1px 1px 5px #${label.color}) drop-shadow(1px 1px 5px #${label.color}) drop-shadow(1px 1px 5px #${label.color}) " src="../img/labels/${label.img}"></td><td><a onclick="deleteLabel(${label.id})">Borrar</a> <a onclick="openEditModal(${label.id})">Editar</a></td>
               </tr>`
                 // console.log(label)
             });
@@ -25,7 +25,7 @@ function showLabels(){
 }
 function deleteLabel(id,name){
     Swal.fire({
-        title: `Seguro que quieres eliminar la categoría?`,
+        title: `Seguro que quieres eliminar la Label?`,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -53,7 +53,7 @@ function deleteLabel(id,name){
                           });
                           Toast.fire({
                             icon: "success",
-                            title: "Categoría borrada correctamente"
+                            title: "Label borrada correctamente"
                           });
                     }else{
                         Swal.fire({
@@ -80,7 +80,7 @@ function openEditModal(id){
             Swal.fire({
                 showConfirmButton: false,
                 html:`<a id="closeModal" onclick="swal.close(); return false;">x</a><h1>Editando ${data.name}</h1>
-                <form id="modForm">
+                <form id="modForm" enctype="multipart/form-data">
                     <input type="hidden" name="id" id="labelId" value="${data.id}">
                     <label for="name">Nombre</label>
                     <br>
@@ -90,19 +90,49 @@ function openEditModal(id){
                     <br>
                     <input type="color" name="labelColor" id="labelColor" value="#${data.color}">
                     <br>
+                    <input type="file" id="img" name="img"/>
+                    </br>
+                    <img class="iconsForm" id="icon" style="filter: drop-shadow(1px 1px 5px #${data.color}) drop-shadow(1px 1px 5px #${data.color}) drop-shadow(1px 1px 5px #${data.color}) " src="../img/labels/${data.img}"
+                    <br>
                     <br>
                 </form>
                 <p id="error"></p>
-                <button onclick="update()">Crear</button>`
+                <button onclick="update()">Editar</button>`
             });
+            var inputFile = document.getElementById("img");
+            var colorInput = document.getElementById("labelColor");
+            var icon =document.getElementById("icon")
+            inputFile.addEventListener("change",()=>{
+                // console.log("entra")
+                readURL();
+            })
+            colorInput.addEventListener("change",()=>{
+                console.log(colorInput.value)
+                icon.style.filter = `drop-shadow(1px 1px 5px ${colorInput.value}) drop-shadow(1px 1px 5px ${colorInput.value}) drop-shadow(1px 1px 5px ${colorInput.value})`
+            })
         }
     }
     ajax.send(formdata);
 }
+function readURL() {
+    var preview = document.querySelector('#icon');
+    var file    = document.querySelector('input[type=file]').files[0];
+    var reader  = new FileReader();
+
+    reader.onloadend = function () {
+        preview.src = reader.result;
+    }
+
+    if (file) {
+        reader.readAsDataURL(file);
+    } else {
+        preview.src = "";
+    }
+}
 function openNewForm(){
     Swal.fire({
         showConfirmButton: false,
-        html:`<a id="closeModal" onclick="swal.close(); return false;">x</a><h1>Nueva categoría</h1>
+        html:`<a id="closeModal" onclick="swal.close(); return false;">x</a><h1>Nueva Label</h1>
         <form id="newForm">
             <label for="name">Nombre</label>
             <br>
@@ -112,11 +142,26 @@ function openNewForm(){
             <br>
             <input type="color" name="labelColor" id="labelColor">
             <br>
+            <input type="file" id="img" name="img"/>
+            </br>
+            <img class="iconsForm" id="icon" style="filter: drop-shadow(1px 1px 5px #000000) drop-shadow(1px 1px 5px #000000) drop-shadow(1px 1px 5px #000000) " src=""
+            <br>
             <br>
         </form>
         <p id="error"></p>
         <button onclick="create()">Crear</button>`
     });
+    var inputFile = document.getElementById("img");
+    var colorInput = document.getElementById("labelColor");
+    var icon =document.getElementById("icon")
+    inputFile.addEventListener("change",()=>{
+        // console.log("entra")
+        readURL();
+    })
+    colorInput.addEventListener("change",()=>{
+        console.log(colorInput.value)
+        icon.style.filter = `drop-shadow(1px 1px 5px ${colorInput.value}) drop-shadow(1px 1px 5px ${colorInput.value}) drop-shadow(1px 1px 5px ${colorInput.value})`
+    })
 }
 function create(){
     var frm = document.getElementById("newForm");
@@ -138,7 +183,7 @@ function create(){
                   });
                   Toast.fire({
                     icon: "success",
-                    title: "Categoría creada correctamente"
+                    title: "Label creada correctamente"
                   });
             }else{
                 document.getElementById("error").innerText = ajax.responseText;

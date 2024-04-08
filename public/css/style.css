@@ -7,3 +7,14 @@
     border-style: solid;
     border-color: black;
 }
+.iconsCRUD{
+    display: block;
+    height: 50px;
+    width: 35px;
+}
+.iconsForm{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+}

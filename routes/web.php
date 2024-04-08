@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\pointController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,4 +36,10 @@ Route::controller(pointController::class)->group(function () {
     Route::post('/admin/point/show','show')->name('point.show');
     Route::post('/admin/point/store','store')->name('point.store');
     Route::post('/admin/point/delete','delete')->name('point.delete');
+});
+
+Route::controller(UserController::class)->group(function () {
+    Route::get('admin/user/','index')->name('user.index');
+    Route::post('admin/user/list','list')->name('user.list');
+    Route::post('admin/user/store','store')->name('user.store');
 });
