@@ -1,4 +1,10 @@
+@extends('layouts.basic')
+    
+@section('title', 'Foot Track')
+
+@section('content')
 <form method="POST" action="{{ route('login') }}" id="loginForm">
+    <h1 class="font-medium">Inicia sesión en Foot Track</h1>
     @csrf
     <label for="email" class="col-md-4 col-form-label text-md-end roboto-black">Correo electrónico</label>
 
@@ -20,9 +26,9 @@
     </span>
     @enderror
     <br>
-    <button type="submit" class="btn btn-primary" id="loginbtn">
-        Iniciar sesión
-    </button>
+    <button type="submit" class="btn btn-primary" id="loginbtn">Iniciar sesión</button>
+    <br>
+    <a class="font-medium" href="/register">¿Aún no tienes cuenta? ¡Haz clic aquí!</a>
 
     @if (Route::has('password.request'))
         <a class="btn btn-link" href="{{ route('password.request') }}">
@@ -31,3 +37,5 @@
     @endif
     <br>
 </form>
+@endsection
+

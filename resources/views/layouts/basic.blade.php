@@ -14,7 +14,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-    <script src="{{ asset('js/main.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,36 +27,10 @@
     <title>@yield('title')</title>
 </head>
 <body>
-    <div class="background">
+    <div id="login-background">
     </div>
-    <header>
-        <div class="header-searchbar">
-            
-        </div>
-        <div class="header-labels">
-
-        </div>
-    </header>
-    <div class="profile-container">
-        @php echo $links; @endphp
-        <p onclick="MyProfile()">Mi perfil</p>
-        <p onclick="window.location.href = '{{ route('logout'); }}'">Cerrar sesión</p>
-    </div>
-    <div class="content">
-        <div class="container @yield('tipo')">
-            <div class="title-container">
-                <span>@yield('titulo')</span>
-            </div>
-            <div id="layout-cabeceras">
-                @yield('cabeceras')
-            </div>
-            <div id="loading-container">
-                <img class="loading-circle" src="{{ asset('img/loading-circle.png') }}" alt="Loading...">
-            </div>
-            <div id="layout-contenido">
-                @yield('contenido')
-            </div>
-        </div>
+    <div id="basic-content">
+        @yield('content')
     </div>
     @yield('scripts')
 </body>
