@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('address')->nullable();
             $table->longText('img')->nullable();
+            $table->longText('desc')->nullable();
             $table->foreignId('main_label_id')->nullable()->constrained('labels');
             $table->timestamps();
         });
