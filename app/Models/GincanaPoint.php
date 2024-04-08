@@ -11,6 +11,7 @@ use App\Models\GincanaSessionGroupUserCheckpoint;
 class GincanaPoint extends Model
 {
     protected $table = 'gincana_points';
+    protected $fillable = ['gincana_id', 'point_id', 'order_id', 'hint', 'user_id'];
     use HasFactory;
 
     public function gincana() {
@@ -24,4 +25,6 @@ class GincanaPoint extends Model
     public function gincana_sessions_checkpoints() {
         return $this->hasMany(GincanaSessionGroupUserCheckpoint::class, 'gincana_point_id');
     }
+
+
 }

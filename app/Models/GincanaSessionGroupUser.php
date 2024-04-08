@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\GincanaSessionGroup;
 use App\Models\GincanaSessionGroupUserCheckpoint;
+use App\Models\User;
 
 class GincanaSessionGroupUser extends Model
 {
@@ -18,5 +19,9 @@ class GincanaSessionGroupUser extends Model
 
     public function checkpoints() {
         return $this->hasMany(GincanaSessionGroupUserCheckpoint::class, 'gin_ses_grp_user_id');
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
