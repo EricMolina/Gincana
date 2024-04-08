@@ -205,7 +205,7 @@
                     </div>
                 </div> --}}
 
-                <div class="bottom-gincana-session">
+                {{-- <div class="bottom-gincana-session">
                     <h1 class="font-bold bottom-gincana-session-title">Nombre de la gincana seleccionada</h1>
                     <p class="font-medium-italic bottom-gincana-session-name">Nombre de la sesión</p>
                     <div class="bottom-gincana-session-groups-title-container">
@@ -230,9 +230,47 @@
                         
                     </div>
 
-                </div>
+                </div> --}}
 
                 
+                <div class="bottom-gincana-mysession">
+                    <h1 class="font-bold bottom-gincana-session-title">Nombre de la gincana seleccionada</h1>
+                    <p class="font-medium-italic bottom-gincana-session-name">Nombre de la sesión</p>
+
+                    <!-- AQUÍ VAN LAS PISTAS!!!!!!!! (cuan  do haya empezado) -->
+
+                    <div class="bottom-gincana-mysession-clue-container">
+                        <div class="bottom-gincana-mysession-clue-title">
+                            <h1 class="font-medium">Pista 1</h1>
+                        </div>
+                        <div class="bottom-gincana-mysession-clue">
+                            <span class="font-medium bottom-gincana-mysession-clue-text">Texto de la pista</span>
+                        </div>
+                        <span class="font-medium-italic bottom-gincana-mysession-clue-left">Miembros restantes: 3</span>
+                        <br>
+                        <span class="font-medium-italic bottom-gincana-mysession-clue-arrived">Han llegado: 2</span>
+                    </div>
+
+                    <!-- SE CIERRAN LAS PISTAS -->
+
+
+                    <div class="bottom-gincana-session-groups-title-container">
+                        <span class="font-medium bottom-gincana-mysession-groups-title">Nombre del grupo</span>
+                        <div class="bottom-gincana-mysession-groups-create">
+                            <img src="{{ asset('img/exit_icon.png')}}" alt="create">
+                        </div>
+                    </div>
+                    
+                    <div class="bottom-gincana-mysession-group">
+                        <span class="font-medium bottom-gincana-mysession-group-title">Nombre de un usuario</span>
+                    </div>
+
+                    <div class="bottom-gincana-mysession-group">
+                        <span class="font-medium bottom-gincana-mysession-group-title">Nombre de un usuario</span>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>
