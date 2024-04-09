@@ -70,4 +70,49 @@ class UserController extends Controller
         $user = User::find($id);
         return response()->json($user);
     }
+    public function update(Request $request){
+        $user = User::find($request->id);
+        if(!$request->input("name")){
+            return 'El campo nombre no puede estar vacío';
+        }
+        if(!$request->input("email")){
+            return 'El campo email no puede estar vacío';
+        }
+        $usermail = User::where('email',$request->input("email"))->first();
+        // return $usermail;
+        if($usermail && $usermail->mail != $user->mail){
+            return 'El correo indicado ya está en uso';
+        }
+        $img = $request->file("img");
+        try {
+            if($img){
+                $filename = time().'.'.$request->file("img")->getClientOriginalExtension();
+                $user->img = $filename;
+            }
+            // $user = new User();
+            $user->name=$request->input("name");
+            $user->email = $request->input("email");
+            $user->role = $request->input("rol");
+            if(!$request->input("pwd")){
+                $user->password = Hash::make($request->input("pwd"));
+            }
+            $user->save();
+            $imgOld = $user->img;
+            if($img != NULL){
+                $filename = time().'.'.$img->getClientOriginalExtension();
+                // return $filename;
+                // $img->move(public_path('img/usuarios'), $filename);
+                // $user->img = $filename;
+                if(File::exists("img/usuarios/$imgOld")){
+                    File::delete("img/usuarios/$imgOld");
+                }
+                $img->move(public_path('img/users'), $filename);
+            }
+            // return "entra5";
+            return "ok";
+        }catch (\Exception $e) {
+            // DB::rollBack();
+            return $e->getMessage();
+        }
+    }
 }

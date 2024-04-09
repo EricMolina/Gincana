@@ -85,15 +85,16 @@ function openEditModal(id){
     formdata.append('id', id);
     formdata.append('_token', csrf_token);
     var ajax = new XMLHttpRequest();
-    ajax.open('POST', '/admin/user/show');
+    ajax.open('POST', 'user/show');
     ajax.onload = function(){
         if(ajax.status == 200){
             var data = JSON.parse(ajax.responseText);
-            console.log(data);
+            // console.log(data);
             Swal.fire({
                 showConfirmButton: false,
-                html:`<a id="closeModal" onclick="swal.close(); return false;">x</a><h1>Nueva categoría</h1>
-                <form id="newForm">
+                html:`<a id="closeModal" onclick="swal.close(); return false;">x</a><h1>Editando ${data.name}</h1>
+                <form id="modForm">
+                    <input type="hidden" name="id" id="userId" value="${data.id}">
                     <label for="name">Nombre</label>
                     <br>
                     <input type="text" name="name" id="name" value ="${data.name}">
@@ -122,21 +123,50 @@ function openEditModal(id){
                     <br>
                 </form>
                 <p id="error"></p>
-                <button onclick="create()">Crear</button>`
+                <button onclick="update()">Crear</button>`
             });
             var rolchk = document.getElementById("rolField")
             rolchk =  rolchk.querySelectorAll("input")
             rolchk.forEach(element => {
-                // if(element.id = data.rol){
-                //     element.che
-                // }
+                if(element.value == data.role){
+                    element.checked = true;
+                }
             });
             var inputFile = document.getElementById("img");
             var icon =document.getElementById("icon")
             inputFile.addEventListener("change",()=>{
-                // console.log("entra")
                 readURL();
             })
+        }
+    }
+    ajax.send(formdata);
+}
+function update(){
+    var frm = document.getElementById("modForm");
+    var formdata = new FormData(frm);
+    formdata.append('_token', csrf_token);
+    var ajax = new XMLHttpRequest();
+    ajax.open('POST', 'user/update');
+    ajax.onload=function(){
+        if(ajax.status == 200){
+            console.log(ajax.responseText);
+            if(ajax.responseText == "ok"){
+                showUsers()
+                document.getElementById("closeModal").click();
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                  });
+                  Toast.fire({
+                    icon: "success",
+                    title: "Cambios aplicados correctamente"
+                  });
+            }else{
+                document.getElementById("error").innerText = ajax.responseText;
+            }
         }
     }
     ajax.send(formdata);

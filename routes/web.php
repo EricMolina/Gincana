@@ -42,6 +42,7 @@ Route::controller(UserController::class)->group(function () {
     Route::get('admin/user/','index')->name('user.index');
     Route::post('admin/user/list','list')->name('user.list');
     Route::post('admin/user/store','store')->name('user.store');
-    Route::post('/admin/user/delete','delete')->name('user.delete');
-    Route::post('/admin/user/show','show')->name('user.show');
+    Route::post('admin/user/delete','delete')->name('user.delete');
+    Route::post('admin/user/show','show')->name('user.show');
+    Route::post('admin/user/update','update')->name('user.update');
 });
