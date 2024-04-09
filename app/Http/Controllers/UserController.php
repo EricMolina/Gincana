@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use app\Models\UserLabel;
+use App\Models\GincanaSessionGroupUser;
+use App\Models\GincanaSessionGroup;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -48,17 +51,37 @@ class UserController extends Controller
         return "ok";
     }
     public function delete(Request $request){
-        // DB::beginTransaction();
+        DB::beginTransaction();
         $id = $request->input("id");
         try {
-            $user = User::find($id);
+            $user = User::with("user_label")->with("session_admin")->get()->find($id);
+            $grupo = GincanaSessionGroupUser::with("checkpoints")->get()->where("user_id",$id);
+            foreach($grupo as $grupos){
+                foreach ($grupos["checkpoints"] as $chk) {
+                    $chk->delete();
+                }
+                $grupos->delete();
 
+            }
+            foreach ($user["session_admin"] as $session) {
+                $sesionGrupo = GincanaSessionGroup::where("gincana_session_id",$session["id"])->delete();
+                $session->delete();
+            }
+            foreach ($user["user_label"] as $labels) {
+                $userLebels = UserLabel::with("points")->get()->where("user_id", $labels["user_id"]);
+                foreach ($userLebels as $userLebel) {
+                    foreach($userLebel["points"] as $points){
+                        $points["pivot"]->delete();  
+                    }
+                }
+                $labels->delete();
+            }
             $user->delete();
             $imgName = $user->img;
             if(File::exists("img/users/$imgName")){
                 File::delete("img/users/$imgName");
             }
-            // DB::commit();
+            DB::commit();
             return "ok";
         } catch (\Exception $e) {
             DB::rollBack();
@@ -86,6 +109,7 @@ class UserController extends Controller
         $img = $request->file("img");
         try {
             if($img){
+                $imgOld = $user->img;
                 $filename = time().'.'.$request->file("img")->getClientOriginalExtension();
                 $user->img = $filename;
             }
@@ -97,14 +121,14 @@ class UserController extends Controller
                 $user->password = Hash::make($request->input("pwd"));
             }
             $user->save();
-            $imgOld = $user->img;
             if($img != NULL){
                 $filename = time().'.'.$img->getClientOriginalExtension();
                 // return $filename;
                 // $img->move(public_path('img/usuarios'), $filename);
                 // $user->img = $filename;
-                if(File::exists("img/usuarios/$imgOld")){
-                    File::delete("img/usuarios/$imgOld");
+                
+                if(File::exists("img/users/$imgOld")){
+                    File::delete("img/users/$imgOld");
                 }
                 $img->move(public_path('img/users'), $filename);
             }

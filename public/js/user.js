@@ -10,7 +10,7 @@ function showUsers(){
     ajax.onload = function(){
         if(ajax.status == 200){
             var json = JSON.parse(ajax.responseText);
-            console.log(ajax.responseText);
+            // console.log(ajax.responseText);
             var table="<table><tr><th>Nombre</th><th>Email</th><th>Foto</th><th>Rol</th><th>Opciones</th></tr>";
             json.forEach(usr => {
                 table +=`<tr><td>${usr.name}</td><td>${usr.email}</td><td><img class="picCRUD" src="../img/users/${usr.img}"></td><td>${usr.role}</td><td><a onclick="deleteUsr(${usr.id})">Borrar</a> <a onclick="openEditModal(${usr.id})">Editar</a></td>
@@ -88,7 +88,7 @@ function openEditModal(id){
     ajax.open('POST', 'user/show');
     ajax.onload = function(){
         if(ajax.status == 200){
-            var data = JSON.parse(ajax.responseText);
+            // var data = JSON.parse(ajax.responseText);
             // console.log(data);
             Swal.fire({
                 showConfirmButton: false,
@@ -219,8 +219,10 @@ function deleteUsr(id){
             ajax.open('POST', 'user/delete');
             ajax.onload = function(){
                 if(ajax.status == 200){
-                    showUsers();
+                    // console.log(JSON.parse(ajax.responseText))
+                    console.log(ajax.responseText)
                     if(ajax.responseText == "ok"){
+                        showUsers();
                         const Toast = Swal.mixin({
                             toast: true,
                             position: "top-end",

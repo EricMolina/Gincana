@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
+use App\Models\GincanaSessionGroupUserCheckpoint;
 class pointController extends Controller
 {
     public function index(){
@@ -137,10 +138,20 @@ class pointController extends Controller
         DB::beginTransaction();
         $id = $request->input("id");
         try {
-            $point = Point::with("main_label")->with("labels")->get()->find($id);
+            $point = Point::with("main_label")->with("user_labels")->with("gincana_points")->with("labels")->get()->find($id);
+            foreach ($point["gincana_points"] as $gincana_points) {
+                // return $gincana_points;
+                $checkpoint = GincanaSessionGroupUserCheckpoint::where("gincana_point_id",$gincana_points["point_id"])->delete();
+                $gincana_points->delete();
+            }
+
+            
+            foreach ($point["user_labels"] as $labels) {
+                $labels["pivot"]->delete();
+                $labels->delete();
+            }
             foreach ($point["labels"] as $label) {
                 $label["pivot"]->delete();
-                // return $label;
             }
             $point->delete();
             $imgName = $point->img;
