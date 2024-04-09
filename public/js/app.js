@@ -7,10 +7,20 @@ function changeTab(tab) {
     oldTab = tab;
     if (tab == 1) { //Ubicaciones
         loadPointers('ubicaciones');
+        document.getElementById('current-activity-button').style.display = 'none';
+        document.getElementById('create-gincana-button').style.display = 'none';
     } else if (tab == 2) { //Gincanas
         loadPointers('gincanas');
+        document.getElementById('current-activity-button').style.display = 'none';
+        document.getElementById('create-gincana-button').style.display = 'flex';
     } else { //Mi actividad
-
+        console.log('b')
+        document.getElementById('current-activity-button').style.display = 'flex';
+        document.getElementById('create-gincana-button').style.display = 'none';
+        document.getElementById('current-activity-button').onclick = () => {
+            openBottomContainer(true);
+            displayCurrentActivityStatus();
+        }
     }
 }
 

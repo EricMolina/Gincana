@@ -72,7 +72,10 @@
                 </div>
             </div>
             <div class="footer-big-buttons">
-                <div class="footer-big-button">
+                <div id="current-activity-button" class="footer-big-button" style="display: none">
+                    <img class="img-icon" src="{{ asset('img/clue_icon.png') }}" alt="clue-icon">
+                </div>
+                <div  id="create-gincana-button" class="footer-big-button" style="display: none">
                     <img class="img-icon" src="{{ asset('img/new_gincana_icon.png') }}" alt="create-gincana">
                 </div>
                 <div onclick="loadPointers()" class="footer-big-button">
@@ -177,138 +180,13 @@
                 </div>
 
                 <div class="bottom-play-button">
-                    <div class="back-arrow-img">
+                    <div id="play-activity-button" class="back-arrow-img" style="display: none">
                         <img class="play-arrow" src="{{ asset('img/icon_play.png') }}" alt="gincanas">
                     </div>
                 </div>
 
             </div>
             <div id="bottom-container-content">
-
-
-                {{-- <div class="bottom-gincana-selected">
-                    <h1 class="font-bold bottom-gincana-selected-title">Nombre de la gincana seleccionada</h1>
-                    <p class="font-medium bottom-gincana-selected-desc">Desc</p>
-                    <span class="bottom-gincana-selected-creator">Creada por: Usuario</span>
-                    <span class="bottom-gincana-selected-checkpoints">Puntos de control: 18</span>
-                    <h1 class="font-bold bottom-gincana-selected-title">Sesiones activas</h1>
-                    <div class="bottom-gincana-selected-session">
-                        <div class="bottom-gincana-selected-session-container">
-                            <p class="bottom-gincana-selected-session-container-title">Sesión de ejemplo</p>
-                            <p class="bottom-gincana-selected-session-container-creator">Creador: Usuario de ejemplo</p>
-                        </div>
-                        <div class="bottom-gincana-selected-session-join">
-                            <img src="{{asset ('img/arrow_up_icon.png') }}" alt="ver">
-                        </div>
-                    </div>
-                    <div class="bottom-gincana-selected-session">
-                        <div class="bottom-gincana-selected-session-container">
-                            <p class="bottom-gincana-selected-session-container-title">Sesión de ejemplo</p>
-                            <p class="bottom-gincana-selected-session-container-creator">Creador: Usuario de ejemplo</p>
-                        </div>
-                        <div onclick="checkSessionGroups(session_id)" class="bottom-gincana-selected-session-join">
-                            <img src="{{asset ('img/arrow_up_icon.png') }}" alt="ver">
-                        </div>
-                    </div>
-                </div> --}}
-
-                {{-- <div class="bottom-gincana-session">
-                    <h1 class="font-bold bottom-gincana-session-title">Nombre de la gincana seleccionada</h1>
-                    <p class="font-medium-italic bottom-gincana-session-name">Nombre de la sesión</p>
-                    <div class="bottom-gincana-session-groups-title-container">
-                        <span class="font-medium bottom-gincana-session-groups-title">Grupos de la sesión</span>
-                        <div class="bottom-gincana-session-groups-create">
-                            <img src="{{ asset('img/create_group_icon.png')}}" alt="create">
-                        </div>
-                    </div>
-                    
-                    <div class="bottom-gincana-session-group">
-                        <span class="font-medium bottom-gincana-session-group-title">Nombre del grupo</span>
-
-                        <div class="font-medium bottom-gincana-session-group-user"><span>Usuario de ejemplo</span></div>
-                        <div class="font-medium bottom-gincana-session-group-user"><span>Usuario de ejemplo</span></div>
-                        <div class="font-medium bottom-gincana-session-group-user"><span>Usuario de ejemplo</span></div>
-
-                        <div class="bottom-gincana-session-group-join-container">
-                            <div class="bottom-gincana-session-group-join">
-                                <img src="{{ asset('img/join_icon.png')}}" alt="join">
-                            </div>
-                        </div>
-                        
-                    </div>
-
-                </div> --}}
-
-                
-                {{-- <div class="bottom-gincana-mysession">
-                    <h1 class="font-bold bottom-gincana-session-title">Nombre de la gincana seleccionada</h1>
-                    <p class="font-medium-italic bottom-gincana-session-name">Nombre de la sesión</p>
-
-                    <!-- AQUÍ VAN LAS PISTAS!!!!!!!! (cuan  do haya empezado) -->
-
-                    <div class="bottom-gincana-mysession-clue-container">
-                        <div class="bottom-gincana-mysession-clue-title">
-                            <h1 class="font-medium">Pista 1</h1>
-                        </div>
-                        <div class="bottom-gincana-mysession-clue">
-                            <span class="font-medium bottom-gincana-mysession-clue-text">Texto de la pista</span>
-                        </div>
-                        <span class="font-medium-italic bottom-gincana-mysession-clue-left">Miembros restantes: 3</span>
-                        <br>
-                        <span class="font-medium-italic bottom-gincana-mysession-clue-arrived">Han llegado: 2</span>
-                    </div>
-
-                    <!-- SE CIERRAN LAS PISTAS -->
-
-
-                    <div class="bottom-gincana-session-groups-title-container">
-                        <span class="font-medium bottom-gincana-mysession-groups-title">Nombre del grupo</span>
-                        <div class="bottom-gincana-mysession-groups-create">
-                            <img src="{{ asset('img/exit_icon.png')}}" alt="create">
-                        </div>
-                        <div class="bottom-gincana-mysession-groups-close">
-                            <img src="{{ asset('img/close_icon.png')}}" alt="close">
-                        </div>
-                    </div>
-                    
-                    <div class="bottom-gincana-mysession-group">
-                        <span class="font-medium bottom-gincana-mysession-group-title">Nombre de un usuario</span>
-                    </div>
-
-                    <div class="bottom-gincana-mysession-group">
-                        <span class="font-medium bottom-gincana-mysession-group-title">Nombre de un usuario</span>
-                    </div>
-
-                </div> --}}
-
-
-
-
-
-                <div class="bottom-gincana-finished">
-                    <h1 class="font-bold bottom-gincana-session-title">Nombre de la gincana seleccionada</h1>
-                    <p class="font-medium-italic bottom-gincana-session-name">Nombre de la sesión</p>
-                    <h1 class="font-bold bottom-gincana-session-title">¡Enhorabuena, has terminado la gincana!</h1>
-                    
-                    <div class="bottom-gincana-finished-position-container">
-                        <span class="font-bold bottom-gincana-finished-position">#1: Nombre del grupo</span>
-                    </div>
-
-                    <div class="bottom-gincana-finished-position-container">
-                        <span class="font-bold bottom-gincana-finished-position">#2: Nombre del grupo</span>
-                    </div>
-
-                    <div class="bottom-gincana-finished-position-container">
-                        <span class="font-bold bottom-gincana-finished-position">#3: Nombre del grupo</span>
-                    </div>
-
-                    <div class="bottom-gincana-finished-left-container">
-                        <div class="bottom-gincana-finished-left">
-                            <img src="{{ asset('img/exit_icon.png')}}" alt="leave">
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
@@ -319,5 +197,11 @@
     <script>
         setUserPointerName('{{$user->name}}');
     </script>
+
+    @if(!Session::get('current_activity'))
+        <script>var inActivity = false;</script>
+    @else
+        <script>var inActivity = true;</script>
+    @endif
 </body>
 </html>

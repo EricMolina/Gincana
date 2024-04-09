@@ -31,6 +31,11 @@ window.onload = function () {
     changeTab(1);
     disableTab(3);
     loading(false);
+
+    if (inActivity) {
+        disableTab(2);
+        enableTab(3);
+    } 
 }
 
 function initMap() {
@@ -225,7 +230,7 @@ function centerMapOnUser() {
 
 function openPointer(pointer) {
     openBottomContainer(true);
-    displayCurrentActivityStatus()
+    displaySessions(pointer)
 }
 
 
@@ -234,6 +239,7 @@ function openPointer(pointer) {
 /* SESSIONS FUNCTIONALITIES */
 
 function displaySessions(gincana) {
+    loading(true);
     currentGincana = gincana.id;
 
     fetch(`/api/sessions/?id=${gincana.id}`)
@@ -266,7 +272,12 @@ function displaySessions(gincana) {
         });
         
         appContent.innerHTML += content + "</div>";
+        loading(false);
     })
+    .catch(error => {
+        console.error(error);
+        loading(false);
+    });
 
     document.getElementById('reload-button').onclick = () => displaySessions(gincana);
 }
@@ -276,6 +287,7 @@ function displaySessions(gincana) {
 /* GROUPS FUNCTIONALITIES */
 
 function displayGroups(sessionId) {
+    loading(true);
     currentSession = sessionId;
 
     fetch(`/api/groups/?id=${sessionId}`)
@@ -320,11 +332,16 @@ function displayGroups(sessionId) {
         
         appContent.innerHTML = content;
         document.getElementById('reload-button').onclick = () => displayGroups(sessionId);
+        loading(false);
     })
+    .catch(error => {
+        console.error(error);
+        loading(false);
+    });
 }
 
 
-function joinGroup(groupId) {
+function joinGroup(groupId) {    
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     let data = {
         'gincana_session_group_id': groupId
@@ -339,7 +356,11 @@ function joinGroup(groupId) {
         body: JSON.stringify(data)
     })
     .then(() => {
+        changeTab(3);
+        disableTab(2);
+        enableTab(3);
         displayCurrentActivityStatus();
+        document.getElementById('current-activity-button').style.display = 'flex';
     })
 }
 
@@ -347,6 +368,8 @@ function joinGroup(groupId) {
 /* CURRENT ACTIVITY FUNCTIONALITIES */
 
 function displayCurrentActivityStatus() {
+    loading(true);
+
     fetch('/api/current-activity/status/')
     .then((res) => res.text())
     .then((text) => {
@@ -359,57 +382,131 @@ function displayCurrentActivityStatus() {
                 <p class="font-medium-italic bottom-gincana-session-name">${activity.session.status == 0 ? `Esperando jugadores` : `En juego`}</p>
             `;
 
-        if (activity.session.status == 1) {
-            activity.available_points.forEach((point, index) => {
-                appContent.innerHTML += `
-                    <div class="bottom-gincana-mysession-clue-container">
-                        <div class="bottom-gincana-mysession-clue-title">
-                            <h1 class="font-medium">Punto ${index + 1}</h1>
-                        </div>
-                        <div class="bottom-gincana-mysession-clue">
-                            <span class="font-medium bottom-gincana-mysession-clue-text">Pista: ${point.hint ? point.hint : ''}</span>
-                        </div>
-                        <span class="font-medium-italic bottom-gincana-mysession-clue-left">Miembros restantes: ${activity.group.gincana_session_group_users_count}</span>
-                        <br>
-                        <span class="font-medium-italic bottom-gincana-mysession-clue-arrived">Han llegado: ${point.members_in_point}</span>
-                    </div>
-                `;
-            });
-        }
+        if (!activity.ranking) {
 
-        appContent.innerHTML += `
-            <div class="bottom-gincana-session-groups-title-container">
-                <span class="font-medium bottom-gincana-mysession-groups-title">${activity.group.name}</span>
-                <div class="bottom-gincana-mysession-groups-create">
-                    <img src="../img/exit_icon.png" alt="create">
+            if (activity.session.status == 1) {
+                activity.available_points.forEach((point, index) => {
+                    appContent.innerHTML += `
+                        <div class="bottom-gincana-mysession-clue-container">
+                            <div class="bottom-gincana-mysession-clue-title">
+                                <h1 class="font-medium">Punto ${index + 1}</h1>
+                            </div>
+                            <div class="bottom-gincana-mysession-clue">
+                                <span class="font-medium bottom-gincana-mysession-clue-text">Pista: ${point.hint ? point.hint : ''}</span>
+                            </div>
+                            <span class="font-medium-italic bottom-gincana-mysession-clue-left">Miembros restantes: ${activity.group.gincana_session_group_users_count}</span>
+                            <br>
+                            <span class="font-medium-italic bottom-gincana-mysession-clue-arrived">Han llegado: ${point.members_in_point}</span>
+                        </div>
+                    `;
+                });
+            }
+
+            appContent.innerHTML += `
+                <div class="bottom-gincana-session-groups-title-container">
+                    <span class="font-medium bottom-gincana-mysession-groups-title">${activity.group.name}</span>
+                    ${activity.session.status != 1 ? 
+                        `<div class="bottom-gincana-mysession-groups-create">
+                            <img onclick="exitGroup()" src="../img/exit_icon.png" alt="create">
+                        </div>` : ''}
                 </div>
-            </div>
-        `;
-
-        activity.group.gincana_session_group_users.forEach(member => {
-            appContent.innerHTML += `
-                <div class="bottom-gincana-mysession-group">
-                    <span class="font-medium bottom-gincana-mysession-group-title">${member.user.name}</span>
-                </div>`;
-        });
-
-        /* appContent.innerHTML += `
-            </ul><br>
-            ${activity.session.is_owner && activity.session.status != 1 ? 
-                '<button onclick="startGincanaSession()">Iniciar gincana</button><br><br>' : ''}
-            <button onclick="exitGroup()">Abandonar grupo</button><br><br>
-        `; */
-
-       /*  if (activity.ranking) {
-            appContent.innerHTML += `
-                <b>Gincana completada!</b>
             `;
 
-            activity.ranking.forEach(group => {
-                appContent.innerHTML += `<br><b>#${group.group_position} - ${group.group_name}</b>`;
+            activity.group.gincana_session_group_users.forEach(member => {
+                appContent.innerHTML += `
+                    <div class="bottom-gincana-mysession-group">
+                        <span class="font-medium bottom-gincana-mysession-group-title">${member.user.name}</span>
+                    </div>`;
             });
 
-            appContent.innerHTML += '<br><br><button onclick="exitCurrentActivity()">Salir</button>';
-        } */
+            if (activity.session.is_owner && activity.session.status != 1) {
+                document.getElementById('play-activity-button').style.display = 'flex';
+                document.getElementById('play-activity-button').onclick = () => {
+                    startGincanaSession();
+                }
+            } else {
+                document.getElementById('play-activity-button').style.display = 'none';
+            }
+
+        } else {
+            appContent.innerHTML += `<h1 class="font-bold bottom-gincana-session-title">¡Enhorabuena, has terminado la gincana!</h1>`;
+
+            activity.ranking.forEach(group => {
+                appContent.innerHTML += `
+                    <div class="bottom-gincana-finished-position-container">
+                        <span class="font-bold bottom-gincana-finished-position">#${group.group_position}: ${group.group_name}</span>
+                    </div>`;
+            });
+
+            appContent.innerHTML += `
+                <div class="bottom-gincana-finished-left-container">
+                    <div onclick="exitCurrentActivity()" class="bottom-gincana-finished-left">
+                        <img src="../img/exit_icon.png" alt="leave">
+                    </div>
+                </div>`;
+        }
+
+        document.getElementById('reload-button').onclick = () => displayCurrentActivityStatus();
+        loading(false);
+    })
+    .catch(error => {
+        console.error(error);
+        loading(false);
+    });
+}
+
+
+function exitGroup() {
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    fetch('/api/groups/exit/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        }
+    })
+    .then(() => {
+        inActivity = false;
+        disableTab(3);
+        enableTab(2);
+        changeTab(2);
+        openBottomContainer(false);
     })
 }
+
+
+function startGincanaSession() {
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    fetch('/api/sessions/start/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        }
+    })
+    .then(() => {
+        displayCurrentActivityStatus();
+    })
+}
+
+
+function exitCurrentActivity() {
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    fetch('/api/current-activity/exit/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        }
+    })
+    .then(() => {
+        inActivity = false;
+        disableTab(3);
+        enableTab(2);
+        changeTab(2);
+    })
+}
+
