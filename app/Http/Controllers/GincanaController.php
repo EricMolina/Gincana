@@ -60,7 +60,9 @@ class GincanaController extends Controller
         });
     }
 
-
+    function create(){
+        return view("gincana.create");
+    }
     function list_points() {
         return Point::all();
     }

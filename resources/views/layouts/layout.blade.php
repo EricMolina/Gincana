@@ -75,7 +75,7 @@
                 <div id="current-activity-button" class="footer-big-button" style="display: none">
                     <img class="img-icon" src="{{ asset('img/clue_icon.png') }}" alt="clue-icon">
                 </div>
-                <div  id="create-gincana-button" class="footer-big-button" style="display: none">
+                <div onclick="openGincanaModal()" id="create-gincana-button" class="footer-big-button" style="display: none">
                     <img class="img-icon" src="{{ asset('img/new_gincana_icon.png') }}" alt="create-gincana">
                 </div>
                 <div onclick="loadPointers()" class="footer-big-button">

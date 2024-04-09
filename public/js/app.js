@@ -24,6 +24,7 @@ function changeTab(tab) {
     }
 }
 
+
 function disableTab(tab) {
     document.getElementById('tab'+tab).classList.add('footer-item-disabled');
     if (tab == 1) {
@@ -91,4 +92,57 @@ function reloadContent() {
 
 
     loading(false);
+}
+
+function openGincanaModal(){
+    var ajax = new XMLHttpRequest();
+    ajax.open('get', 'api/gincanas/create/');
+    ajax.onload=function(){
+        if(ajax.status == 200){
+            // console.log(ajax.responseText)
+            Swal.fire({
+                showConfirmButton: false,
+                html: ajax.responseText,
+            });
+            getGeoLocation().then(position => {
+                //position.lat  X
+                //position.lng  Y
+                var mapGin = L.map('mapNewGincana').setView([position.lat, position.lng], 14);
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(mapGin);
+                var marker = L.marker([position.lat,position.lng]).addTo(mapGin);
+                document.getElementById("coord").innerText = `${position.lat} - ${position.lng}`
+                document.getElementById("coordx").value = position.lat;
+                document.getElementById("coordy").value = position.lng;
+                function onMapClick(e) {
+                    mapGin.eachLayer((layer) => {
+                        if (layer instanceof L.Marker) {
+                            layer.remove();
+                        }
+                    });
+                    var coord = e.latlng;
+                    var lat = coord.lat;
+                    var lng = coord.lng;
+                    var marker = L.marker([lat,lng]).addTo(mapGin);
+                    document.getElementById("coord").innerText = `${lat} - ${lng}`
+                    document.getElementById("coordx").value = lat;
+                    document.getElementById("coordy").value = lng;
+                }
+                mapGin.on('click', onMapClick);
+            }).catch(error => {
+                console.error(error);
+            });
+        }
+    }
+    ajax.send();
+}
+function NuevoPunto(){
+    var newPoint = `<label>Punto 1</label>
+    <br>
+    <select name="punto[]">
+    <br>
+    <textarea name="pista[]" rows="2" cols="20"></textarea>`
+    document.getElementById("puntos").innerHTML +=newPoint;
 }
