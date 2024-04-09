@@ -1,0 +1,26 @@
+#map{
+    width: 100%;
+    height: 70vh;
+}
+.mapa{
+    width: 100%;
+    height: 50vh;
+}
+.linea{
+    margin-left: 2%;
+    margin-right: 2%;
+}
+.linea::after {
+    width: 100%;
+    content: "";
+    display: table;
+    clear: both;
+}
+.colLista{
+    width: 40%;
+    float: left;
+}
+.colMapa{
+    width: 60%;
+    float: left;
+}

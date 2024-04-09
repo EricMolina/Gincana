@@ -6,6 +6,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Database\Seeders\PointSeeder;
 
+use Database\Seeders\LabelSeeder;
+use Database\Seeders\PointsSeeder;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -22,5 +24,7 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         $this->Call(PointSeeder::class);
+        $this->call(LabelSeeder::class);
+        $this->call(PointsSeeder::class);
     }
 }

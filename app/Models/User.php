@@ -5,6 +5,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\UserLabel;
+use App\Models\GincanaSession;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -44,5 +46,8 @@ class User extends Authenticatable
 
     public function session_admin() {
         return $this->hasMany(GincanaSession::class, 'session_admin');
+    }
+    public function user_label() {
+        return $this->hasMany(UserLabel::class, 'user_id');
     }
 }

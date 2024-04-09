@@ -18,7 +18,10 @@ return new class extends Migration
             $table->double('coord_x')->nullable();
             $table->double('coord_y')->nullable();
             $table->string('name')->nullable();
+            $table->string('address')->nullable();
             $table->longText('img')->nullable();
+            $table->longText('desc')->nullable();
+            $table->foreignId('main_label_id')->nullable()->constrained('labels');
             $table->timestamps();
         });
     }
