@@ -6,14 +6,18 @@ function showUsers(){
     var formdata = new FormData();
     formdata.append('src', src.value);
     formdata.append('_token', csrf_token);
+    loading(true);
     ajax.open('POST', 'user/list');
     ajax.onload = function(){
         if(ajax.status == 200){
+            loading(false);
             var json = JSON.parse(ajax.responseText);
             // console.log(ajax.responseText);
             var table="<table><tr><th>Nombre</th><th>Email</th><th>Foto</th><th>Rol</th><th>Opciones</th></tr>";
             json.forEach(usr => {
-                table +=`<tr><td>${usr.name}</td><td>${usr.email}</td><td><img class="picCRUD" src="../img/users/${usr.img}"></td><td>${usr.role}</td><td><a onclick="deleteUsr(${usr.id})">Borrar</a> <a onclick="openEditModal(${usr.id})">Editar</a></td>
+                var userImg = "../img/users/"+usr.img;
+                if (usr.img == null) userImg = "../img/default_user.png";
+                table +=`<tr><td>${usr.name}</td><td>${usr.email}</td><td><img class="picCRUD" src="${userImg}"></td><td>${usr.role}</td><td><a onclick="deleteUsr(${usr.id})">Borrar</a> <a onclick="openEditModal(${usr.id})">Editar</a></td>
               </tr>`
                 // console.log(usr)
             });
@@ -27,8 +31,8 @@ function showUsers(){
 function openNewForm(){
     Swal.fire({
         showConfirmButton: false,
-        html:`<a id="closeModal" onclick="swal.close(); return false;">x</a><h1>Nueva categoría</h1>
-        <form id="newForm">
+        html:`<a id="closeModal" onclick="swal.close(); return false;">Cerrar</a><h1>Nuevo usuario</h1>
+        <form onsubmit="return false;" id="newForm" class="crud-form">
             <label for="name">Nombre</label>
             <br>
             <input type="text" name="name" id="name">
@@ -50,14 +54,13 @@ function openNewForm(){
                 <label for="admin">admin</label>
             </fieldset>
             <br>
-                    <input type="file" id="img" name="img"/>
-                    </br>
-                    <img class="iconsForm" id="icon" src="">
+            <input type="file" id="img" name="img"/>
+            </br>
+            <img class="iconsForm" id="icon" src="">
             <br>
-            <br>
+            <button onclick="create()">Crear</button>
         </form>
-        <p id="error"></p>
-        <button onclick="create()">Crear</button>`
+        <p id="error"></p>`
     });
     var inputFile = document.getElementById("img");
     var icon =document.getElementById("icon");
@@ -84,16 +87,20 @@ function openEditModal(id){
     var formdata = new FormData();
     formdata.append('id', id);
     formdata.append('_token', csrf_token);
+    loading(true);
     var ajax = new XMLHttpRequest();
     ajax.open('POST', 'user/show');
     ajax.onload = function(){
+        loading(false);
         if(ajax.status == 200){
-            // var data = JSON.parse(ajax.responseText);
+            var data = JSON.parse(ajax.responseText);
+            var userImg = "../img/users/"+data.img;
+            if (data.img == null) userImg = "../img/default_user.png";
             // console.log(data);
             Swal.fire({
                 showConfirmButton: false,
-                html:`<a id="closeModal" onclick="swal.close(); return false;">x</a><h1>Editando ${data.name}</h1>
-                <form id="modForm">
+                html:`<a id="closeModal" onclick="swal.close(); return false;">Cerrar</a><h1>Editando ${data.name}</h1>
+                <form onsubmit="return false;" id="modForm" class="crud-form">
                     <input type="hidden" name="id" id="userId" value="${data.id}">
                     <label for="name">Nombre</label>
                     <br>
@@ -116,14 +123,13 @@ function openEditModal(id){
                         <label for="admin">admin</label>
                     </fieldset>
                     <br>
-                            <input type="file" id="img" name="img"/>
-                            </br>
-                            <img class="iconsForm" id="icon" src="../img/users/${data.img}">
+                    <input type="file" id="img" name="img"/>
                     <br>
+                    <img class="iconsForm" id="icon" src="${userImg}">
                     <br>
+                    <button onclick="update()">Editar</button>
                 </form>
-                <p id="error"></p>
-                <button onclick="update()">Crear</button>`
+                <p id="error"></p>`
             });
             var rolchk = document.getElementById("rolField")
             rolchk =  rolchk.querySelectorAll("input")
@@ -176,8 +182,10 @@ function create(){
     var formdata = new FormData(frm);
     formdata.append('_token', csrf_token);
     var ajax = new XMLHttpRequest();
+    loading(true);
     ajax.open('POST', 'user/store');
     ajax.onload=function(){
+        loading(false);
         if(ajax.status == 200){
             console.log(ajax.responseText)
             if(ajax.responseText == "ok"){
@@ -192,7 +200,7 @@ function create(){
                   });
                   Toast.fire({
                     icon: "success",
-                    title: "Categoría creada correctamente"
+                    title: "Usuario creado correctamente"
                   });
             }else{
                 document.getElementById("error").innerText = ajax.responseText;
@@ -216,8 +224,10 @@ function deleteUsr(id){
             var formdata = new FormData();
             formdata.append('id', id);
             formdata.append('_token', csrf_token);
+            loading(true);
             ajax.open('POST', 'user/delete');
             ajax.onload = function(){
+                loading(false);
                 if(ajax.status == 200){
                     // console.log(JSON.parse(ajax.responseText))
                     console.log(ajax.responseText)
@@ -232,7 +242,7 @@ function deleteUsr(id){
                           });
                           Toast.fire({
                             icon: "success",
-                            title: "usuario borrado correctamente"
+                            title: "Usuario eliminado correctamente"
                           });
                     }else{
                         Swal.fire({

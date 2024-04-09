@@ -24,15 +24,18 @@
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    @yield('scripts')
     <title>@yield('title')</title>
     @yield('headers')
 </head>
 <body class="@yield('bodyclass')">
     <div id="login-background">
     </div>
+    <div id="load">
+        <img id="load_img" src="{{ asset('img/loading_circle.png') }}" alt="">
+    </div>
     <div id="basic-content">
         @yield('content')
     </div>
-    @yield('scripts')
 </body>
 </html>

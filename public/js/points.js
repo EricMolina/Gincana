@@ -103,12 +103,14 @@ function getPoints(){
             layer.remove();
         }
     });
+    loading(true);
     var ajax = new XMLHttpRequest();
     ajax.open('POST', '/admin/point/list');
     var formdata = new FormData();
     formdata.append('src', src.value);
     formdata.append('_token', csrf_token);
     ajax.onload = function(){
+        loading(false);
         var json = JSON.parse(ajax.responseText);
         if(ajax.status == 200){
             // console.log(json)

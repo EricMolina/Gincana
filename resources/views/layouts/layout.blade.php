@@ -155,7 +155,7 @@
                     </div>
                 </div>
                 <div class="profile-crud-button">
-                    <div onclick="window.location.href = '/crud/points'" class="back-arrow-img">
+                    <div onclick="window.location.href = '/admin/label'" class="back-arrow-img">
                         <img class="back-arrow" src="{{ asset('img/crud_icon.png') }}" alt="gincanas">
                     </div>
                 </div>

@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\UserLabel;
 
 use App\Mail\Welcome;
 
@@ -38,6 +39,11 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        $userLabel = new UserLabel();
+        $userLabel->name = "Favoritos";
+        $userLabel->user_id = User::where('email', $request->email)->first()->id;
+        $userLabel->save();
 
         if (Auth::attempt($request->only('email', 'password'))) {
             $user = Auth::user();

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
-use app\Models\UserLabel;
+use App\Models\UserLabel;
 use App\Models\GincanaSessionGroupUser;
 use App\Models\GincanaSessionGroup;
 use App\Http\Controllers\Controller;
@@ -48,6 +48,12 @@ class UserController extends Controller
         $user->password = Hash::make($request->input("pwd"));
         $user->save();
         $request->file("img")->move(public_path('img/users'), $filename);
+
+        $userLabel = new UserLabel();
+        $userLabel->name = "Favoritos";
+        $userLabel->user_id = User::where('email', $user->email)->first()->id;
+        $userLabel->save();
+
         return "ok";
     }
     public function delete(Request $request){

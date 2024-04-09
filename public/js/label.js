@@ -7,13 +7,15 @@ function showLabels(){
     formdata.append('src', src.value);
     formdata.append('_token', csrf_token);
     ajax.open('POST', '/admin/label/list');
+    loading(true);
     ajax.onload = function(){
+        loading(false);
         if(ajax.status == 200){
             var json = JSON.parse(ajax.responseText);
             // console.log(ajax.responseText);
             var table="<table><tr><th>Label</th><th>Color</th><th>Icono</th><th>Opciones</th></tr>";
             json.forEach(label => {
-                table +=`<tr><td>${label.name}</td><td style="color:#${label.color}">#${label.color}</td><td><img class="iconsCRUD" style="filter: drop-shadow(1px 1px 5px #${label.color}) drop-shadow(1px 1px 5px #${label.color}) drop-shadow(1px 1px 5px #${label.color}) " src="../img/labels/${label.img}"></td><td><a onclick="deleteLabel(${label.id})">Borrar</a> <a onclick="openEditModal(${label.id})">Editar</a></td>
+                table +=`<tr><td>${label.name}</td><td style="color:#${label.color}">#${label.color}</td><td><img class="iconsCRUD" style="filter: drop-shadow(1px 1px 5px #${label.color}) drop-shadow(1px 1px 5px #${label.color}) drop-shadow(1px 1px 5px #${label.color}) " src="../img/labels/${label.img}"></td><td><a onclick="deleteLabel(${label.id}, '${label.name}')">Borrar</a> <a onclick="openEditModal(${label.id})">Editar</a></td>
               </tr>`
                 // console.log(label)
             });
@@ -25,7 +27,7 @@ function showLabels(){
 }
 function deleteLabel(id, name){
     Swal.fire({
-        title: `Seguro que quieres eliminar la Label?`,
+        title: `¿Estás seguro de que quieres eliminar la categoría ${name}?`,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -73,14 +75,16 @@ function openEditModal(id){
     formdata.append('id', id);
     formdata.append('_token', csrf_token);
     var ajax = new XMLHttpRequest();
+    loading(true);
     ajax.open('POST', '/admin/label/show');
     ajax.onload = function(){
+        loading(false);
         if(ajax.status == 200){
             var data = JSON.parse(ajax.responseText);
             Swal.fire({
                 showConfirmButton: false,
-                html:`<a id="closeModal" onclick="swal.close(); return false;">x</a><h1>Editando ${data.name}</h1>
-                <form id="modForm" enctype="multipart/form-data">
+                html:`<a id="closeModal" onclick="swal.close(); return false;">Cerrar</a><h1>Editar ${data.name}</h1>
+                <form onsubmit="return false;" id="modForm" enctype="multipart/form-data" class="crud-form">
                     <input type="hidden" name="id" id="labelId" value="${data.id}">
                     <label for="name">Nombre</label>
                     <br>
@@ -95,9 +99,9 @@ function openEditModal(id){
                     <img class="iconsForm" id="icon" style="filter: drop-shadow(1px 1px 5px #${data.color}) drop-shadow(1px 1px 5px #${data.color}) drop-shadow(1px 1px 5px #${data.color}) " src="../img/labels/${data.img}"
                     <br>
                     <br>
+                    <button onclick="update()">Editar</button>
                 </form>
-                <p id="error"></p>
-                <button onclick="update()">Editar</button>`
+                <p id="error"></p>`
             });
             var inputFile = document.getElementById("img");
             var colorInput = document.getElementById("labelColor");
@@ -132,8 +136,8 @@ function readURL() {
 function openNewForm(){
     Swal.fire({
         showConfirmButton: false,
-        html:`<a id="closeModal" onclick="swal.close(); return false;">x</a><h1>Nueva Label</h1>
-        <form id="newForm">
+        html:`<a id="closeModal" onclick="swal.close(); return false;">Cerrar</a><h1>Nueva categoría</h1>
+        <form onsubmit="return false;" id="newForm" class="crud-form">
             <label for="name">Nombre</label>
             <br>
             <input type="text" name="name" id="name">
@@ -143,13 +147,12 @@ function openNewForm(){
             <input type="color" name="labelColor" id="labelColor">
             <br>
             <input type="file" id="img" name="img"/>
-            </br>
-            <img class="iconsForm" id="icon" style="filter: drop-shadow(1px 1px 5px #000000) drop-shadow(1px 1px 5px #000000) drop-shadow(1px 1px 5px #000000) " src=""
             <br>
+            <img class="iconsForm" id="icon" style="filter: drop-shadow(1px 1px 5px #000000) drop-shadow(1px 1px 5px #000000) drop-shadow(1px 1px 5px #000000) " src="">
             <br>
+            <button onclick="create()">Crear</button>
         </form>
-        <p id="error"></p>
-        <button onclick="create()">Crear</button>`
+        <p id="error"></p>`
     });
     var inputFile = document.getElementById("img");
     var colorInput = document.getElementById("labelColor");
