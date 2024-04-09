@@ -34,10 +34,10 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/', function () {
-        return view('welcome');
+        return view('index');
     });    
 
-    Route::get('/test/', function () {
+    Route::get('/test', function () {
         return view('test');
     })->name('test');
 
@@ -69,32 +69,34 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/api/current-activity/checkpoint/', 'checkpoint')->name('api.current_activity.checkpoint');
         Route::post('/api/current-activity/exit/', 'exit')->name('api.current_activity.exit');
     });
-
-
-Route::controller(LabelController::class)->group(function () {
-    Route::get('/admin/label','index')->name('label.index');
-    Route::get('/label/getlabel','getlabel')->name('label.getlabel');
-    Route::post('/admin/label/list','list')->name('label.list');
-    Route::post('/admin/label/store','store')->name('label.store');
-    Route::post('/admin/label/delete','delete')->name('label.delete');
-    Route::post('/admin/label/show','show')->name('label.show');
-    Route::post('/admin/label/update','update')->name('label.update');
 });
 
-Route::controller(pointController::class)->group(function () {
-    Route::get('/admin/point/','index')->name('point.index');
-    Route::post('/admin/point/list','list')->name('point.list');
-    Route::post('/admin/point/update','update')->name('point.update');
-    Route::post('/admin/point/show','show')->name('point.show');
-    Route::post('/admin/point/store','store')->name('point.store');
-    Route::post('/admin/point/delete','delete')->name('point.delete');
-});
-
-Route::controller(UserController::class)->group(function () {
-    Route::get('admin/user/','index')->name('user.index');
-    Route::post('admin/user/list','list')->name('user.list');
-    Route::post('admin/user/store','store')->name('user.store');
-    Route::post('admin/user/delete','delete')->name('user.delete');
-    Route::post('admin/user/show','show')->name('user.show');
-    Route::post('admin/user/update','update')->name('user.update');
+Route::middleware(['admin'])->group(function () {
+    Route::controller(LabelController::class)->group(function () {
+        Route::get('/admin/label','index')->name('label.index');
+        Route::get('/label/getlabel','getlabel')->name('label.getlabel');
+        Route::post('/admin/label/list','list')->name('label.list');
+        Route::post('/admin/label/store','store')->name('label.store');
+        Route::post('/admin/label/delete','delete')->name('label.delete');
+        Route::post('/admin/label/show','show')->name('label.show');
+        Route::post('/admin/label/update','update')->name('label.update');
+    });
+    
+    Route::controller(pointController::class)->group(function () {
+        Route::get('/admin/point/','index')->name('point.index');
+        Route::post('/admin/point/list','list')->name('point.list');
+        Route::post('/admin/point/update','update')->name('point.update');
+        Route::post('/admin/point/show','show')->name('point.show');
+        Route::post('/admin/point/store','store')->name('point.store');
+        Route::post('/admin/point/delete','delete')->name('point.delete');
+    });
+    
+    Route::controller(UserController::class)->group(function () {
+        Route::get('admin/user/','index')->name('user.index');
+        Route::post('admin/user/list','list')->name('user.list');
+        Route::post('admin/user/store','store')->name('user.store');
+        Route::post('admin/user/delete','delete')->name('user.delete');
+        Route::post('admin/user/show','show')->name('user.show');
+        Route::post('admin/user/update','update')->name('user.update');
+    });
 });

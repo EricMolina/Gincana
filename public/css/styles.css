@@ -1,10 +1,10 @@
 html,
 body {
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
 }
 
 * {
@@ -1155,4 +1155,198 @@ footer {
 
 .bottom-gincana-finished-left:hover {
     background-color: #c79e9e;
+}
+
+body.crud > #basic-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+div.crud {
+    display: inline-block;  
+    width: calc(90% - 60px);
+    height: calc(90% - 60px);
+    background-color: white;
+    position: relative;
+    padding: 30px;
+    border-radius: 25px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+}
+
+#no-mobiles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: darkblue;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+#no-mobiles span {
+    font-size: 28px;
+    color: white;
+    text-align: center;
+    max-width: 80%;
+}
+
+div.crud h1 {
+    text-align: center;
+    font-size: 34px;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 25px;
+    max-height: 30px;
+}
+
+.crud-header {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.crud-header button {
+    margin-right: 30px;
+    width: fit-content;
+    padding: 0 20px;
+    height: 40px;
+    background-color: #8a0f3a;
+    color: white;
+    border-radius: 1000px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    border: none;
+    outline: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.crud-header button:hover {
+    background-color: #590a26;
+}
+
+.crud-search {
+    width: 30%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.crud-search input {
+    width: calc(100% - 40px);
+    height: 100%;
+    border: none;
+    outline: none;
+    background-color: #f9f9f9;
+    border-radius: 1000px;
+    padding: 0 20px;
+    font-size: 20px;
+    box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.crud-container {
+    position: absolute;
+    bottom: 60px;
+    width: calc(100% - 60px);
+    height: calc(100% - 250px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.crud-content {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 25px;
+    border-radius: 25px;
+    box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.3);
+    background-color: rgb(235, 235, 235);
+}
+
+.crud-content table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.crud-content table th {
+    background-color: #ccf5ff;
+    font-size: 20px;
+    padding: 10px;
+    border: 6px solid rgb(235, 235, 235);
+    border-radius: 15px;
+}
+
+.crud-content table td {
+    background-color: white;
+    font-size: 16px;
+    padding: 10px;
+    border: 6px solid #ebebeb;
+    margin: 2px;
+    text-align: center;
+}
+
+.crud-content table td img {
+    display: block;
+    width: auto;
+    height: 50px;
+    margin: auto;
+}
+
+.crud-content table tr:hover {
+    background-color: #EAEAEA;
+}
+
+.crud-content table tr td:last-child {
+    width: 100px;
+}
+
+.crud-content table tr td:last-child a {
+    float: left;
+    width: calc(100% - 24px);
+    height: 40px;
+    background-color: #8a0f3a;
+    color: white;
+    border-radius: 1000px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    border: none;
+    outline: none;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.crud-content table tr td:last-child a:hover {
+    background-color: #590a26;
+}
+
+.crud-content table tr td:last-child button img {
+    width: 25px;
+    height: 25px;
+}
+
+.crud-content table tr td:last-child button img:hover {
+    width: 30px;
+    height: 30px;
+}
+
+body.swal2-height-auto {
+    height: 100% !important
+}
+
+@media (max-width: 700px) {
+    div.crud #no-mobiles {
+        display: flex;
+    }
 }

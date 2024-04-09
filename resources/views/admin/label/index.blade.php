@@ -1,23 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{{asset('css/style.css')}}">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <meta name="csrf-token" content="{{csrf_token()}}">
-    <title>Admin - Labels</title>
-</head>
-<body>
-    <h1>Labels</h1>
-    <a onclick="openNewForm()">Nuevo</a>
-    <input type="text" name="src" id="src">
-    <div id="labelContainer"></div>
-    <script src="{{asset('js/label.js')}}"></script>
+@extends('layouts.basic')
+
+@section('title', 'Admin - Categorías')
+@section('bodyclass', 'crud')
+
+@section('content')
+<div class="crud">
+    <h1>Categorías</h1>
+    <div class="crud-header">
+        <button class="font-medium" onclick="openNewForm()">Nueva categoría</button>
+        <div class="crud-search">
+            <input type="text" name="src" id="src" placeholder="Buscar categoría...">
+        </div>
+    </div>
+
+    <div class="crud-container">
+        <div id="labelContainer" class="crud-content">
+
+        </div>
+    </div>
+    <script src="{{ asset('js/label.js') }}"></script>
     <script>
-        src.addEventListener("keyup",()=>{showLabels();});
+        src.addEventListener("input", () => {
+            showLabels();
+        });
         window.onload = showLabels();
     </script>
-</body>
-</html>
+    <div id="no-mobiles">
+        <span class="font-bold">Sólo puedes entrar en este apartado si tu dispositivo tiene la pantalla en horizontal.</span>
+    </div>
+</div>
+@endsection

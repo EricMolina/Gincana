@@ -23,7 +23,7 @@ function showLabels(){
     }
     ajax.send(formdata);
 }
-function deleteLabel(id,name){
+function deleteLabel(id, name){
     Swal.fire({
         title: `Seguro que quieres eliminar la Label?`,
         icon: "warning",
