@@ -277,10 +277,12 @@ function deletePoint(id){
             var formdata = new FormData();
             formdata.append('id', id);
             formdata.append('_token', csrf_token);
-            ajax.open('POST', '/admin/point/delete');
+            ajax.open('POST', 'point/delete');
             ajax.onload = function(){
                 if(ajax.status == 200){
                     getPoints();
+                    // console.log(JSON.parse(ajax.responseText))
+                    console.log(ajax.responseText)
                     if(ajax.responseText == "ok"){
                         const Toast = Swal.mixin({
                             toast: true,
