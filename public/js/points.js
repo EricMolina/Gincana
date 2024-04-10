@@ -1,9 +1,5 @@
-// Mapa
-var map = L.map('map').setView([41.350030, 2.107861], 14);
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
+
+var map = null;
 function createPoint(e) {
     var coord = e.latlng;
     var lat = coord.lat;
@@ -12,44 +8,45 @@ function createPoint(e) {
     Swal.fire({
         showConfirmButton: false,
         width: '70%',
-        html:`<a id="closeModal" onclick="swal.close(); return false;">x</a><h1>Nuevo punto</h1>
+        html:`<a id="closeModal" onclick="swal.close(); return false;">Cerrar</a><h1>Nuevo punto</h1>
         <div class="fila">
-            <form id="modForm" enctype="multipart/form-data">
-                <div class="colLista">
-                    <input type="hidden" name="coordx" id="coordx" value="${lat}">
-                    <input type="hidden" name="coordy" id="coordy" value="${lng}">
-                    <label for="name">Nombre</label>
-                    <br>
-                    <input type="text" name="name" id="name">
-                    </br>
-                    <label for="address">Dirección</label>
-                    </br>
-                    <input type="text" name="address" id="address">
-                    <br>
-                    <label for="desc">Descripción</label>
-                    <br>
-                    <textarea name="desc" id = "desc" rows="2" cols="35" style="resize: none"></textarea>
-                    <br>
-                    <input type="file" name="img" id="img">
-                    <div id="preview" style="background-image: url('');" class="imgPoint"></div>
-                    </br>
-                    <label for="labelMain">Label principal</label>
-                    <div id="labelList"></div>
-                </div>
-                <div class="colMapa">
-                    <label for="ubi">Ubicación</label>
-                    <p id="coord">${lat} - ${lng}</p>
-                    <div id="mapNew" class="mapa"></div>
-                </div>
-                
+            <form id="modForm" class="crud-form colLista" enctype="multipart/form-data">
+                <input type="hidden" name="coordx" id="coordx" value="${lat}">
+                <input type="hidden" name="coordy" id="coordy" value="${lng}">
+                <label for="name">Nombre</label>
+                <br>
+                <input type="text" name="name" id="name">
+                </br>
+                <label for="address">Dirección</label>
+                </br>
+                <input type="text" name="address" id="address">
+                <br>
+                <label for="desc">Descripción</label>
+                <br>
+                <textarea name="desc" id = "desc" rows="2" cols="35" style="resize: none"></textarea>
+                <br>
+                <input type="file" name="img" id="img">
+                <div id="preview" style="background-image: url('');" class="imgPoint"></div>
+                </br>
+                <label for="labelMain">Categoría principal</label><br>
+                <div id="labelList"></div>
             </form>
+            <div class="colMapa colMapaMod">
+                <label for="ubi">Ubicación</label>
+                <p id="coord">${lat} - ${lng}</p>
+                <div id="mapNew" class="mapa"></div>
+                <div class="shadowMod"></div>
+            </div>
+            <button onclick="newPoint()">Crear</button>
         </div>
-        <p id="error"></p><button onclick="newPoint()">Crear</button>`
+        <p id="error"></p>`
     });
     var labelList = document.getElementById("labelList");
     var ajax = new XMLHttpRequest();
+    loading(true);
     ajax.open('get', '/label/getlabel');
     ajax.onload = function(){
+        loading(false);
         if(ajax.status == 200){
             var labels = JSON.parse(ajax.responseText)
             var labelForm = `<select name="labelMain" id="labelMain">`
@@ -58,7 +55,7 @@ function createPoint(e) {
             labels.forEach(label => {
                 labelForm +=`<option value="${label.id}" selected>${label.name}</option>`;
                 labelchk +=`<label for='${label.id}'>${label.name}</label>`;
-                labelchk +=`<input type='checkbox' name='lab[]' id='${label.id}' value='${label.id}'>`;
+                labelchk +=`<input type='checkbox' name='lab[]' id='${label.id}' value='${label.id}'><br>`;
             });
             labelForm +=`</label>`
             labelchk +=`</fieldset>`
@@ -93,9 +90,7 @@ function createPoint(e) {
     }
     mapNew.on('click', onMapClick);
 }
-map.on('click', createPoint);
-// Lista de puntos
-src = document.getElementById("src");
+
 var csrf_token = document.querySelector("meta[name = 'csrf-token']").getAttribute('content');
 function getPoints(){
     map.eachLayer((layer) => {
@@ -149,7 +144,7 @@ function modForm(id){
             Swal.fire({
                 showConfirmButton: false,
                 width: '70%',
-                html:`<a id="closeModal" onclick="swal.close(); return false;">x</a><h1>Editando ${data.name}</h1>
+                html:`<a id="closeModal" onclick="swal.close(); return false;">Cerrar</a><h1>Editando ${data.name}</h1>
                 <div class="fila">
                     <form id="modForm" class="crud-form colLista" enctype="multipart/form-data">
                             <input type="hidden" name="id" id="labelId" value="${data.id}">
@@ -171,7 +166,7 @@ function modForm(id){
                             <input type="file" name="img" id="img">
                             <div id="preview" style="background-image: url('../img/points/${pointImg}');" class="imgPoint"></div>
                             </br>
-                            <label for="labelMain">Label principal</label>
+                            <label for="labelMain">Categoría principal</label><br>
                             <div id="labelList"></div>
                     </form>
                     <div class="colMapa colMapaMod">
@@ -180,8 +175,9 @@ function modForm(id){
                         <div id="mapMod" class="mapa"></div>
                         <div class="shadowMod"></div>
                     </div>
+                    <button style='margin-right: 10px;' onclick="update()">Modificar</button><button onclick="deletePoint(${data.id})">Borrar</button>
                 </div>
-                <p id="error"></p><button onclick="update()">Modificar</button><button onclick="deletePoint(${data.id})">Borrar</button>`
+                <p id="error"></p>`
             });
             labelFormMain(data.labels,data.main_label_id)
             var file = document.getElementById("img");
@@ -352,7 +348,7 @@ function labelFormMain(inputs, main){
             var labels = JSON.parse(ajax.responseText)
             var labelForm = `<select name="labelMain" id="labelMain">`
             var labelchk = "";
-            labelchk += `</br><fieldset id="labelsList"><legend>Labels</legend>`
+            labelchk += `</br><fieldset id="labelsList"><legend>Categorías</legend>`
             labels.forEach(label => {
                 labelForm +=`<option value="${label.id}" selected>${label.name}</option>`;
                 labelchk +=`<label for='${label.id}'>${label.name}</label>`;
@@ -377,4 +373,65 @@ function labelFormMain(inputs, main){
     }
     ajax.send();
 }
-window.onload=getPoints();
+var latlng = {lat: 41.350030, lng: 2.107861};
+window.onload= function() {
+    map = L.map('map').setView([latlng.lat, latlng.lng], 14);
+    requestGeoLocationPermission().then(() => {
+        getGeoLocation().then(position => {
+            map.setView([position.lat, position.lng], 15);
+            latlng = {lat: position.lat, lng: position.lng};
+        }).catch(error => {
+            console.error(error);
+        });
+    }).catch(error => {
+        console.error('Permission denied: ', error);
+    });
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    map.on('click', createPoint);
+    // Lista de puntos
+    src = document.getElementById("src");
+
+    getPoints();
+} 
+function buttonCreatePoint() {
+    createPoint({latlng: {lat: latlng.lat, lng: latlng.lng}});
+}
+
+function requestGeoLocationPermission() {
+    if (!navigator.permissions) {
+        // La API de Permisos no está disponible en todos los navegadores.
+        return Promise.reject(new Error('Permissions API is not available'));
+    }
+
+    return navigator.permissions.query({ name: 'geolocation' }).then(result => {
+        if (result.state === 'granted') {
+            return Promise.resolve();
+        } else if (result.state === 'prompt') {
+            return getGeoLocation().then(() => Promise.resolve());
+        } else {
+            return Promise.reject(new Error('Permission denied'));
+        }
+    });
+}
+
+function getGeoLocation() {
+    return new Promise((resolve, reject) => {
+        if (!navigator.geolocation) {
+            reject(new Error('Geolocation is not supported by your browser'));
+        } else {
+            navigator.geolocation.getCurrentPosition((position) => {
+                resolve({
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                });
+            }, () => {
+                reject(new Error('Unable to retrieve your location'));
+            });
+        }
+    });
+}

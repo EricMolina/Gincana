@@ -11,7 +11,7 @@
 <div class="crud">
     <h1>Marcadores</h1>
     <div class="crud-header">
-        <button class="font-medium" onclick="openNewForm()">Nuevo marcador</button>
+        <button class="font-medium" onclick="buttonCreatePoint()">Nuevo marcador</button>
         <div class="crud-search">
             <input type="text" name="src" id="src" placeholder="Buscar puntos...">
         </div>
@@ -54,7 +54,6 @@
             </div>
         </div>
     </div>
-    <script src="{{asset('js/points.js')}}"></script>
     <div id="no-mobiles">
         <span class="font-bold">Sólo puedes entrar en este apartado si tu dispositivo tiene la pantalla en horizontal.</span>
     </div>
@@ -63,28 +62,5 @@
 
 @section('scripts')
 <script src="{{ asset('js/app.js') }}"></script>
+<script src="{{asset('js/points.js')}}"></script>
 @endsection
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{{asset('leaflet/leaflet.css')}}" />
-    <link rel="stylesheet" href="{{asset('css/style.css')}}">
-
-    <script src="{{asset('leaflet/leaflet.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <meta name="csrf-token" content="{{csrf_token()}}">
-    <title>Admin - Puntos</title>
-</head>
-<body>
-    
-</body>
-</html>
