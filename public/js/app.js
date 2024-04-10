@@ -93,13 +93,13 @@ function reloadContent() {
 
     loading(false);
 }
-
+var numPuntos = 0;
 function openGincanaModal(){
+    numPuntos == 0;
     var ajax = new XMLHttpRequest();
     ajax.open('get', 'api/gincanas/create/');
     ajax.onload=function(){
         if(ajax.status == 200){
-            // console.log(ajax.responseText)
             Swal.fire({
                 showConfirmButton: false,
                 html: ajax.responseText,
@@ -131,18 +131,65 @@ function openGincanaModal(){
                     document.getElementById("coordy").value = lng;
                 }
                 mapGin.on('click', onMapClick);
-            }).catch(error => {
-                console.error(error);
-            });
+            })
         }
     }
     ajax.send();
 }
 function NuevoPunto(){
-    var newPoint = `<label>Punto 1</label>
-    <br>
-    <select name="punto[]">
-    <br>
-    <textarea name="pista[]" rows="2" cols="20"></textarea>`
-    document.getElementById("puntos").innerHTML +=newPoint;
+    fetch('/api/points/').then(response => {return response.json();})
+    .then(data => {
+        numPuntos ++;
+        var newPoint = `
+        <div id ="${numPuntos}">
+        <p>Punto ${numPuntos}</p>
+        <select name="points[]">`;
+        data.forEach(point => {
+            newPoint +=`<option value="${point.id}">${point.name}</option>`
+        });
+        newPoint +=`</select>
+        <br>
+        <label>Pista</label>
+        <br>
+        <textarea name="hints[]" rows="2" cols="20"></textarea><br>
+        <button onclick="deletePoint(${numPuntos})">Borrar</button>
+        </div>`
+        document.getElementById("puntos").innerHTML +=newPoint;
+    })
+}
+function deletePoint(id){
+    numPuntos --;
+    document.getElementById(id).remove();
+    var puntos = document.getElementById("puntos").children
+    for (let i = 0; i < puntos.length; i++) {
+        var puntoPos = i+1
+        puntos[i].children[0].innerText = `Punto ${puntoPos}`
+    }
+}
+function crearGin(){
+    var frm = document.getElementById("ginForm");
+    var formdata = new FormData(frm);
+    var ajax = new XMLHttpRequest();
+    ajax.open('post', 'api/gincanas/');
+    ajax.onload=function(){
+        if(ajax.status == 200){
+            if(ajax.responseText == "ok"){
+                swal.close();
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                  });
+                  Toast.fire({
+                    icon: "success",
+                    title: "usuario borrado correctamente"
+                  });
+            }else{
+                document.getElementById("error").innerText = ajax.responseText;
+            }
+        }
+    }
+    ajax.send(formdata);
 }
