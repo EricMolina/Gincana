@@ -96,6 +96,8 @@ function reloadContent() {
 var numPuntos = 0;
 function openGincanaModal(){
     numPuntos == 0;
+    arrayPuntos = [];
+    arrayDesc = [];
     var ajax = new XMLHttpRequest();
     ajax.open('get', 'api/gincanas/create/');
     ajax.onload=function(){
@@ -155,6 +157,7 @@ function NuevoPunto(){
         <button onclick="deletePoint(${numPuntos})">Borrar</button>
         </div>`
         document.getElementById("puntos").innerHTML +=newPoint;
+        // console.log(newPoint)
     })
 }
 function deletePoint(id){
@@ -184,7 +187,7 @@ function crearGin(){
                   });
                   Toast.fire({
                     icon: "success",
-                    title: "usuario borrado correctamente"
+                    title: "gincana creada correctamente"
                   });
             }else{
                 document.getElementById("error").innerText = ajax.responseText;
