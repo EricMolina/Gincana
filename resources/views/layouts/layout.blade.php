@@ -154,11 +154,13 @@
                         <img class="back-arrow" src="{{ asset('img/back_arrow.png') }}" alt="gincanas">
                     </div>
                 </div>
+                @if ($user->role == 'admin')
                 <div class="profile-crud-button">
                     <div onclick="window.location.href = '/admin/label'" class="back-arrow-img">
                         <img class="back-arrow" src="{{ asset('img/crud_icon.png') }}" alt="gincanas">
                     </div>
                 </div>
+                @endif
             </div>
         </div>
     </div>

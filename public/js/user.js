@@ -153,7 +153,9 @@ function update(){
     formdata.append('_token', csrf_token);
     var ajax = new XMLHttpRequest();
     ajax.open('POST', 'user/update');
+    loading(true);
     ajax.onload=function(){
+        loading(false);
         if(ajax.status == 200){
             console.log(ajax.responseText);
             if(ajax.responseText == "ok"){

@@ -42,3 +42,8 @@
     <a class="font-medium" href="/login">¿Ya tienes cuenta? ¡Haz clic aquí!</a>
 </form>
 @endsection
+
+@section('scripts')
+<script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ asset('js/login.js') }}"></script>
+@endsection

@@ -11,9 +11,9 @@
 <div class="crud">
     <h1>Marcadores</h1>
     <div class="crud-header">
-        <button class="font-medium" onclick="openNewForm()">Nuevo usuario</button>
+        <button class="font-medium" onclick="openNewForm()">Nuevo marcador</button>
         <div class="crud-search">
-            <input type="text" name="src" id="src" placeholder="Buscar usuario...">
+            <input type="text" name="src" id="src" placeholder="Buscar puntos...">
         </div>
     </div>
 
@@ -44,11 +44,13 @@
     <div class="crud-container">
         <div id="userContainer" class="crud-content">
             <div class="colLista">
-                <input type="text" name="src" id="src" placeholder="Buscar puntos">
-                <div id="pointList"></div>
+                <div id="pointList">
+                    
+                </div>
             </div>
             <div class="colMapa">
                 <div id="map"></div>
+                <div class="shadow"></div>
             </div>
         </div>
     </div>
