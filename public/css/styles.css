@@ -710,6 +710,7 @@ footer {
     cursor: pointer;
     border: none;
     outline: none;
+    user-select: none;
 }
 
 #bottom-container-content {
@@ -719,6 +720,7 @@ footer {
     overflow-y: auto;
     margin-top: 10px;
     user-select: all;
+    overflow-x: hidden;
 }
 
 .bottom-reload-button {
@@ -1611,6 +1613,104 @@ body.swal2-height-auto {
 
 .crud-form.colLista {
     max-height: 350px;
+}
+
+
+.leaflet-marker-icon {
+    background-color: transparent !important;
+    border: none !important;
+}
+
+
+.bottom-mark {
+    width: 100%;
+    height: fit-content;
+}
+
+.bottom-mark-title {
+    font-size: 24px;
+    text-align: center;
+}
+
+.bottom-mark-name {
+    font-size: 18px;
+    text-align: left;
+}
+
+.bottom-mark-desc {
+    font-size: 16px;
+    text-align: justify;
+}
+
+.bottom-mark-labels {
+    width: 100%;
+    height: 35px;
+    padding: 10px 5px 10px 0;
+    overflow-x: auto;
+    white-space: nowrap;
+    margin-bottom: 15px;
+}
+
+.bottom-mark-label {
+    width: fit-content;
+    height: 26px;
+    padding: 8px 10px 0 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: black;
+    background-color: #ececec;
+    border-radius: 1000px;
+    cursor: pointer;
+    display: inline-block;
+    margin-left: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    user-select: none;
+}
+
+.bottom-mark-user-label {
+    width: fit-content;
+    height: 26px;
+    padding: 8px 10px 0 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: black;
+    background-color: #e4f8ff;
+    border-radius: 1000px;
+    cursor: pointer;
+    display: inline-block;
+    margin-left: 10px;
+    outline: 5px dashed #38abff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    user-select: none;
+
+}
+
+.bottom-mark-label span {
+    font-size: 16px;
+    font-weight: 600;
+    color: black;
+}
+
+.bottom-mark > img {
+    width: 80%;
+    margin-left: 10%;
+    height: auto;
+    max-height: 500px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    filter: drop-shadow(0px 6px 6px rgba(0, 0, 0, 0.5));
+}
+
+.bottom-add-label > div {
+    width: 30%; 
+    height: 50px; 
+    background-color: #bdffc2; 
+    margin-left: 35%; 
+    cursor: pointer;
+}
+
+.bottom-add-label > div:hover {
+    background-color: #a2c79e;
 }
 
 @media (max-width: 700px) {

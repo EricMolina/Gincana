@@ -6,6 +6,8 @@ var pointersLayer = null;
 
 
 window.onload = function () {
+    appContent = document.getElementById('bottom-container-content');
+    
     var map = initMap();
     
     requestGeoLocationPermission().then(() => {
@@ -36,8 +38,8 @@ function initMap() {
 
     map.getContainer().style.zIndex = 0;
 
-    userLayer = L.layerGroup().addTo(map);
     pointersLayer = L.layerGroup().addTo(map);
+    userLayer = L.layerGroup().addTo(map);
 
     return map;
 }
@@ -118,6 +120,17 @@ function UpdateMapPointers() {
             iconSize: [48, 64],
             iconAnchor: [32, 64]
         });
+
+        if (pointersType == 'ubicaciones') {
+            var icon = L.divIcon({
+                iconSize: [48, 64],
+                iconAnchor: [32, 64],
+                html: `<div style="position: relative; background-color: transparent; width: 100%; height: 100%; background-image: url(${pointers[i].pointer_img}); background-size: cover; background-repeat: no-repeat; filter: drop-shadow(2px 2px 0 black);">
+                            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #${pointers[i].pointer_col}; opacity: 1; mask-image: url(${pointers[i].pointer_img}); mask-size: cover;"></div>
+                        </div>`
+            });
+        }
+        
         var marker = L.marker([pointers[i].coord_x, pointers[i].coord_y], { icon: icon })
             .bindTooltip(pointers[i].name, {
                 permanent: true,
@@ -134,7 +147,7 @@ function UpdateMapPointers() {
     loading(false);
 }
 
-var pointersType = 'ubicaciones';
+var pointersType = '';
 function loadPointers(type) {
     if (type == pointersType) return;
     if (type != null) pointersType = type;
@@ -149,19 +162,21 @@ function loadPointers(type) {
                 return response.json();
             })
             .then(data => {
+                console.log(data);
                 pointers = [];
                 for (var i = 0; i < data.length; i++) {
                     pointers.push({
                         id: data[i].id,
                         name: data[i].name,
-                        pointer_img: data[i].main_category_img,
-                        pointer_col: data[i].main_category_color,
+                        pointer_img: '../img/labels/' + data[i].main_label.img,
+                        pointer_col: data[i].main_label.color,
                         img: data[i].img,
                         coord_x: data[i].coord_x,
                         coord_y: data[i].coord_y,
-                        categories: data[i].categories,
                         address: data[i].address,
-                        desc: data[i].desc
+                        desc: data[i].desc,
+                        labels: data[i].labels,
+                        user_labels: data[i].user_labels
                     });
                 }
                 
@@ -217,4 +232,57 @@ function centerMapOnUser() {
 
 function openPointer(pointer) {
     openBottomContainer(true);
+    if (pointersType == 'ubicaciones') {
+        displayMapPointer(pointer);
+    } else {
+        displaySessions(pointer);
+    }
+}
+
+function displayMapPointer(pointer) {
+
+    //Recoge el coord_x y coord_y de pointer y centra el mapa en esas coordenadas
+    map.setView([pointer.coord_x - 0.0011, pointer.coord_y], 17);
+
+    document.getElementById('reload-button').style.display = 'none';
+    document.getElementById('play-activity-button').style.display = 'none';
+    var content = `
+    <div class="bottom-mark">
+        <h1 class="font-bold bottom-mark-title">${pointer.name}</h1>
+        <p class="font-medium-italic bottom-mark-name">${pointer.address}</p>
+        <div class="bottom-mark-labels">
+    `;
+
+    for (var i = 0; i < pointer.labels.length; i++) {
+        content += `
+        <div class="bottom-mark-label">
+            <span class="font-light">${pointer.labels[i].name}</span>
+        </div>
+        `;
+    }
+
+    for (var i = 0; i < pointer.user_labels.length; i++) {
+        content += `
+        <div class="bottom-mark-user-label">
+            <span class="font-light">${pointer.user_labels[i].name}</span>
+        </div>
+        `;
+    }
+
+    content += `
+        </div>
+        <div style="text-align: center;" class="bottom-add-label">
+            <div
+                class="footer-item-img bottom-add-label-img">
+                <img style="height: 40px; width: auto;" class="img-icon"
+                    src="./img/label_icon.png" alt="ubicaciones">
+            </div>
+            <span class="font-medium footer-item-text">Añadir marcador personal</span>
+        </div>
+        <p class="font-light bottom-mark-desc">${pointer.desc}</p>
+        <img src="./img/points/${pointer.img}" alt="">
+    </div>
+    `;
+
+    appContent.innerHTML = content;
 }

@@ -58,6 +58,7 @@ class GincanaController extends Controller
 
 
     function list_points() {
-        return Point::all();
+        return Point::with('labels', 'main_label', 'user_labels')->get();
     }
+
 }
