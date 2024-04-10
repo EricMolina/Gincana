@@ -5,7 +5,6 @@ var userLayer = null;
 var pointersLayer = null;
 
 var appContent;
-// var appForm = document.getElementById('form');
 var currentGincana;
 var currentSession;
 
@@ -117,6 +116,13 @@ function UpdateUserLocation() {
                 .addTo(userLayer);
         }
 
+        /* if (inActivity) {
+            sendCheckpoint({
+                'lat': position.lat,
+                'lng': position.lng
+            });
+        } */
+
     }).catch(error => {
         console.error(error);
     });
@@ -213,7 +219,11 @@ function loadPointers(type) {
                 loading(false);
                 console.error(error);
             });
+    } else {
+        UpdateMapPointers();
+        loading(false);
     }
+    
 }
 
 function zoomIn() {
@@ -383,7 +393,6 @@ function displayCurrentActivityStatus() {
             `;
 
         if (!activity.ranking) {
-
             if (activity.session.status == 1) {
                 activity.available_points.forEach((point, index) => {
                     appContent.innerHTML += `
@@ -445,6 +454,21 @@ function displayCurrentActivityStatus() {
                     </div>
                 </div>`;
         }
+
+        pointers = [];
+
+        activity.available_points.forEach((point, index) => {
+            if (point.id) {
+                pointers.push({
+                    id: point.id,
+                    name: point.name,
+                    img: '../img/checkpoint_mark.png',
+                    pointer_img: '../img/checkpoint_mark.png',
+                    coord_x: point.coord_x,
+                    coord_y: point.coord_y,
+                });
+            }
+        });
 
         document.getElementById('reload-button').onclick = () => displayCurrentActivityStatus();
         loading(false);
@@ -510,3 +534,38 @@ function exitCurrentActivity() {
     })
 }
 
+
+function sendCheckpoint(position) {
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    let data = {
+        'coord_x': position['lat'],
+        'coord_y': position['lng']
+    };
+
+    fetch('/api/current-activity/checkpoint/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify(data)
+    })
+    .then((res) => res.text())
+    .then((text) => {
+        let response = JSON.parse(text);
+
+    /*  if (response['result'] == 'ok') {
+            displayCurrentActivityStatus();
+            document.getElementById('check-result-msg').textContent = 'Punto encontrado';
+
+        } else if (response['result' ]== 'wait') {
+            document.getElementById('check-result-msg').textContent = 'Espera a que el resto lleguen al punto';
+
+        } else if (response['result'] == 'no')  {
+            document.getElementById('check-result-msg').textContent = 'No se ha encontrado el punto';
+
+        } */
+
+    })
+}
