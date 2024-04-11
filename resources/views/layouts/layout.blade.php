@@ -71,7 +71,10 @@
                 </div>
             </div>
             <div class="footer-big-buttons">
-                <div class="footer-big-button">
+                <div id="current-activity-button" class="footer-big-button" style="display: none">
+                    <img class="img-icon" src="{{ asset('img/clue_icon.png') }}" alt="clue-icon">
+                </div>
+                <div onclick="openGincanaModal()" id="create-gincana-button" class="footer-big-button" style="display: none">
                     <img class="img-icon" src="{{ asset('img/new_gincana_icon.png') }}" alt="create-gincana">
                 </div>
                 <div onclick="loadPointers()" class="footer-big-button">
@@ -190,6 +193,12 @@
         setUserPointerName('{{ $user->name }}');
         UserId({{ $user->id}});
     </script>
+
+    @if(!Session::get('current_activity'))
+        <script>var inActivity = false;</script>
+    @else
+        <script>var inActivity = true;</script>
+    @endif
 </body>
 
 </html>

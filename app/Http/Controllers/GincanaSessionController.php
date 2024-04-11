@@ -26,7 +26,9 @@ function generateRandomString($length = 8) {
 class GincanaSessionController extends Controller
 {
     function list(Request $request) {
-        $gincana_sessions = GincanaSession::where(
+        $gincana_sessions = GincanaSession::with(
+            'session_admin'
+        )->where(
             'gincana_id', $request->id
         )->where(
             'status', 0
