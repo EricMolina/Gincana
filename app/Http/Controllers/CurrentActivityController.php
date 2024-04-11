@@ -92,6 +92,8 @@ class CurrentActivityController extends Controller
 
                 if ($current_point_count == $group_count) {
                     $point_data = Point::find($point->point_id);
+                    $current_available_point['id'] = $point->id;
+                    $current_available_point['name'] = $point_data->name;
                     $current_available_point['coord_x'] = $point_data->coord_x;
                     $current_available_point['coord_y'] = $point_data->coord_y;
                     $show_next_hint = true;
@@ -239,7 +241,7 @@ class CurrentActivityController extends Controller
             'gin_ses_group_id', $current_gincana_session_group->id
         )->first();
 
-        $nex_point = Point::find($next_gincana_point->id);
+        $nex_point = Point::find($next_gincana_point->point_id);
 
         $next_point_checkpoint = GincanaSessionGroupUserCheckpoint::where(
             'gin_ses_grp_user_id', $group_user->id

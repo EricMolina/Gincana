@@ -17,7 +17,7 @@ function changeTab(tab) {
         document.getElementById('current-activity-button').style.display = 'none';
         document.getElementById('create-gincana-button').style.display = 'flex';
     } else { //Mi actividad
-        console.log('b')
+        loadPointers('gincana_points');
         document.getElementById('current-activity-button').style.display = 'flex';
         document.getElementById('create-gincana-button').style.display = 'none';
         document.getElementById('current-activity-button').onclick = () => {
