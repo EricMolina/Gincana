@@ -102,4 +102,36 @@ class GincanaSessionGroupController extends Controller
             return "error: ".$e->getMessage();
         }
     }
+    
+
+    function leave() {
+        try {
+            DB::beginTransaction();
+            $current_gincana_session_group = GincanaSessionGroup::find(
+                Session::get('current_activity')
+            );
+
+            $group_user = GincanaSessionGroupUser::where(
+                'user_id', Auth::user()->id
+            )->where(
+                'gin_ses_group_id', $current_gincana_session_group->id
+            )->first();
+
+            GincanaSessionGroupUserCheckpoint::where(
+                'gin_ses_grp_user_id', $group_user->id
+            )->delete();
+
+            $group_user->delete();
+
+            Session::forget('current_activity');
+
+            DB::commit();
+
+            return 'ok';
+        
+        } catch (Exception $e) {
+            DB::rollBack();
+            return "error: ".$e->getMessage();
+        }
+    }
 }
