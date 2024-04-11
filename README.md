@@ -28,5 +28,22 @@ Un usuario registrado puede crear una gincana el cual pide los siguientes datos:
 Una vez creada las gincanas se pueden ver en la sección de gincanas de la pagina principal.
 
 ### Unirse a una gincana
+# CRUDS
+Esta sección de la pagina a diferencia de la sección de usuarios está pensada para ser usada en un PC, por eso si la resolución no es correcta (por ejemplo con el movil en vertical) se muestra un mensaje avisando.
+
+![image](https://github.com/EricMolina/Gincana/assets/91189374/7deb5d01-84e8-488a-8425-809f429ed96f)
+
+Desde aquí los administradores pueden gestionar los siguientes recursos.
+
 ## Panel del administrador
 Para la correcta gestión de la pagina web se ha creado un panel para gestionar los usuarios, puntos y las categorías principales (no incluye las personales de los usuarios) 
+
+![image](https://github.com/EricMolina/Gincana/assets/91189374/6a840ad2-9828-41c3-b898-b27b26ec4dda)
+
+![image](https://github.com/EricMolina/Gincana/assets/91189374/87ef8488-bfcd-429a-b349-cdd1a97cad53)
+
+![image](https://github.com/EricMolina/Gincana/assets/91189374/c91ec834-cb96-4216-a81f-3a914172f35a)
+
+
+
+
