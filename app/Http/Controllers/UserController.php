@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use App\Models\Label;
 use App\Models\UserLabel;
 use App\Models\GincanaSessionGroupUser;
 use App\Models\GincanaSessionGroup;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -144,5 +146,11 @@ class UserController extends Controller
             // DB::rollBack();
             return $e->getMessage();
         }
+    }
+
+    public function userdata(){
+        $user = User::with('user_label')->find(Auth::user()->id);
+        $labels = Label::all();
+        return response()->json(['user' => $user, 'labels' => $labels]);
     }
 }

@@ -3,6 +3,7 @@ var pointers = [];
 var userPointer = { name: 'Nombre de Usuario', pointer_img: '../img/me_icon.png', coord_x: 0, coord_y: 0 };
 var userLayer = null;
 var pointersLayer = null;
+var userId = null;
 
 
 window.onload = function () {
@@ -26,6 +27,10 @@ window.onload = function () {
     changeTab(1);
     disableTab(3);
     loading(false);
+}
+
+function UserId(id) {
+    userId = id;
 }
 
 function initMap() {
@@ -149,7 +154,6 @@ function UpdateMapPointers() {
 
 var pointersType = '';
 function loadPointers(type) {
-    if (type == pointersType) return;
     if (type != null) pointersType = type;
 
     loading(true);
@@ -263,7 +267,7 @@ function displayMapPointer(pointer) {
 
     for (var i = 0; i < pointer.user_labels.length; i++) {
         content += `
-        <div class="bottom-mark-user-label">
+        <div onclick="removeUserLabelPoint(${pointer.user_labels[i].id}, ${pointer.id})" class="bottom-mark-user-label">
             <span class="font-light">${pointer.user_labels[i].name}</span>
         </div>
         `;
@@ -271,13 +275,19 @@ function displayMapPointer(pointer) {
 
     content += `
         </div>
-        <div style="text-align: center;" class="bottom-add-label">
-            <div
-                class="footer-item-img bottom-add-label-img">
-                <img style="height: 40px; width: auto;" class="img-icon"
-                    src="./img/label_icon.png" alt="ubicaciones">
+        <div class="bottom-mark-buttons">
+            <div class="profile-button">
+                <div onclick="assignUserLabel(${userId}, ${pointer.id})" class="footer-item-img profile-button-label">
+                    <img class="img-icon" src="../img/label_icon.png" alt="ubicaciones">
+                </div>
+                <span class="font-medium footer-item-text">Añadir etiqueta</span>
             </div>
-            <span class="font-medium footer-item-text">Añadir marcador personal</span>
+            <div class="profile-button">
+                <div onclick="traceRoute(${pointer.coord_x},${pointer.coord_y})" class="footer-item-img profile-button-close">
+                    <img class="img-icon" src="../img/icon_route.png" alt="gincanas">
+                </div>
+                <span class="font-medium footer-item-text">Trazar ruta</span>
+            </div>
         </div>
         <p class="font-light bottom-mark-desc">${pointer.desc}</p>
         <img src="./img/points/${pointer.img}" alt="">
@@ -285,4 +295,42 @@ function displayMapPointer(pointer) {
     `;
 
     appContent.innerHTML = content;
+}
+
+var routingControl;
+function traceRoute(lat, lng) {
+    removeTraceRoute();
+
+    routingControl = L.Routing.control({
+        waypoints: [
+            L.latLng(userPointer.coord_x, userPointer.coord_y),
+            L.latLng(lat, lng)
+        ],
+        routeWhileDragging: true,
+        showAlternatives: false,
+        lineOptions: {
+            styles: [
+                {color: 'blue', opacity: 1, weight: 5}
+            ]
+        },
+        createMarker: function() { return null; },
+        addWaypoints: false,
+    }).addTo(map);
+    openBottomContainer(false);
+
+    if (document.getElementsByClassName('leaflet-control-container')[0])
+        document.getElementsByClassName('leaflet-control-container')[0].remove();
+    document.getElementById('remove-route-button').style.display = 'flex';
+
+    var midLat = (userPointer.coord_x + lat) / 2;
+    var midLng = (userPointer.coord_y + lng) / 2;
+    map.setView([midLat, midLng], 14);
+}
+
+function removeTraceRoute() {
+    if (routingControl) {
+        map.removeControl(routingControl);
+        routingControl = null;
+    }
+    document.getElementById('remove-route-button').style.display = 'none';
 }

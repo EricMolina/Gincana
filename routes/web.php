@@ -10,6 +10,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\pointController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserLabelController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -68,6 +69,19 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/api/current-activity/status/', 'status')->name('api.current_activity.status');
         Route::post('/api/current-activity/checkpoint/', 'checkpoint')->name('api.current_activity.checkpoint');
         Route::post('/api/current-activity/exit/', 'exit')->name('api.current_activity.exit');
+    });
+
+    //Crea rutas para el controlador de user
+    Route::controller(UserController::class)->group(function () {
+        Route::get('/user/data', 'userdata');
+    });
+
+    Route::controller(UserLabelController::class)->group(function () {
+        Route::get('/userlabel/{id}', 'data');
+        Route::post('/userlabel/store', 'store');
+        Route::post('/userlabel/delete', 'delete');
+        Route::post('/userlabel/store_point', 'store_point');
+        Route::post('/userlabel/delete_point', 'delete_point');
     });
 });
 

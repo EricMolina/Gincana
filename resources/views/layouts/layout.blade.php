@@ -29,6 +29,7 @@
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
     <script src="{{ asset('js/map.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <title>@yield('title')</title>
@@ -49,21 +50,15 @@
                 <img src="{{ $userImage }}" alt="">
             </div>
         </div>
-        <div class="header-labels">
-            <div class="header-label">
-                <span class="font-light">Label ejemplo</span>
-            </div>
-            <div class="header-label">
-                <span class="font-light">Label ejemplo</span>
-            </div>
-            <div class="header-user-label">
-                <span class="font-light">Mi label ejemplo</span>
-            </div>
+        <div id="header-content-labels" class="header-labels">
         </div>
     </header>
     <footer>
         <div class="footer-buttons">
             <div class="footer-small-buttons">
+                <div id="remove-route-button" style="display: none;" onclick="removeTraceRoute()" class="footer-small-button">
+                    <img class="img-icon" src="{{ asset('img/icon_route_cancel.png') }}" alt="remove-route">
+                </div>
                 <div onclick="zoomIn()" class="footer-small-button">
                     <img class="img-icon" src="{{ asset('img/zoom_in_icon.png') }}" alt="zoom-in">
                 </div>
@@ -122,20 +117,11 @@
                     <span class="font-medium">{{ $user->email }}</span>
                 </div>
             </div>
-            <div class="profile-labels">
-                <div class="profile-label">
-                    <span class="font-light">Mi label ejemplo</span>
-                </div>
-                <div class="profile-label">
-                    <span class="font-light">Mi label ejemplo</span>
-                </div>
-                <div class="profile-label">
-                    <span class="font-light">Mi label ejemplo</span>
-                </div>
+            <div id="user-profile-labels" class="profile-labels">
             </div>
             <div class="profile-buttons">
                 <div class="profile-button">
-                    <div onclick="createUserLabel(user_id)" class="footer-item-img profile-button-label">
+                    <div onclick="createUserLabel({{ $user->id }})" class="footer-item-img profile-button-label">
                         <img class="img-icon" src="{{ asset('img/label_icon.png') }}" alt="ubicaciones">
                     </div>
                     <span class="font-medium footer-item-text">Crear etiqueta</span>
@@ -198,6 +184,7 @@
     @yield('scripts')
     <script>
         setUserPointerName('{{ $user->name }}');
+        UserId({{ $user->id}});
     </script>
 </body>
 
