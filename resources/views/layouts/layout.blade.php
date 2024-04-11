@@ -44,13 +44,17 @@
                 <img src="{{ asset('img/logo_sm.png') }}" alt="logo">
             </div>
             <div class="header-search-input">
-                <input class="font-light" type="text" name="search" id="search" placeholder="Buscar aquí">
+                <input id="bar-search-input" class="font-light" type="text" name="search" id="search" placeholder="Buscar aquí">
             </div>
             <div onclick="openUserProfile(true)" class="icon user-icon">
                 <img src="{{ $userImage }}" alt="">
             </div>
         </div>
         <div id="header-content-labels" class="header-labels">
+        </div>
+        <div id="bar-search-container">
+            <div id="bar-search-content">
+            </div>
         </div>
     </header>
     <footer>

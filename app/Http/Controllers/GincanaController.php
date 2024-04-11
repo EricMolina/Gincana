@@ -57,8 +57,46 @@ class GincanaController extends Controller
     }
 
 
-    function list_points() {
-        return Point::with('labels', 'main_label', 'user_labels')->get();
+    function list_points(Request $request) {
+        $labelFilters = json_decode($request->input('labelFilters'), true);
+        $userLabelFilters = json_decode($request->input('userLabelFilters'), true);
+    
+        $query = Point::with('labels', 'main_label', 'user_labels');
+    
+        if (in_array(1, $labelFilters)) {
+            foreach ($labelFilters as $id => $value) {
+                if ($value == 1) {
+                    $query->whereHas('labels', function ($query) use ($id) {
+                        $query->where('label_id', $id);
+                    });
+                }
+            }
+        }
+    
+        if (in_array(1, $userLabelFilters)) {
+            foreach ($userLabelFilters as $id => $value) {
+                if ($value == 1) {
+                    $query->whereHas('user_labels', function ($query) use ($id) {
+                        $query->where('user_label_id', $id);
+                    });
+                }
+            }
+        }
+    
+        return $query->get();
     }
 
+    function list_points_search(Request $request) {
+        $searchVal = $request->input('search');
+    
+        $query = Point::with('labels');
+    
+        if ($searchVal != '') {
+            $query->where('name', 'like', '%' . $searchVal . '%')
+                  ->orWhere('address', 'like', '%' . $searchVal . '%')
+                  ->orWhere('desc', 'like', '%' . $searchVal . '%');
+        }
+    
+        return $query->get();
+    }
 }

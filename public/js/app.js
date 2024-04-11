@@ -1,4 +1,7 @@
 var oldTab = 3;
+
+var labelFilters = { 1:0};
+var userLabelFilters = { 1:0};
 function changeTab(tab) {
     if (tab == oldTab) return;
     if (document.getElementById('tab'+tab).classList.contains('footer-item-disabled')) return;
@@ -87,6 +90,8 @@ function reloadContent() {
 
 function loadDefaultData() {
     loading(true);
+    labelFilters = {};
+    userLabelFilters = {};
     fetch('/user/data')
             .then(response => {
                 loading(false);
@@ -102,14 +107,15 @@ function loadDefaultData() {
                 var headerContent = '';
                 for (var i = 0; i < data.labels.length; i++) {
                     headerContent += `
-                    <div class="header-label">
+                    <div onclick="alterLabelFilter(${data.labels[i].id})" class="header-label" id="header-label-${data.labels[i].id}">
                         <span class="font-light">${data.labels[i].name}</span>
                     </div>
                     `;
+                    labelFilters[data.labels[i].id] = 0;
                 }
                 for (var i = 0; i < data.user.user_label.length; i++) {
                     headerContent += `
-                    <div class="header-user-label">
+                    <div onclick="alterUserLabelFilter(${data.user.user_label[i].id})" class="header-user-label" id="header-user-label-${data.user.user_label[i].id}">
                         <span class="font-light">${data.user.user_label[i].name}</span>
                     </div>
                     `;
@@ -118,6 +124,7 @@ function loadDefaultData() {
                         <span class="font-light">${data.user.user_label[i].name}</span>
                     </div>
                     `;
+                    userLabelFilters[data.user.user_label[i].id] = 0;
                 }
                 document.getElementById('user-profile-labels').innerHTML = userContent;
                 document.getElementById('header-content-labels').innerHTML = headerContent;
@@ -310,4 +317,28 @@ function deleteUserLabel(label_id){
         }
     }
     ajax.send(formdata);
+}
+
+function alterLabelFilter(filter_id) {
+    if (labelFilters[filter_id] == 0) labelFilters[filter_id] = 1;
+    else labelFilters[filter_id] = 0;
+    loadPointers('ubicaciones');
+
+    if (labelFilters[filter_id] == 1) {
+        document.getElementById('header-label-'+filter_id).classList.add('header-label-selected');
+    } else {
+        document.getElementById('header-label-'+filter_id).classList.remove('header-label-selected');
+    }
+}
+
+function alterUserLabelFilter(filter_id) {
+    if (userLabelFilters[filter_id] == 0) userLabelFilters[filter_id] = 1;
+    else userLabelFilters[filter_id] = 0;
+    loadPointers('ubicaciones');
+
+    if (userLabelFilters[filter_id] == 1) {
+        document.getElementById('header-user-label-'+filter_id).classList.add('header-user-label-selected');
+    } else {
+        document.getElementById('header-user-label-'+filter_id).classList.remove('header-user-label-selected');
+    }
 }

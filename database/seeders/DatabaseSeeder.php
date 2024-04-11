@@ -23,8 +23,7 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        $this->Call(PointSeeder::class);
         $this->call(LabelSeeder::class);
-        $this->call(PointsSeeder::class);
+        $this->Call(PointSeeder::class);
     }
 }

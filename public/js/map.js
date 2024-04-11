@@ -27,6 +27,14 @@ window.onload = function () {
     changeTab(1);
     disableTab(3);
     loading(false);
+    document.getElementById('bar-search-input').addEventListener('input', function() {
+        filterBySearchBar();
+        if (document.getElementById('bar-search-input').value == '') {
+            alterSearchDiv(false);
+        } else {
+            alterSearchDiv(true);
+        }
+    });
 }
 
 function UserId(id) {
@@ -90,6 +98,9 @@ function requestGeoLocationPermission() {
 var userMarker = null;
 function UpdateUserLocation() {
     getGeoLocation().then(position => {
+        if (userPointer.coord_x == position.lat && userPointer.coord_y == position.lng) {
+            return;
+        }
         userPointer.coord_x = position.lat;
         userPointer.coord_y = position.lng;
 
@@ -158,14 +169,17 @@ function loadPointers(type) {
 
     loading(true);
     if (pointersType == 'ubicaciones') { //Ubicaciones
-        fetch('/api/points')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error al cargar los puntos');
-                }
-                return response.json();
-            })
-            .then(data => {
+        var formdata = new FormData();
+        var csrf_token = document.querySelector("meta[name = 'csrf-token']").getAttribute('content');
+        formdata.append('_token', csrf_token);
+        formdata.append('labelFilters', JSON.stringify(labelFilters));
+        formdata.append('userLabelFilters', JSON.stringify(userLabelFilters));
+        var ajax = new XMLHttpRequest();
+        ajax.open('POST', '/api/points', true);
+
+        ajax.onload = function() {
+            if (this.status >= 200 && this.status < 400) {
+                var data = JSON.parse(this.response);
                 console.log(data);
                 pointers = [];
                 for (var i = 0; i < data.length; i++) {
@@ -185,11 +199,17 @@ function loadPointers(type) {
                 }
                 
                 UpdateMapPointers();
-            })
-            .catch(error => {
-                loading(false);
-                console.error(error);
-            });
+            } else {
+                console.error('Error al cargar los puntos');
+            }
+        };
+
+        ajax.onerror = function() {
+            loading(false);
+            console.error('Error de red');
+        };
+
+        ajax.send(formdata);
     } else if (pointersType == 'gincanas') { //Gincanas
         fetch('/api/gincanas/')
             .then(response => {
@@ -333,4 +353,53 @@ function removeTraceRoute() {
         routingControl = null;
     }
     document.getElementById('remove-route-button').style.display = 'none';
+}
+
+function alterSearchDiv(b) {
+    if (b) {
+        document.getElementById('bar-search-container').style.display = 'inline-block';
+        document.getElementById('header-content-labels').style.display = 'none';
+        filterBySearchBar();
+    } else {
+        document.getElementById('bar-search-container').style.display = 'none';
+        document.getElementById('header-content-labels').style.display = 'inline-block';
+    }
+}
+
+function filterBySearchBar() {
+    var formdata = new FormData();
+    var csrf_token = document.querySelector("meta[name = 'csrf-token']").getAttribute('content');
+    formdata.append('_token', csrf_token);
+    formdata.append('search', document.getElementById('bar-search-input').value);
+    var ajax = new XMLHttpRequest();
+    ajax.open('POST', '/api/points/search', true);
+
+    ajax.onload = function() {
+        if (this.status >= 200 && this.status < 400) {
+            var data = JSON.parse(this.response);
+            console.log(data);
+            var content = '';
+            for (var i = 0; i < data.length; i++) {
+
+                content += `
+                <div onclick="zoomToPointer(${data[i].coord_x}, ${data[i].coord_y})" class="bar-search-item font-medium-italic">${data[i].name} - ${data[i].address}</div>
+                `;
+            }
+            document.getElementById('bar-search-content').innerHTML = content;
+        } else {
+            console.error('Error al cargar los puntos');
+        }
+    };
+
+    ajax.onerror = function() {
+        loading(false);
+        console.error('Error de red');
+    };
+
+    ajax.send(formdata);
+}
+
+function zoomToPointer(lat, lng) {
+    map.setView([lat, lng], 17);
+    alterSearchDiv(false);
 }
