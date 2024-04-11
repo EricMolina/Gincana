@@ -597,7 +597,10 @@ function displayCurrentActivityStatus() {
                     ${activity.session.status != 1 ? 
                         `<div class="bottom-gincana-mysession-groups-create">
                             <img onclick="exitGroup()" src="../img/exit_icon.png" alt="create">
-                        </div>` : ''}
+                        </div>` : 
+                        `<div class="bottom-gincana-mysession-groups-create">
+                            <img onclick="leaveGroup()" src="../img/exit_icon.png" alt="create">
+                        </div>`}
                 </div>
             `;
 
@@ -665,6 +668,26 @@ function exitGroup() {
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     fetch('/api/groups/exit/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        }
+    })
+    .then(() => {
+        inActivity = false;
+        disableTab(3);
+        enableTab(2);
+        changeTab(2);
+        openBottomContainer(false);
+    })
+}
+
+
+function leaveGroup() {
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    fetch('/api/groups/leave/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

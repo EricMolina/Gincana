@@ -66,6 +66,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/api/groups/', 'store')->name('api.groups.store');
         Route::post('/api/groups/join/', 'join')->name('api.groups.join');
         Route::post('/api/groups/exit/', 'exit')->name('api.groups.exit');
+        Route::post('/api/groups/leave/', 'leave')->name('api.groups.leave');
     });
 
     Route::controller(CurrentActivityController::class)->group(function () {
