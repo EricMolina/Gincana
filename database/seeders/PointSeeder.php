@@ -64,5 +64,19 @@ class PointSeeder extends Seeder
         $point = Point::with("main_label")->with("labels")->find(4);
         $point->labels()->attach(6);
         $point->labels()->attach(2);
+
+
+        Point::create([
+            "coord_x"=>"41.350671687019485",
+            "coord_y"=> "2.1125866123556984",
+            "name"=>"Cataluña Pita House",
+            "main_label_id"=>"1",
+            "address"=> "Rambla de la Marina, 80, 08907 L'Hospitalet de Llobregat, Barcelona",
+            "desc"=>"El restaurante kebab de la plaza. Todo correcto y raciones muy grandes como para repetir varias veces.",
+            "img"=>"pitahouse.jpg",
+        ]);
+        $point = Point::with("main_label")->with("labels")->find(5);
+        $point->labels()->attach(1);
+        $point->labels()->attach(6);
     }
 }

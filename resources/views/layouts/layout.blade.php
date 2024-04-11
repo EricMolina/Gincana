@@ -5,8 +5,8 @@
         //Hacer cosas si el usuario está autenticado
         $user = Auth::user();
         $userImage = '../img/default_user.png';
-        if ($user->image != null) {
-            $userImage = $user->image;
+        if ($user->img != null) {
+            $userImage = '../img/users/'.$user->img;
         }
         //blade php console log $user
     @endphp
@@ -53,7 +53,7 @@
                 <input id="bar-search-input" class="font-light" type="text" name="search" id="search" placeholder="Buscar aquí">
             </div>
             <div onclick="openUserProfile(true)" class="icon user-icon">
-                <img src="{{ $userImage }}" alt="">
+                <img id="search-bar-profile-img" src="{{ $userImage }}" alt="">
             </div>
         </div>
         <div id="header-content-labels" class="header-labels">
@@ -116,9 +116,9 @@
     </div>
     <div id="user-profile-container" style="display: none">
         <div class="user-profile">
-            <div class="user-profile-principal-container">
+            <div onclick="selectUserImage()" class="user-profile-principal-container">
                 <div onclick="changeUserPhoto(id)" class="user-profile-principal-img-container">
-                    <img class="user-profile-principal-img-container-img" src="{{ $userImage }}"
+                    <img id="user-profile-image" class="user-profile-principal-img-container-img" src="{{ $userImage }}"
                         alt="user-photo">
                     <img class="user-profile-principal-img-container-change" src="{{ asset('img/photo_icon.png') }}"
                         alt="change">
@@ -198,6 +198,7 @@
     <script>
         setUserPointerName('{{ $user->name }}');
         UserId({{ $user->id}});
+        if (!inActivity) disableTab(3);
     </script>
 </body>
 

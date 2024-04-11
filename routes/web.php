@@ -77,6 +77,7 @@ Route::middleware(['auth'])->group(function () {
     //Crea rutas para el controlador de user
     Route::controller(UserController::class)->group(function () {
         Route::get('/user/data', 'userdata');
+        Route::post('/user/image', 'image');
     });
 
     Route::controller(UserLabelController::class)->group(function () {

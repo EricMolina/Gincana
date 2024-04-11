@@ -153,4 +153,25 @@ class UserController extends Controller
         $labels = Label::all();
         return response()->json(['user' => $user, 'labels' => $labels]);
     }
+
+    public function image(Request $request) {
+        $user = User::find(Auth::user()->id);
+        $img = $request->file("image");
+        $filename = time().'.'.$img->getClientOriginalExtension();
+    
+        // Comprobar si el usuario tenía una imagen anterior
+        if ($user->img) {
+            $oldFile = public_path('img/users/' . $user->img);
+    
+            // Comprobar si el archivo existe y eliminarlo
+            if (file_exists($oldFile)) {
+                unlink($oldFile);
+            }
+        }
+    
+        $user->img = $filename;
+        $user->save();
+        $img->move(public_path('img/users'), $filename);
+        return "ok";
+    }
 }

@@ -115,6 +115,10 @@ function loadDefaultData() {
             .then(data => {
                 console.log(data);
 
+                var userImg = '../img/default_user.png';
+                if (data.user.image != null) {
+                    userImg = '../img/users/'+data.user.img;
+                }
                 var userContent = '';
                 var headerContent = '';
                 for (var i = 0; i < data.labels.length; i++) {
@@ -463,4 +467,41 @@ function alterUserLabelFilter(filter_id) {
     } else {
         document.getElementById('header-user-label-'+filter_id).classList.remove('header-user-label-selected');
     }
+}
+
+function selectUserImage() {
+    let input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+
+    input.onchange = function(event) {
+        let file = event.target.files[0];
+        changeUserImage(file);
+    };
+    input.click();
+}
+
+function changeUserImage(file) {
+    var imgTag = document.getElementById('user-profile-image');
+    var imgTag2 = document.getElementById('search-bar-profile-img');
+    var formdata = new FormData();
+    var csrf_token = document.querySelector("meta[name = 'csrf-token']").getAttribute('content');
+    formdata.append('_token', csrf_token);
+    formdata.append('image', file);
+    var ajax = new XMLHttpRequest();
+    loading(true);
+    ajax.open('POST', '/user/image');
+    ajax.onload=function(){
+        loading(false);
+        if(ajax.status == 200){
+            if(ajax.responseText == "ok"){
+                imgTag.src = URL.createObjectURL(file);
+                imgTag2.src = URL.createObjectURL(file);
+                Swal.fire("Imagen de perfil cambiada correctamente", "", "success");
+            } else{
+                Swal.fire("Error al cambiar la imagen de perfil", "", "error");
+            }
+        }
+    }
+    ajax.send(formdata);
 }
