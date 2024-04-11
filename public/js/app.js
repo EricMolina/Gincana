@@ -230,7 +230,9 @@ function openGincanaModal(){
     arrayDesc = [];
     var ajax = new XMLHttpRequest();
     ajax.open('get', 'api/gincanas/create/');
+    loading(true);
     ajax.onload=function(){
+        loading(false);
         if(ajax.status == 200){
             Swal.fire({
                 showConfirmButton: false,

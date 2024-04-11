@@ -12,6 +12,12 @@
     @endphp
 @endauth
 
+@if(!Session::get('current_activity'))
+<script>var inActivity = false;</script>
+@else
+<script>var inActivity = true;</script>
+@endif
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -193,12 +199,6 @@
         setUserPointerName('{{ $user->name }}');
         UserId({{ $user->id}});
     </script>
-
-    @if(!Session::get('current_activity'))
-        <script>var inActivity = false;</script>
-    @else
-        <script>var inActivity = true;</script>
-    @endif
 </body>
 
 </html>
