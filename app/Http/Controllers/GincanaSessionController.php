@@ -6,6 +6,7 @@ use App\Models\GincanaSession;
 use App\Models\GincanaSessionGroup;
 
 use App\Http\Controllers\Controller;
+use App\Models\Gincana;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -43,7 +44,14 @@ class GincanaSessionController extends Controller
 
     function store(Request $request) {
         try {
-            
+            if(!isset($request->name) || $request->name ==""){
+                return "Error1";
+            }
+            // $labels = Label::where("name","LIKE",$src."%")->get();
+            $gincana  = GincanaSession::where("gincana_id",$request->gincana_id)->first();
+            if($gincana){
+                return "Error2";
+            }
             $gincana_session = new GincanaSession;
             $gincana_session->name = $request->name;
             $gincana_session->status = 0;
@@ -52,13 +60,16 @@ class GincanaSessionController extends Controller
             $gincana_session->session_code = generateRandomString();
             $gincana_session->save();
 
-            return $gincana_session;
+            // return $gincana_session;
+            return $gincana_session->session_code;
 
         } catch (Exception $e) {
             return "error: ".$e->getMessage();
         }
     }
-
+    function newSession(){
+        return view("session.newSession");
+    }
 
     function start(Request $request) {
         try {

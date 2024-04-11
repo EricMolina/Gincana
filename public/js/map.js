@@ -436,17 +436,17 @@ function displaySessions(gincana) {
     .then((res) => res.text())
     .then((text) => {
         appContent.innerHTML = `
-            <div class="bottom-gincana-selected">
-                <h1 class="font-bold bottom-gincana-selected-title">${gincana.name}</h1>
-                <p class="font-medium bottom-gincana-selected-desc">${gincana.desc}</p>
-                <span class="bottom-gincana-selected-creator">Creada por: ${gincana.user}</span>
-                <span class="bottom-gincana-selected-checkpoints">Puntos de control: ${gincana.gincana_points_count}</span>
-                <div class="bottom-gincana-session-groups-title-container">
-                    <span class="font-medium bottom-gincana-session-groups-title">Sesiones activas</span>
-                    <div class="bottom-gincana-session-groups-create">
-                        <img src="../img/create_group_icon.png" alt="create">
-                    </div>
+        <div class="bottom-gincana-selected">
+            <h1 class="font-bold bottom-gincana-selected-title">${gincana.name}</h1>
+            <p class="font-medium bottom-gincana-selected-desc">${gincana.desc}</p>
+            <span class="bottom-gincana-selected-creator">Creada por: ${gincana.user}</span>
+            <span class="bottom-gincana-selected-checkpoints">Puntos de control: ${gincana.gincana_points_count}</span>
+            <div class="bottom-gincana-session-groups-title-container">
+                <span class="font-medium bottom-gincana-session-groups-title">Sesiones activas</span>
+                <div onclick="openNewSessionModal(${gincana.id})" class="bottom-gincana-session-groups-create">
+                    <img src="../img/create_group_icon.png" alt="create">
                 </div>
+            </div>
         `;
 
         let sessions = JSON.parse(text);

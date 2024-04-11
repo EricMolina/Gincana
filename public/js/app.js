@@ -505,3 +505,45 @@ function changeUserImage(file) {
     }
     ajax.send(formdata);
 }
+
+function openNewSessionModal(id){
+    var ajax = new XMLHttpRequest();
+    loading(true);
+    ajax.open('GET', `/api/session/newSession/`);
+    ajax.onload=function() {
+        if(ajax.status == 200){
+            Swal.fire({
+                showConfirmButton: false,
+                html:`${ajax.responseText}`,
+            });
+            document.getElementById("gincana_id").value = id;
+            loading(false);
+        }
+    }
+    ajax.send();
+}
+function createSession(){
+    // console.log(entra)
+    var form = document.getElementById("frm");
+    var formdata = new FormData(frm);
+    var ajax = new XMLHttpRequest();
+    // loading(true);
+    ajax.open('POST', `/api/sessions/`);
+    ajax.onload=function() {
+        if(ajax.status == 200){
+            if(ajax.responseText == "Error1"){
+                document.getElementById("error").innerText = "Es obligatorio darle un nombre a la sesión"
+            }else if(ajax.responseText == "Error2"){
+                document.getElementById("error").innerText = "La sesión ya existe"
+            }else{
+                Swal.fire({
+                    title: "Sesión creada correctamente",
+                    text: "tu codigo es: "+ajax.responseText+".",
+                    icon: "success"
+                  });
+                // loading(false);
+            }
+        }
+    }
+    ajax.send(formdata);
+}

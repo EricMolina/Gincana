@@ -58,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(GincanaSessionController::class)->group(function () {
         Route::get('/api/sessions/', 'list')->name('api.sessions.list');
         Route::post('/api/sessions/', 'store')->name('api.sessions.store');
+        Route::get('/api/session/newSession', 'newSession')->name('api.sessions.newSession');
         Route::post('/api/sessions/start/', 'start')->name('api.sessions.start');
     });
 
