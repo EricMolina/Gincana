@@ -29,7 +29,6 @@ window.onload = function () {
     setInterval(UpdateUserLocation, 2000);
 
     changeTab(1);
-    disableTab(3);
     loading(false);
     document.getElementById('bar-search-input').addEventListener('input', function() {
         filterBySearchBar();
@@ -653,6 +652,7 @@ function displayCurrentActivityStatus() {
 
         document.getElementById('reload-button').onclick = () => displayCurrentActivityStatus();
         loading(false);
+        loadPointers('gincana_points');
     })
     .catch(error => {
         console.error(error);

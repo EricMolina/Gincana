@@ -85,6 +85,10 @@ class GincanaController extends Controller
         });
     }
 
+    function all_points() {
+        $query = Point::with('labels', 'main_label', 'user_labels');
+        return $query->get();
+    }
 
     function list_points(Request $request) {
         $labelFilters = json_decode($request->input('labelFilters'), true);
@@ -128,7 +132,7 @@ class GincanaController extends Controller
     
         return $query->get();
     }
-    
+
     function create(){
         return view("gincana.create");
     }
