@@ -8,6 +8,7 @@ use Database\Seeders\PointSeeder;
 
 use Database\Seeders\LabelSeeder;
 use Database\Seeders\PointsSeeder;
+use Database\Seeders\userSeeder;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -25,5 +26,6 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call(LabelSeeder::class);
         $this->Call(PointSeeder::class);
+        $this->Call(userSeeder::class);
     }
 }
