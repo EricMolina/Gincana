@@ -179,8 +179,8 @@
                     </div>
                 </div>
 
-                <div class="bottom-play-button">
-                    <div id="play-activity-button" class="back-arrow-img" style="display: none">
+                <div id="play-activity-button" class="bottom-play-button">
+                    <div class="back-arrow-img" style="display: none">
                         <img class="play-arrow" src="{{ asset('img/icon_play.png') }}" alt="gincanas">
                     </div>
                 </div>

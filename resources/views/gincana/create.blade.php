@@ -1,6 +1,6 @@
-<p onclick="swal.close()">X</p>
+<p id="closeModal" onclick="swal.close()">Cerrar</p>
 <h1>Nueva Gincana</h1>
-<form onsubmit="return false" method="post" id="ginForm">
+<form class="crud-form" onsubmit="return false" method="post" id="ginForm">
     @csrf
     <input type="hidden" name="coordx" id="coordx">
     <input type="hidden" name="coordy" id="coordy">
@@ -17,7 +17,7 @@
     <input type="number" name="difficulty">
     <br>
     <label for="coord">Punto de inicio</label>
-    <p id="coord"></p>
+    <input id="coord" type="text" value=" - " disabled>
     <div style="width:100%;height:50vh"id="mapNewGincana"></div>
     <button onclick="NuevoPunto()">Nuevo punto</button>
     <div id="puntos"></div>

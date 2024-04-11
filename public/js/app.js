@@ -248,7 +248,7 @@ function openGincanaModal(){
                     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 }).addTo(mapGin);
                 var marker = L.marker([position.lat,position.lng]).addTo(mapGin);
-                document.getElementById("coord").innerText = `${position.lat} - ${position.lng}`
+                document.getElementById("coord").value = `${position.lat} - ${position.lng}`
                 document.getElementById("coordx").value = position.lat;
                 document.getElementById("coordy").value = position.lng;
                 function onMapClick(e) {
@@ -261,7 +261,7 @@ function openGincanaModal(){
                     var lat = coord.lat;
                     var lng = coord.lng;
                     var marker = L.marker([lat,lng]).addTo(mapGin);
-                    document.getElementById("coord").innerText = `${lat} - ${lng}`
+                    document.getElementById("coord").value = `${lat} - ${lng}`
                     document.getElementById("coordx").value = lat;
                     document.getElementById("coordy").value = lng;
                 }
@@ -340,11 +340,13 @@ function deleteUserLabelPoint(label_id, point_id){
 }
 
 function NuevoPunto(){
+    loading(true);
     fetch('/api/points/').then(response => {return response.json();})
     .then(data => {
+        loading(false);
         numPuntos ++;
         var newPoint = `
-        <div id ="${numPuntos}">
+        <div id="${numPuntos}">
         <p>Punto ${numPuntos}</p>
         <select name="points[]">`;
         data.forEach(point => {
@@ -356,7 +358,7 @@ function NuevoPunto(){
         <br>
         <textarea name="hints[]" rows="2" cols="20"></textarea><br>
         <button onclick="deletePoint(${numPuntos})">Borrar</button>
-        </div>`
+        </div>`;
         document.getElementById("puntos").innerHTML +=newPoint;
         // console.log(newPoint)
     })
@@ -371,11 +373,13 @@ function deletePoint(id){
     }
 }
 function crearGin(){
+    loading(true);
     var frm = document.getElementById("ginForm");
     var formdata = new FormData(frm);
     var ajax = new XMLHttpRequest();
     ajax.open('post', 'api/gincanas/');
     ajax.onload=function(){
+        loading(false);
         if(ajax.status == 200){
             if(ajax.responseText == "ok"){
                 swal.close();

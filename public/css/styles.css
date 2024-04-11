@@ -1773,6 +1773,12 @@ body.swal2-height-auto {
     font-size: 14px;
 }
 
+#error {
+    font-weight: 600;
+    color: red;
+    text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
 @media (max-width: 700px) {
     div.crud #no-mobiles {
         display: flex;
