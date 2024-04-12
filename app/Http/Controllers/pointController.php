@@ -140,12 +140,12 @@ class pointController extends Controller
         try {
             $point = Point::with("main_label")->with("user_labels")->with("gincana_points")->with("labels")->get()->find($id);
             foreach ($point["gincana_points"] as $gincana_points) {
-                // return $gincana_points;
-                $checkpoint = GincanaSessionGroupUserCheckpoint::where("gincana_point_id",$gincana_points["point_id"])->delete();
+                // Primero eliminamos los registros en gin_ses_grp_usr_checkpoints
+                GincanaSessionGroupUserCheckpoint::where("gincana_point_id",$gincana_points["point_id"])->delete();
+                // Luego eliminamos el registro en gincana_points
                 $gincana_points->delete();
             }
-
-            
+    
             foreach ($point["user_labels"] as $labels) {
                 $labels["pivot"]->delete();
                 $labels->delete();

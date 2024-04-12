@@ -51,15 +51,15 @@ Route::middleware(['auth'])->group(function () {
         Route::post('api/gincanas/store/', 'store')->name('api.gincanas.store');
         Route::get('api/points/all_points/', 'all_points')->name('api.points.list');
         Route::post('api/points/list_points/', 'list_points');
-        Route::post('api/points/search/list_points_search', 'list_points_search');
+        Route::post('api/points/search/list_points_search/', 'list_points_search');
         Route::get('api/gincanas/create/', 'create')->name('api.gincanas.create');
     });
 
     Route::controller(GincanaSessionController::class)->group(function () {
         Route::get('api/sessions/', 'list')->name('api.sessions.list');
         Route::post('api/sessions/store/', 'store')->name('api.sessions.store');
-        Route::get('api/session/newSession', 'newSession')->name('api.sessions.newSession');
-        Route::get('api/session/newGroup', 'newGroup')->name('api.sessions.newGroup');
+        Route::get('api/session/newSession/', 'newSession')->name('api.sessions.newSession');
+        Route::get('api/session/newGroup/', 'newGroup')->name('api.sessions.newGroup');
         Route::post('api/sessions/start/', 'start')->name('api.sessions.start');
     });
 
@@ -95,8 +95,8 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['admin'])->group(function () {
     Route::controller(LabelController::class)->group(function () {
         Route::get('admin/label','index')->name('label.index');
-        Route::get('label/getlabel','getlabel')->name('label.getlabel');
-        Route::post('admin/label/list','list')->name('label.list');
+        Route::get('admin/label/getlabel','getlabel')->name('label.getlabel');
+        Route::post('admin/label/list/','list')->name('label.list');
         Route::post('admin/label/store','store')->name('label.store');
         Route::post('admin/label/delete','delete')->name('label.delete');
         Route::post('admin/label/show','show')->name('label.show');

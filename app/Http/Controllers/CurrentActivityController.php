@@ -256,7 +256,7 @@ class CurrentActivityController extends Controller
         } else {
             $distance = calculateDistance($current_user_x_coord, $current_user_y_coord, $nex_point->coord_x, $nex_point->coord_y);
     
-            if ($distance <= 150) { # metros
+            if ($distance <= 50) { # metros
                 $user_checkpoint = new GincanaSessionGroupUserCheckpoint;
                 $user_checkpoint->gin_ses_grp_user_id = $group_user->id;
                 $user_checkpoint->gincana_point_id = $next_gincana_point->id;

@@ -97,8 +97,9 @@ class LabelController extends Controller
             }
         }
         if($label->name != $request->input('name')){
-            $label = Label::where('name',$label->name)->first();
-            if($label){
+            $labelVal = Label::where('name',$request->input('name'))->get();
+            // return count($label);
+            if(count($labelVal) != 0){
                 return 'El nombre de la categoría ya existe';
             }
         }

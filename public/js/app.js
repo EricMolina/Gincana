@@ -12,10 +12,14 @@ function changeTab(tab) {
         loadPointers('ubicaciones');
         document.getElementById('current-activity-button').style.display = 'none';
         document.getElementById('create-gincana-button').style.display = 'none';
+
+        document.getElementById('header-content-labels').style.display = 'block';
     } else if (tab == 2) { //Gincanas
         loadPointers('gincanas');
         document.getElementById('current-activity-button').style.display = 'none';
         document.getElementById('create-gincana-button').style.display = 'flex';
+
+        document.getElementById('header-content-labels').style.display = 'none';
     } else { //Mi actividad
         displayCurrentActivityStatus();
         //loadPointers('gincana_points');
@@ -25,6 +29,7 @@ function changeTab(tab) {
             openBottomContainer(true);
             displayCurrentActivityStatus();
         }
+        document.getElementById('header-content-labels').style.display = 'none';
     }
 
     loadDefaultData();
@@ -117,7 +122,7 @@ function loadDefaultData() {
 
                 var userImg = '../img/default_user.png';
                 if (data.user.image != null) {
-                    userImg = '../img/users/'+data.user.img;
+                    userImg = '../img/users'+data.user.img;
                 }
                 var userContent = '';
                 var headerContent = '';
@@ -234,7 +239,7 @@ function openGincanaModal(){
     arrayPuntos = [];
     arrayDesc = [];
     var ajax = new XMLHttpRequest();
-    ajax.open('get', 'api/gincanas/create/');
+    ajax.open('get', 'api/gincanas/create');
     loading(true);
     ajax.onload=function(){
         loading(false);
@@ -345,7 +350,7 @@ function deleteUserLabelPoint(label_id, point_id){
 
 function NuevoPunto(){
     loading(true);
-    fetch('api/points/all_points/').then(response => {return response.json();})
+    fetch('api/points/all_points').then(response => {return response.json();})
     .then(data => {
         loading(false);
         numPuntos ++;
@@ -510,7 +515,7 @@ function changeUserImage(file) {
 function openNewSessionModal(id){
     var ajax = new XMLHttpRequest();
     loading(true);
-    ajax.open('GET', `api/session/newSession/`);
+    ajax.open('GET', `api/session/newSession`);
     ajax.onload=function() {
         if(ajax.status == 200){
             Swal.fire({
@@ -555,7 +560,7 @@ function createSession(){
 function openNewGroupModal(id){
     var ajax = new XMLHttpRequest();
     loading(true);
-    ajax.open('GET', `api/session/newGroup/`);
+    ajax.open('GET', `api/session/newGroup`);
     ajax.onload=function() {
         if(ajax.status == 200){
             Swal.fire({
@@ -574,7 +579,7 @@ function createGroup(){
     var formdata = new FormData(frm);
     var ajax = new XMLHttpRequest();
     loading(true);
-    ajax.open('POST', `api/groups/store/`);
+    ajax.open('POST', `api/groups/store`);
     ajax.onload=function() {
         loading(false);
         if(ajax.status == 200){

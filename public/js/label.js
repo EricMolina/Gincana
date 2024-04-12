@@ -6,7 +6,7 @@ function showLabels(){
     var formdata = new FormData();
     formdata.append('src', src.value);
     formdata.append('_token', csrf_token);
-    ajax.open('POST', 'admin/label/list');
+    ajax.open('POST', 'label/list');
     loading(true);
     ajax.onload = function(){
         loading(false);
@@ -40,7 +40,7 @@ function deleteLabel(id, name){
             var formdata = new FormData();
             formdata.append('id', id);
             formdata.append('_token', csrf_token);
-            ajax.open('POST', 'admin/label/delete');
+            ajax.open('POST', 'label/delete');
             ajax.onload = function(){
                 // console.log(ajax.responseText)
                 if(ajax.status == 200){
@@ -76,7 +76,7 @@ function openEditModal(id){
     formdata.append('_token', csrf_token);
     var ajax = new XMLHttpRequest();
     loading(true);
-    ajax.open('POST', 'admin/label/show');
+    ajax.open('POST', 'label/show');
     ajax.onload = function(){
         loading(false);
         if(ajax.status == 200){
@@ -171,7 +171,7 @@ function create(){
     var formdata = new FormData(frm);
     formdata.append('_token', csrf_token);
     var ajax = new XMLHttpRequest();
-    ajax.open('POST', 'admin/label/store');
+    ajax.open('POST', 'label/store');
     ajax.onload=function(){
         if(ajax.status == 200){
             if(ajax.responseText == "ok"){
@@ -201,7 +201,7 @@ function update(){
     var formdata = new FormData(frm);
     formdata.append('_token', csrf_token);
     var ajax = new XMLHttpRequest();
-    ajax.open('POST', 'admin/label/update');
+    ajax.open('POST', 'label/update');
     ajax.onload=function(){
         if(ajax.status == 200){
             if(ajax.responseText == "ok"){
