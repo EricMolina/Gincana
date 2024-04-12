@@ -774,17 +774,16 @@ function sendCheckpoint(position) {
     .then((text) => {
         let response = JSON.parse(text);
 
-    /*  if (response['result'] == 'ok') {
+        if (response['result'] == 'ok') {
+            displayPointFound();
             displayCurrentActivityStatus();
-            document.getElementById('check-result-msg').textContent = 'Punto encontrado';
-
-        } else if (response['result' ]== 'wait') {
-            document.getElementById('check-result-msg').textContent = 'Espera a que el resto lleguen al punto';
-
-        } else if (response['result'] == 'no')  {
-            document.getElementById('check-result-msg').textContent = 'No se ha encontrado el punto';
-
-        } */
+        }
 
     })
 }
+
+
+function displayPointFound() {
+    Swal.fire("¡Punto encontrado!");
+}
+
