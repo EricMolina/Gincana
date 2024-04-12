@@ -104,7 +104,7 @@ function loadDefaultData() {
     loading(true);
     labelFilters = {};
     userLabelFilters = {};
-    fetch('/user/data')
+    fetch('user/data')
             .then(response => {
                 loading(false);
                 if (!response.ok) {
@@ -174,7 +174,7 @@ function newUserLabel(user_id){
     formdata.append('user_id', user_id);
     var ajax = new XMLHttpRequest();
     loading(true);
-    ajax.open('POST', '/userlabel/store');
+    ajax.open('POST', 'userlabel/store');
     ajax.onload=function(){
         loading(false);
         if(ajax.status == 200){
@@ -285,7 +285,7 @@ function newUserLabelPoint(user_id, point_id){
     formdata.append('point_id', point_id);
     var ajax = new XMLHttpRequest();
     loading(true);
-    ajax.open('POST', '/userlabel/store_point');
+    ajax.open('POST', 'userlabel/store_point');
     ajax.onload=function(){
         loading(false);
         if(ajax.status == 200){
@@ -325,7 +325,7 @@ function deleteUserLabelPoint(label_id, point_id){
     formdata.append('point_id', point_id);
     var ajax = new XMLHttpRequest();
     loading(true);
-    ajax.open('POST', '/userlabel/delete_point');
+    ajax.open('POST', 'userlabel/delete_point');
     ajax.onload=function(){
         loading(false);
         if(ajax.status == 200){
@@ -345,7 +345,7 @@ function deleteUserLabelPoint(label_id, point_id){
 
 function NuevoPunto(){
     loading(true);
-    fetch('/api/points/').then(response => {return response.json();})
+    fetch('api/points/').then(response => {return response.json();})
     .then(data => {
         loading(false);
         numPuntos ++;
@@ -425,7 +425,7 @@ function deleteUserLabel(label_id){
     formdata.append('label_id', label_id);
     var ajax = new XMLHttpRequest();
     loading(true);
-    ajax.open('POST', '/userlabel/delete');
+    ajax.open('POST', 'userlabel/delete');
     ajax.onload=function(){
         loading(false);
         if(ajax.status == 200){
@@ -491,7 +491,7 @@ function changeUserImage(file) {
     formdata.append('image', file);
     var ajax = new XMLHttpRequest();
     loading(true);
-    ajax.open('POST', '/user/image');
+    ajax.open('POST', 'user/image');
     ajax.onload=function(){
         loading(false);
         if(ajax.status == 200){
@@ -510,7 +510,7 @@ function changeUserImage(file) {
 function openNewSessionModal(id){
     var ajax = new XMLHttpRequest();
     loading(true);
-    ajax.open('GET', `/api/session/newSession/`);
+    ajax.open('GET', `api/session/newSession/`);
     ajax.onload=function() {
         if(ajax.status == 200){
             Swal.fire({
@@ -529,7 +529,7 @@ function createSession(){
     var formdata = new FormData(frm);
     var ajax = new XMLHttpRequest();
     loading(true);
-    ajax.open('POST', `/api/sessions/`);
+    ajax.open('POST', `api/sessions/`);
     ajax.onload=function() {
         loading(false);
         document.getElementById("reload-button").click();
@@ -555,7 +555,7 @@ function createSession(){
 function openNewGroupModal(id){
     var ajax = new XMLHttpRequest();
     loading(true);
-    ajax.open('GET', `/api/session/newGroup/`);
+    ajax.open('GET', `api/session/newGroup/`);
     ajax.onload=function() {
         if(ajax.status == 200){
             Swal.fire({
@@ -574,7 +574,7 @@ function createGroup(){
     var formdata = new FormData(frm);
     var ajax = new XMLHttpRequest();
     loading(true);
-    ajax.open('POST', `/api/groups/`);
+    ajax.open('POST', `api/groups/`);
     ajax.onload=function() {
         loading(false);
         if(ajax.status == 200){

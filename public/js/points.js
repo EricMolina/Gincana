@@ -44,7 +44,7 @@ function createPoint(e) {
     var labelList = document.getElementById("labelList");
     var ajax = new XMLHttpRequest();
     loading(true);
-    ajax.open('get', '/label/getlabel');
+    ajax.open('get', 'label/getlabel');
     ajax.onload = function(){
         loading(false);
         if(ajax.status == 200){
@@ -100,7 +100,7 @@ function getPoints(){
     });
     loading(true);
     var ajax = new XMLHttpRequest();
-    ajax.open('POST', '/admin/point/list');
+    ajax.open('POST', 'admin/point/list');
     var formdata = new FormData();
     formdata.append('src', src.value);
     formdata.append('_token', csrf_token);
@@ -129,7 +129,7 @@ function getPoints(){
 }
 function modForm(id){
     var ajax = new XMLHttpRequest();
-    ajax.open('POST', '/admin/point/show');
+    ajax.open('POST', 'admin/point/show');
     var formdata = new FormData();
     loading(true);
     formdata.append('id', id);
@@ -215,7 +215,7 @@ function update(){
     formdata.append('_token', csrf_token);
     var ajax = new XMLHttpRequest();
     loading(true);
-    ajax.open('POST', '/admin/point/update');
+    ajax.open('POST', 'admin/point/update');
     ajax.onload=function(){
         loading(false);
         if(ajax.status == 200){
@@ -247,7 +247,7 @@ function newPoint(){
     formdata.append('_token', csrf_token);
     var ajax = new XMLHttpRequest();
     loading(true);
-    ajax.open('POST', '/admin/point/store');
+    ajax.open('POST', 'admin/point/store');
     ajax.onload=function(){
         loading(false);
         if(ajax.status == 200){
@@ -341,7 +341,7 @@ function labelFormMain(inputs, main){
     var labelList = document.getElementById("labelList");
     loading(true);
     var ajax = new XMLHttpRequest();
-    ajax.open('get', '/label/getlabel');
+    ajax.open('get', 'label/getlabel');
     ajax.onload = function(){
         loading(false);
         if(ajax.status == 200){

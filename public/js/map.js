@@ -191,7 +191,7 @@ function loadPointers(type) {
         formdata.append('labelFilters', JSON.stringify(labelFilters));
         formdata.append('userLabelFilters', JSON.stringify(userLabelFilters));
         var ajax = new XMLHttpRequest();
-        ajax.open('POST', '/api/points', true);
+        ajax.open('POST', 'api/points', true);
 
         ajax.onload = function() {
             if (this.status >= 200 && this.status < 400) {
@@ -227,7 +227,7 @@ function loadPointers(type) {
 
         ajax.send(formdata);
     } else if (pointersType == 'gincanas') { //Gincanas
-        fetch('/api/gincanas/')
+        fetch('api/gincanas/')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error al cargar los puntos');
@@ -394,7 +394,7 @@ function filterBySearchBar() {
     formdata.append('_token', csrf_token);
     formdata.append('search', document.getElementById('bar-search-input').value);
     var ajax = new XMLHttpRequest();
-    ajax.open('POST', '/api/points/search', true);
+    ajax.open('POST', 'api/points/search', true);
 
     ajax.onload = function() {
         if (this.status >= 200 && this.status < 400) {
@@ -434,7 +434,7 @@ function displaySessions(gincana) {
     loading(true);
     currentGincana = gincana.id;
 
-    fetch(`/api/sessions/?id=${gincana.id}`)
+    fetch(`api/sessions/?id=${gincana.id}`)
     .then((res) => res.text())
     .then((text) => {
         appContent.innerHTML = `
@@ -487,7 +487,7 @@ function displayGroups(sessionId) {
     loading(true);
     currentSession = sessionId;
 
-    fetch(`/api/groups/?id=${sessionId}`)
+    fetch(`api/groups/?id=${sessionId}`)
     .then((res) => res.text())
     .then((text) => {
         let groups = JSON.parse(text);
@@ -544,7 +544,7 @@ function joinGroup(groupId) {
         'gincana_session_group_id': groupId
     };
 
-    fetch('/api/groups/join/', {
+    fetch('api/groups/join/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -568,7 +568,7 @@ function displayCurrentActivityStatus() {
     loading(true);
     pointersType = 'gincana_points';
 
-    fetch('/api/current-activity/status/')
+    fetch('api/current-activity/status/')
     .then((res) => res.text())
     .then((text) => {
         let activity = JSON.parse(text);
@@ -676,7 +676,7 @@ function exitGroup() {
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     loading(true);
-    fetch('/api/groups/exit/', {
+    fetch('api/groups/exit/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -702,7 +702,7 @@ function exitGroup() {
 function leaveGroup() {
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    fetch('/api/groups/leave/', {
+    fetch('api/groups/leave/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -722,7 +722,7 @@ function leaveGroup() {
 function startGincanaSession() {
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    fetch('/api/sessions/start/', {
+    fetch('api/sessions/start/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -738,7 +738,7 @@ function startGincanaSession() {
 function exitCurrentActivity() {
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    fetch('/api/current-activity/exit/', {
+    fetch('api/current-activity/exit/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -762,7 +762,7 @@ function sendCheckpoint(position) {
         'coord_y': position['lng']
     };
 
-    fetch('/api/current-activity/checkpoint/', {
+    fetch('api/current-activity/checkpoint/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
