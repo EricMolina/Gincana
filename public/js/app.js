@@ -230,7 +230,7 @@ function assignUserLabel(user_id, point_id) {
 }
 var numPuntos = 0;
 function openGincanaModal(){
-    numPuntos == 0;
+    numPuntos = 0;
     arrayPuntos = [];
     arrayDesc = [];
     var ajax = new XMLHttpRequest();
@@ -384,6 +384,7 @@ function crearGin(){
     ajax.open('post', 'api/gincanas/');
     ajax.onload=function(){
         loading(false);
+        loadPointers('gincanas');
         if(ajax.status == 200){
             if(ajax.responseText == "ok"){
                 swal.close();
@@ -527,14 +528,17 @@ function createSession(){
     var form = document.getElementById("frm");
     var formdata = new FormData(frm);
     var ajax = new XMLHttpRequest();
-    // loading(true);
+    loading(true);
     ajax.open('POST', `/api/sessions/`);
     ajax.onload=function() {
+        loading(false);
+        document.getElementById("reload-button").click();
+
         if(ajax.status == 200){
             if(ajax.responseText == "Error1"){
                 document.getElementById("error").innerText = "Es obligatorio darle un nombre a la sesión"
             }else if(ajax.responseText == "Error2"){
-                document.getElementById("error").innerText = "La sesión ya existe"
+                document.getElementById("error").innerText = "Ya tienes una sesión activa"
             }else{
                 Swal.fire({
                     title: "Sesión creada correctamente",
@@ -543,6 +547,52 @@ function createSession(){
                   });
                 // loading(false);
             }
+        }
+    }
+    ajax.send(formdata);
+}
+
+function openNewGroupModal(id){
+    var ajax = new XMLHttpRequest();
+    loading(true);
+    ajax.open('GET', `/api/session/newGroup/`);
+    ajax.onload=function() {
+        if(ajax.status == 200){
+            Swal.fire({
+                showConfirmButton: false,
+                html:`${ajax.responseText}`,
+            });
+            document.getElementById("session_id").value = id;
+            loading(false);
+        }
+    }
+    ajax.send();
+}
+function createGroup(){
+    // console.log(entra)
+    var form = document.getElementById("frm");
+    var formdata = new FormData(frm);
+    var ajax = new XMLHttpRequest();
+    loading(true);
+    ajax.open('POST', `/api/groups/`);
+    ajax.onload=function() {
+        loading(false);
+        if(ajax.status == 200){
+            inActivity = true;
+            enableTab(3);
+            changeTab(3);
+            joinGroup(ajax.responseText);
+            document.getElementById("reload-button").onclick = displayCurrentActivityStatus;
+
+            Swal.fire({
+                title: "Grupo creado correctamente",
+                icon: "success"
+            });
+        } else {
+            Swal.fire({
+                title: "Algo ha salido mal",
+                icon: "error"
+            });
         }
     }
     ajax.send(formdata);

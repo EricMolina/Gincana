@@ -33,9 +33,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
     <script src="{{ asset('js/map.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <title>@yield('title')</title>
@@ -146,9 +145,6 @@
                     <span class="font-medium footer-item-text">Cerrar sesión</span>
                 </div>
             </div>
-            <span class="font-light-italic">Gincanas en las que he participado: 10</span>
-            <br>
-            <span class="font-light-italic">Gincanas en las que he ganado: 2</span>
             <div class="profile-close-container">
                 <div class="back-arrow-container">
                     <div onclick="openUserProfile(false)" class="back-arrow-img">
@@ -179,8 +175,8 @@
                     </div>
                 </div>
 
-                <div id="play-activity-button" class="bottom-play-button">
-                    <div class="back-arrow-img" style="display: none">
+                <div id="play-activity-button" class="bottom-play-button" style="display: none">
+                    <div class="back-arrow-img">
                         <img class="play-arrow" src="{{ asset('img/icon_play.png') }}" alt="gincanas">
                     </div>
                 </div>

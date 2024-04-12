@@ -131,12 +131,12 @@ function UpdateUserLocation() {
                 .addTo(userLayer);
         }
 
-        /* if (inActivity) {
+        if (inActivity) {
             sendCheckpoint({
                 'lat': position.lat,
                 'lng': position.lng
             });
-        } */
+        }
 
     }).catch(error => {
         console.error(error);
@@ -181,6 +181,7 @@ function UpdateMapPointers() {
 var pointersType = '';
 function loadPointers(type) {
     if (type != null) pointersType = type;
+    console.log(pointersType);
 
     loading(true);
     if (pointersType == 'ubicaciones') { //Ubicaciones
@@ -255,7 +256,8 @@ function loadPointers(type) {
                 loading(false);
                 console.error(error);
             });
-    } else {
+    } else { //Gincana Points
+        //displayCurrentActivityStatus();
         UpdateMapPointers();
         loading(false);
     }
@@ -497,7 +499,7 @@ function displayGroups(sessionId) {
                 <p class="font-medium-italic bottom-gincana-session-name">${groups.session.name} [${groups.session.session_code}]</p>
                 <div class="bottom-gincana-session-groups-title-container">
                     <span class="font-medium bottom-gincana-session-groups-title">Grupos de la sesión</span>
-                    <div class="bottom-gincana-session-groups-create">
+                    <div onclick="openNewGroupModal(${groups.session.id})" class="bottom-gincana-session-groups-create">
                         <img src="../img/create_group_icon.png" alt="create">
                     </div>
                 </div>
@@ -564,6 +566,7 @@ function joinGroup(groupId) {
 
 function displayCurrentActivityStatus() {
     loading(true);
+    pointersType = 'gincana_points';
 
     fetch('/api/current-activity/status/')
     .then((res) => res.text())
@@ -672,6 +675,7 @@ function displayCurrentActivityStatus() {
 function exitGroup() {
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+    loading(true);
     fetch('/api/groups/exit/', {
         method: 'POST',
         headers: {
@@ -680,12 +684,18 @@ function exitGroup() {
         }
     })
     .then(() => {
+        loading(false);
         inActivity = false;
         disableTab(3);
         enableTab(2);
         changeTab(2);
         openBottomContainer(false);
-    })
+        swal.fire("Actividad abandonada", "", "success");
+    }).catch(error => {
+        console.error(error);
+        loading(false);
+        swal.fire("Error al abandonar la actividad", "", "error");
+    });
 }
 
 

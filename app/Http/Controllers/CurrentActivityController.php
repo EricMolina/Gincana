@@ -50,6 +50,7 @@ class CurrentActivityController extends Controller
 
         $data['gincana'] = Gincana::find($data['session']->gincana_id);
 
+        $data['available_points'] = [];
         if ($data['session']->status == 1) {
 
             $available_points = [];
@@ -209,9 +210,9 @@ class CurrentActivityController extends Controller
             'order_id'
         )->get();
 
-        $next_gincana_point = null;
         $group_members = GincanaSessionGroupUser::where('gin_ses_group_id', $current_gincana_session_group->id)->get();
         $group_count = count($group_members);
+        $next_gincana_point = $gincana_points->first();
 
         foreach ($gincana_points as $point) {
                 

@@ -36,19 +36,19 @@ class GincanaSessionGroupController extends Controller
             $gincana_session_group = new GincanaSessionGroup;
             $gincana_session_group->name = $request->name;
             $gincana_session_group->status = 1;
-            $gincana_session_group->gincana_session_id = $request->gincana_session_id;
+            $gincana_session_group->gincana_session_id = $request->session_id;
             $gincana_session_group->save();
 
-            $gincana_session_group_user = new GincanaSessionGroupUser;
+            /*$gincana_session_group_user = new GincanaSessionGroupUser;
             $gincana_session_group_user->user_id = Auth::user()->id;
             $gincana_session_group_user->gin_ses_group_id = $gincana_session_group->id;
-            $gincana_session_group_user->save();
+            $gincana_session_group_user->save();*/
 
             Session::put('current_activity', $gincana_session_group->id);
 
             DB::commit();
 
-            return $gincana_session_group;
+            return $gincana_session_group->id;
 
         } catch (Exception $e) {
             DB::rollBack();

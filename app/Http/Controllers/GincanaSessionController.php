@@ -48,7 +48,10 @@ class GincanaSessionController extends Controller
                 return "Error1";
             }
             // $labels = Label::where("name","LIKE",$src."%")->get();
-            $gincana  = GincanaSession::where("gincana_id",$request->gincana_id)->first();
+            $gincana = GincanaSession::where("gincana_id", $request->gincana_id)
+                ->where("session_admin", Auth::user()->id)
+                ->where("status", 0)
+                ->first();
             if($gincana){
                 return "Error2";
             }
@@ -69,6 +72,9 @@ class GincanaSessionController extends Controller
     }
     function newSession(){
         return view("session.newSession");
+    }
+    function newGroup(){
+        return view("session.newGroup");
     }
 
     function start(Request $request) {
