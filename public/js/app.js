@@ -345,7 +345,7 @@ function deleteUserLabelPoint(label_id, point_id){
 
 function NuevoPunto(){
     loading(true);
-    fetch('api/points/').then(response => {return response.json();})
+    fetch('api/points/all_points/').then(response => {return response.json();})
     .then(data => {
         loading(false);
         numPuntos ++;
@@ -529,7 +529,7 @@ function createSession(){
     var formdata = new FormData(frm);
     var ajax = new XMLHttpRequest();
     loading(true);
-    ajax.open('POST', `api/sessions/`);
+    ajax.open('POST', `api/sessions/store`);
     ajax.onload=function() {
         loading(false);
         document.getElementById("reload-button").click();
@@ -574,7 +574,7 @@ function createGroup(){
     var formdata = new FormData(frm);
     var ajax = new XMLHttpRequest();
     loading(true);
-    ajax.open('POST', `api/groups/`);
+    ajax.open('POST', `api/groups/store/`);
     ajax.onload=function() {
         loading(false);
         if(ajax.status == 200){

@@ -49,15 +49,15 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(GincanaController::class)->group(function () {
         Route::get('api/gincanas/', 'list')->name('api.gincanas.list');
         Route::post('api/gincanas/store/', 'store')->name('api.gincanas.store');
-        Route::get('api/points/', 'all_points')->name('api.points.list');
-        Route::post('api/points/', 'list_points');
-        Route::post('api/points/search', 'list_points_search');
+        Route::get('api/points/all_points/', 'all_points')->name('api.points.list');
+        Route::post('api/points/list_points/', 'list_points');
+        Route::post('api/points/search/list_points_search', 'list_points_search');
         Route::get('api/gincanas/create/', 'create')->name('api.gincanas.create');
     });
 
     Route::controller(GincanaSessionController::class)->group(function () {
         Route::get('api/sessions/', 'list')->name('api.sessions.list');
-        Route::post('api/sessions/', 'store')->name('api.sessions.store');
+        Route::post('api/sessions/store/', 'store')->name('api.sessions.store');
         Route::get('api/session/newSession', 'newSession')->name('api.sessions.newSession');
         Route::get('api/session/newGroup', 'newGroup')->name('api.sessions.newGroup');
         Route::post('api/sessions/start/', 'start')->name('api.sessions.start');
@@ -65,7 +65,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::controller(GincanaSessionGroupController::class)->group(function () {
         Route::get('api/groups/', 'list')->name('api.groups.list');
-        Route::post('api/groups/', 'store')->name('api.groups.store');
+        Route::post('api/groups/store/', 'store')->name('api.groups.store');
         Route::post('api/groups/join/', 'join')->name('api.groups.join');
         Route::post('api/groups/exit/', 'exit')->name('api.groups.exit');
         Route::post('api/groups/leave/', 'leave')->name('api.groups.leave');
