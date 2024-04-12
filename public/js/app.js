@@ -381,7 +381,7 @@ function crearGin(){
     var frm = document.getElementById("ginForm");
     var formdata = new FormData(frm);
     var ajax = new XMLHttpRequest();
-    ajax.open('post', 'api/gincanas/');
+    ajax.open('post', 'api/gincanas/store');
     ajax.onload=function(){
         loading(false);
         loadPointers('gincanas');
